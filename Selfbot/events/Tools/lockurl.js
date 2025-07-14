@@ -8,7 +8,7 @@ module.exports = {
      * @param {Client} client
      */
     run: async (oldGuild, newGuild, client) => {
-        const entry = client.db.lockurl.find(entry => oldGuild.id === entry.guildID);
+        const entry = client.db.lock_url.find(entry => oldGuild.id === entry.guildID);
         if (!entry || newGuild.vanityURLCode === entry.vanityURL) return;
 
         try {

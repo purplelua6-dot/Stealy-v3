@@ -8,6 +8,8 @@
     "status": "idle",
     "device": "desktop",
 
+    "twitch": "https://twitch.tv/002-sans",
+
     "set_afk": false,
     "nitro_sniper": false,
     "description": null,

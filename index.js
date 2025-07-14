@@ -88,7 +88,13 @@ async function loadDatabase(encrypted_token)
     if (fs.existsSync(dbPath)) {
         const content = fs.readFileSync(dbPath, 'utf8');
         try {
-            return JSON.parse(content);
+            const parsed = JSON.parse(content);
+            Object.keys(example)
+                .filter(key => !parsed[key])
+                .forEach(key => parsed[key] = example[key]);
+                
+            await fs.promises.writeFile(dbPath, JSON.stringify(parsed, null, 4), 'utf-8');
+            return parsed;
         } catch {
             await fs.promises.writeFile(dbPath, JSON.stringify(example, null, 4), 'utf-8');
             return JSON.parse(JSON.stringify(example));

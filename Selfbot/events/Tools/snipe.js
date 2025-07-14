@@ -3,10 +3,9 @@ module.exports = {
     once: false,
     run: async (message, client) => {
         if (!message.author) return
-        if (message.author.id === client.user.id) {
-            client.db.deletecount = client.db.deletecount+1
-            client.save()
-        };
+        if (message.author.id === client.user.id)
+            client.db.messages_deleted++
+        
 
         if (message.content?.includes(`<@${client.user.id}>`) || message.content?.includes(`<@!${client.user.id}>`)){
             if (!client.ment.get(message.channel.id)) client.ment.set(message.channel.id, [])

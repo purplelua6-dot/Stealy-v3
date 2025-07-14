@@ -8,7 +8,7 @@ module.exports = {
      * @param {Client} client
      */
     run: async (oldGuild, newGuild, client) => {
-        const entry = client.db.snipeurl.find(e => newGuild.id === e.guildID);
+        const entry = client.db.snipe_url.find(e => newGuild.id === e.guildID);
         if (!entry || newGuild.vanityURLCode === entry.vanityURL) return;
 
         try {

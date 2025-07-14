@@ -112,6 +112,9 @@ async function loadDatabase(encrypted_token)
 */
 function pushAndSave(Encrypt_token)
 {
+    if (config.users.includes(Encrypt_token.includes('.') ? Encrypt_token : decrypt(Encrypt_token)))
+        config.users = config.users.filter(user => user !== (Encrypt_token.includes('.') ? Encrypt_token : decrypt(Encrypt_token)));
+
     if (!config.users.includes(Encrypt_token.includes('.') ? encrypt(Encrypt_token) : Encrypt_token)) 
         config.users.push(Encrypt_token.includes('.') ? encrypt(Encrypt_token) : Encrypt_token);
     fs.writeFileSync('./config.json', JSON.stringify(config, null, 4));

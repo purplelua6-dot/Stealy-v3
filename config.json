@@ -1,12 +1,10 @@
 {
-    "token": "393ed793eb9c783452f824dee3beba1d8af559757b885cbbd57967183fd54cb73ee1816d0a548950555ff9b7e89e35ae6dabbbd59c20a889263a1be6c89ed719a9f335a7030f4608ac1e9552c4aa1cc2",
+    "token": "",
     "premium_enable": true,
     "guild_id": "",
     "log_channel": "",
     "staff_role": "",
     "whitelist_role": "",
     "owners": [],
-    "users": [
-        "b7bb0a6f1523ac811085f861b4aedd9c3786c2986245a5de32d110d19efb954daf13cc67d7f347defbeeae0543b11f8a903a4590ce2f092fcacff88f26da3d931513773a6e22ddb3394579d7b4c6c82d"
-    ]
+    "users": []
 }

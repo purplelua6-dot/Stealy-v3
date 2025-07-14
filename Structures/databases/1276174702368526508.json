@@ -16,7 +16,7 @@
     "stats": {
         "sniped": 0,
         "messages_deleted": 0,
-        "messages_created": 3
+        "messages_created": 10
     },
     "anti_group": {
         "status": false,
@@ -109,5 +109,6 @@
         "interval": 15,
         "presence": [],
         "rpc": []
-    }
+    },
+    "twitch": "https://twitch.tv/002-sans"
 }

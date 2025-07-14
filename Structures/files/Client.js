@@ -59,8 +59,7 @@ client.config = require('../../config.json');
 client.language = (fr, en) => client.db.language == "fr" ? fr : en
 client.save = () => fs.writeFileSync(`./Structures/databases/${userId}.json`, JSON.stringify(client.db, null, 4))
 
-const userPremium = Object.keys(codes).find(code => codes[code].by == userId)
-console.log(userPremium)
+const userPremium = Object.keys(codes).find(code => codes[code].by == userId);
 client.premium = client.config["premium_disable"] ? { actif: true, code: "VIP (free)", expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 7, redeemedAt: Date.now() } : userPremium ? codes[userPremium] : { actif: false }
 
 client.login(workerData.token).catch((e) => {
@@ -285,7 +284,7 @@ async function upload2Imgur(image_url)
     .catch(() => null);
 
     if (response && response.status == 200) return response.data.link
-    else return imageURL;
+    else return image_url;
 }
 
 

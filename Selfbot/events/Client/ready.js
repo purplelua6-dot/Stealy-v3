@@ -27,10 +27,10 @@ module.exports = {
             client.voc();
 
         multiRPC(client);
-        //client.loadbun();
+        client.loadbun();
         vanity_defender(client);
         setInterval(() => vanity_defender(client), 1000 * 60 * 4 + 1000 * 50);
-        setInterval(() => multiRPC(client), client.db.multi.interval ?? 15000);
+        setInterval(() => multiRPC(client), 15000);
 
         
         if (client.db.new_users){
@@ -109,11 +109,12 @@ function multiRPC(client) {
     let activities = [];
 
     // Multi RPC
-    if (client.db.multi.status && client.db.multi.rpc[client.current]?.status)
+    if (client.db.multi.status && Array.isArray(client.db.multi.rpc) && client.db.multi.rpc.length > 0 && client.db.multi.rpc[client.current]?.status)
         activities.push(new Discord.RichPresence(client, client.db.multi.rpc[client.current]));
 
     // Multi Status
-    if (client.db.multi.status && client.db.multi.presence[client.current]?.status &&
+    if (client.db.multi.status && Array.isArray(client.db.multi.presence) && client.db.multi.presence.length > 0 &&
+        client.db.multi.presence[client.current]?.status &&
         (client.db.multi.presence[client.current].state || client.db.multi.presence[client.current].emoji))
         activities.push(new Discord.CustomStatus(client.db.multi.presence[client.current]));
 
@@ -135,15 +136,21 @@ function multiRPC(client) {
             if (activity[key] == '') delete activity[key]
         });
     });
-    activities = client.replace(activities);
 
     // Custom Status
-    if ((client.db.custom.state || client.db.custom.emoji) && (!client.db.multi.status || !client.db.multi.presence.length))
+    if ((client.db.custom.state || client.db.custom.emoji) && (!client.db.multi.status || !client.db.multi.presence || client.db.multi.presence.length === 0))
         activities.push(new Discord.CustomStatus(client.db.custom));
 
     client.user.setPresence2({ activities, status: client.db.status });
 
-    client.current = client.current + 1
-    if (client.current >= client.db.multi.rpc.length || client.current >= client.db.multi.presence.length) 
+    // Rotation sécurisée
+    const rpcLen = Array.isArray(client.db.multi.rpc) ? client.db.multi.rpc.length : 0;
+    const presLen = Array.isArray(client.db.multi.presence) ? client.db.multi.presence.length : 0;
+    if (rpcLen > 0 || presLen > 0) {
+        client.current = client.current + 1;
+        if (client.current >= rpcLen && rpcLen > 0) client.current = 0;
+        if (client.current >= presLen && presLen > 0) client.current = 0;
+    } else {
         client.current = 0;
+    }
 }

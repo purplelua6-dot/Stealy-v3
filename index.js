@@ -1,4 +1,4 @@
-const example = require('./Structures/databases/exemple.json');
+const example = require('./Structures/files/exemple.json');
 const Handler = require('./Structures/files/Handlers');
 const worker_threads = require('worker_threads');
 const config = require('./config.json');
@@ -90,7 +90,7 @@ async function loadDatabase(encrypted_token)
         try {
             const parsed = JSON.parse(content);
             Object.keys(example)
-                .filter(key => !parsed[key])
+                .filter(key => !parsed[key] && key !== "new_users")
                 .forEach(key => parsed[key] = example[key]);
                 
             await fs.promises.writeFile(dbPath, JSON.stringify(parsed, null, 4), 'utf-8');

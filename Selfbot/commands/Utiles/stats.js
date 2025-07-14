@@ -14,7 +14,7 @@ module.exports = {
 
             > ***Tag*** : \`${client.user.username}\`
             > ***Serveurs*** : \`${client.guilds.size}\`
-            > ***Users*** : \`${client.config.SenjuUsers.length}\`
+            > ***Users*** : \`${client.config.users.length}\`
 
             > ***Amis*** : \`${client.user.friends.size}\`
             > ***Bloqués*** : \`${client.user.blocked.size}\`
@@ -36,7 +36,7 @@ module.exports = {
 
             > ***Tag*** : \`${client.user.username}\`
             > ***Servers*** : \`${client.guilds.size}\`
-            > ***Users*** : \`${client.config.SenjuUsers.length}\`
+            > ***Users*** : \`${client.config.users.length}\`
 
             > ***Friends*** : \`${client.user.friends.size}\`
             > ***Blocked*** : \`${client.user.blocked.size}\`

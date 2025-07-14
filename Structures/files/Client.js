@@ -45,7 +45,6 @@ client.ment = new Map();
 client.snipes = new Map();
 client.db = workerData.database;
 client.setMaxListeners(Infinity);
-client.managerbot = workerData.manager;
 //client.otp = require('./TOTP.js');
 
 client.loadbun = () => loadBun();
@@ -359,9 +358,6 @@ function getDevice(data)
     }
 }
 
-
-
-
-
-
-
+process.on("unhandledRejection", errorHandler);
+process.on("uncaughtException", errorHandler);
+process.on('warning', () => false);

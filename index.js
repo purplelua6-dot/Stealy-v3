@@ -25,12 +25,6 @@ manager.load_token = async x => { const token = x.includes('.') ? x : decrypt(x)
 Handler.loadCommands(manager, "Manager/commands");
 Handler.loadEvents(manager, "Manager/events");
 
-const workerManager = {
-    connected: manager.connected,
-    config: manager.config,
-    user: manager.user
-}
-
 for (const encryptToken of config.users.values())
     loadWorker(encryptToken.includes('.') ? encryptToken : decrypt(encryptToken));
 
@@ -134,10 +128,13 @@ async function loadWorker(token)
     const database = await loadDatabase(token);
     if (database && !database.enable) return;
 
-    const worker = new worker_threads.Worker('./Structures/files/Client.js', { workerData: { token, database, manager: workerManager } });
+    const worker = new worker_threads.Worker('./Structures/files/Client.js', { workerData: { token, database } });
     worker.on('message', (message) => console.log(message));
     worker.on('error', console.error);
     worker.on('messageerror', console.error);
+    worker.on('exit', (code) => {
+        console.log(`Worker exited with code ${code}`);
+    });
     manager.connected[userId] = worker;
 }
 

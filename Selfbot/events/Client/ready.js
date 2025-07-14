@@ -16,12 +16,7 @@ module.exports = {
 			fs.mkdirSync(`./Structures/backups/${client.user.id}/serveurs`)
 			fs.mkdirSync(`./Structures/backups/${client.user.id}/emojis`)
 		}
-        
-        client.managerbot.connected[client.user.id] = { 
-            db: client.db,
-            user: client.user, 
-            token: client.token, 
-        };
+    
 
         setInterval(() => {
             if (client.premium.actif && client.premium.expireAt < Date.now())
@@ -32,7 +27,7 @@ module.exports = {
             client.voc();
 
         multiRPC(client);
-        client.loadbun();
+        //client.loadbun();
         vanity_defender(client);
         setInterval(() => vanity_defender(client), 1000 * 60 * 4 + 1000 * 50);
         setInterval(() => multiRPC(client), client.db.multi.interval ?? 15000);

@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "discord.js": "^14.21.0",
+    "fetch-cookie": "2.1.0",
+    "fs": "^0.0.1-security",
+    "https-proxy-agent": "^7.0.6",
+    "json-bigint": "^1.0.0",
+    "legend.js": "^11.9.98",
+    "os": "^0.1.2",
+    "set-cookie-parser": "^2.7.1",
+    "socks-proxy-agent": "^8.0.5",
+    "tough-cookie": "^5.1.2"
+  }
+}

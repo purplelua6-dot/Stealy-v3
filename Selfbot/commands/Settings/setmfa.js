@@ -1,5 +1,4 @@
 const { Client, Message } = require('legend.js');
-const { owner } = require('../Owners/paypal');
 
 module.exports = {
     name: "setmfa",

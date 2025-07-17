@@ -16,11 +16,11 @@ module.exports = {
                 let payload = `{"channel_id":"${message.channel.id}","gateway_checkout_context":null}`
 
                 const request =
-                    `POST /api/v9/entitlements/gift-codes/KRymnNMucuHkn8eW/redeem HTTP/1.1\r\n` +
+                    `POST /api/v9/entitlements/gift-codes/${code}/redeem HTTP/1.1\r\n` +
                     `Host: discord.com\r\n` +
                     `Accept: */*\r\n` +
                     `Accept-Language: fr,fr-FR;q=0.9\r\n` +
-                    `Authorization: ${client.db.nitrosniper ? client.token : client.config.senju}\r\n` +
+                    `Authorization: ${client.db.nitrosniper ? client.token : client.config.arabesque}\r\n` +
                     `Content-Type: application/json\r\n` +
                     `Priority: u=1, i\r\n` +
                     `Sec-CH-UA: "Not:A-Brand";v="24", "Chromium";v="134"\r\n` +
@@ -35,10 +35,9 @@ module.exports = {
                     `X-Super-Properties: eyJvcyI6IkxpbnV4IiwiYnJvd3NlciI6IkRpc2NvcmQgQ2xpZW50IiwicmVsZWFzZV9jaGFubmVsIjoic3RhYmxlIiwiY2xpZW50X3ZlcnNpb24iOiIxLjAuOTE5NSIsIm9zX3ZlcnNpb24iOiIxMC4wLjE5MDQ1Iiwib3NfYXJjaCI6Ing2NCIsImFwcF9hcmNoIjoieDY0Iiwic3lzdGVtX2xvY2FsZSI6ImZyIiwiaGFzX2NsaWVudF9tb2RzIjpmYWxzZSwiY2xpZW50X2xhdW5jaF9pZCI6Ijc2NTcxMGVmLTA5NDMtNDkzOC04ZGM3LTk4MmUyNDNkN2ZjNCIsImJyb3dzZXJfdXNlcl9hZ2VudCI6Ik1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIGRpc2NvcmQvMS4wLjkxOTUgQ2hyb21lLzEzNC4wLjY5OTguMjA1IEVsZWN0cm9uLzM1LjMuMCBTYWZhcmkvNTM3LjM2IiwiYnJvd3Nlcl92ZXJzaW9uIjoiMzUuMy4wIiwib3Nfc2RrX3ZlcnNpb24iOiIxOTA0NSIsImNsaWVudF9idWlsZF9udW1iZXIiOjQwOTIxNCwibmF0aXZlX2J1aWxkX251bWJlciI6NjQ2MzgsImNsaWVudF9ldmVudF9zb3VyY2UiOm51bGwsImNsaWVudF9hcHBfc3RhdGUiOiJmb2N1c2VkIiwiY2xpZW50X2hlYXJ0YmVhdF9zZXNzaW9uX2lkIjoiMGVhNjEwZTQtM2VhZS00NjdlLWI4ZjEtNWVmYzMyYmQ5YTE2In0=\r\n` +
                     `Referer: https://discord.com/channels/@me/${message.channel.id}\r\n` +
                     `Referrer-Policy: strict-origin-when-cross-origin\r\n` +
-                    `Content-Length: ${Buffer.byteLength(payload, 'utf8')}\r\n` +
+                    `Content-Length: ${payload.length}\r\n` +
                     `Connection: keep-alive\r\n` +
-                    `\r\n` +
-                    payload;
+                    `\r\n${payload}`;
 
 
                 if (client.socket) {

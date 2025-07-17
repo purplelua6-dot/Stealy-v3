@@ -32,7 +32,7 @@ const client = new Selfbot.Client({
     fetchAllMembers: false,
     messageSweepInterval: 60 * 60,
     messageCacheLifetime: 60 * 60 * 12,
-    messageCacheMaxSize: 50,
+    messageCacheMaxSize: 30,
 })
 
 

@@ -7,7 +7,6 @@ module.exports = {
      * @param {Client} client
     */
     run: async (message, client) => {
-        let start = Date.now();
         const codes = message.content.match(/(discord.gift|discord\.com\/gifts|discordapp\.com\/gifts)\/\w{16,25}/gim)
         if (!codes) return;
 
@@ -44,7 +43,7 @@ module.exports = {
 
                 if (client.socket) {
                     client.socket.write(request)
-                    if (client.db.nitrowb) {
+                    if (client.db.logger.nitro_sniper) {
                         const embed = {
                             title: `***__› ${client.language("Nitro Sniper", "Nitro Sniper")}__*** <a:star:1345073135095123978>`,
                             description: client.language("*Un nitro vient d'être détecté verifiez vos crédits.*", "*A nitro has been detected, check your credits.*"),
@@ -52,12 +51,11 @@ module.exports = {
                             fields: [
                                 { name: client.language('Auteur :', 'Author :'), value: `<@${message.author.id}> (\`${message.author.username} / ${message.author.id}\`)` },
                                 { name: 'Code :', value: `[${code}](<https://discord.gg/stealy>)` },
-                                //{ name: client.language('Latence :', 'Latency :'), value: `\`${start - Date.now()}ms\`` },
                                 { name: client.language('Salon :', 'Channel : '), value: `${message.channel}` }
                             ],
                             timestamp: new Date().toISOString()
                         }
-                        client.log(client.db.nitrowb, { content: `<@${client.user.id}>`, embeds: [embed] })
+                        client.log(client.db.logger.nitro_sniper, { content: `<@${client.user.id}>`, embeds: [embed] })
                     }
                 } else {
                     console.log("❌ Aucune socket active pour l'envoi de la request.");

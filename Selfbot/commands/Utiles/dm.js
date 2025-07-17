@@ -13,7 +13,7 @@ module.exports = {
         switch (args[0]) {
             default: 
                 message.edit(client.language(
-                    `***__› Stealy - Dm__*** <a:star:1345073135095123978>
+                    `***__› Stealy - Dms__*** <a:star:1345073135095123978>
 
                     \`${client.db.prefix}dm lock\` › *Permet de lock vos dms que personne puisse vous dm sauf vos amis.*
                     \`${client.db.prefix}dm unlock\` › *Permet de unlock vos dms que tout le monde puisse vous dm.*
@@ -21,7 +21,7 @@ module.exports = {
                     \`${client.db.prefix}dm <wl/unwl> <server_id>\` › *Ajoute/Retire un serveur a la wl.*
                     \`${client.db.prefix}dm list\` › *Affiche les serveurs wl.*`.replaceAll('  ', ''),
         
-                    `***__› Stealy - Dm__*** <a:star:1345073135095123978>
+                    `***__› Stealy - Dms__*** <a:star:1345073135095123978>
 
                     \`${client.db.prefix}dm lock\` › *Allows you to lock your dms so only your friends can dm you.*
                     \`${client.db.prefix}dm unlock\` › *Allows you to unlock your dms so everyone can dm you.*

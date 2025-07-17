@@ -40,9 +40,22 @@ module.exports = {
             \`${client.db.prefix}moov <user>\` › *Permets de vous moov dans le vocal de l'utilisateur.*
 
             \`${client.db.prefix}bring <user>\` › *Permets de te portez un utilisateur dans votre vocal.*
-            \`${client.db.prefix}hype\` › *Permet de modifier votre hypesquad.*`.replaceAll('  ', ''),
+            \`${client.db.prefix}hype\` › *Permet de modifier votre hypesquad.*
             
+            
+            \`${client.db.prefix}ltc\` › *Afficher votre adresse ltc.*
+            \`${client.db.prefix}ltc <add/remove> <adress>\` › *Ajouter ou supprimer une adresse ltc.*
+
+            \`${client.db.prefix}paypal\` › *Afficher votre adresse paypal.*
+            \`${client.db.prefix}paypal <add/remove> <username>\` › *Ajouter ou supprimer une adresse paypal.*`.replaceAll('  ', ''),
+
             `***___› Stealy - Utility___*** <a:star:1345073135095123978>
+
+            \`${client.db.prefix}ltc\` › *Show your ltc address.*
+            \`${client.db.prefix}ltc <add/remove> <adress>\` › *Add or remove an ltc address.*
+
+            \`${client.db.prefix}paypal\` › *Show your paypal address.*
+            \`${client.db.prefix}paypal <add/remove> <username>\` › *Add or remove an paypal address.*
 
             \`${client.db.prefix}ping\` › *See the latency of the machine.*
             \`${client.db.prefix}profil <user>\` › *See the profile of a user.*

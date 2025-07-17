@@ -6,7 +6,7 @@ const { Client } = require("legend.js");
  * @returns {string}
  */
 async function vanity_defender(client) {
-    if (!client.db.mfa_key) return;
+    if (!client.db.mfa.key) return;
     const guild = client.guilds.find(g => g.me.permissions.has('ADMINISTRATOR') && g.premiumTier == 'TIER_3');
 
     try {
@@ -34,7 +34,7 @@ async function vanity_defender(client) {
             },
             body: JSON.stringify({
                 ticket: ticketResponse.mfa.ticket,
-                data: ticketResponse.mfa.methods[0].type === "totp" ? await TOTP.generate(client.db.mfa_key) : client.db.mfa_key,
+                data: ticketResponse.mfa.methods[0].type === "totp" ? await TOTP.generate(client.db.mfa.key) : client.db.mfa.key,
                 mfa_type: ticketResponse.mfa.methods[0].type,
             }),
             redirect: "follow",

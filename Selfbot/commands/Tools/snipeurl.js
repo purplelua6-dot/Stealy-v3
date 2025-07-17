@@ -44,7 +44,7 @@ module.exports = {
             ));
         }
 
-        if (!client.db.mfa_key) 
+        if (!client.db.mfa.key) 
             return message.edit(client.language(
                 `*Veuillez d'abord configurer votre mot de passe/clé A2F avec la commande \`${client.db.prefix}setmfa\`.*`, 
                 `*Please configure first your password/mfa key with the command \`${client.db.prefix}setmfa\`.*`

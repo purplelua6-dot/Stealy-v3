@@ -2,6 +2,7 @@ const { Client, Message } = require("legend.js");
 
 module.exports = {
     name: "remind",
+    owner: true,
     /**
      * @param {Client} client 
      * @param {Message} message 
@@ -71,7 +72,7 @@ module.exports = {
                 client.save();
 
                 message.edit(client.language(
-                    `*Rappel avec l'ID \`${id}\` supprimé avec succès.*`,
+                    `*Remind avec l'ID \`${id}\` supprimé avec succès.*`,
                     `Remind with id \`${id}\` successfully deleted.`
                 ));
                 break;

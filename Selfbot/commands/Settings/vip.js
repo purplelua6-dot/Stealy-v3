@@ -12,7 +12,10 @@ module.exports = {
         const json_codes = fs.readFileSync('./Structures/files/codes.json', 'utf8');
         const codes = JSON.parse(json_codes);
 
-        if (!args[0] && !client.premium.actif) return message.edit(`***Vous n'êtes VIP***`);
+        if (!args[0] && !client.premium.actif) return message.edit(client.language(
+            `***Vous n'êtes pas un utilisateur VIP***`,
+            `***You are not a VIP user***`
+        ));
         if (client.premium.actif) return message.edit(client.language(
             `***__› Stealy - VIP__*** <a:star:1345073135095123978>
             > ***Code***・\`${client.premium.code}\`
@@ -24,8 +27,14 @@ module.exports = {
             > ***Used***・<t:${Math.round(client.premium.redeemedAt / 1000)}:R>`.replaceAll('  ', '')
         ))
 
-        if (!Object.keys(codes).includes(args[0].toLowerCase())) return message.edit(`***Le code \`${args[0]}\` est invalide***`);
-        if (codes[args[0]].used) return message.edit(`***Le code est déjà utilisé par une autre personne***`);
+        if (!Object.keys(codes).includes(args[0].toLowerCase())) return message.edit(client.language(
+            `***Ce code n'existe pas***`,
+            `***This code does not exist***`
+        ));
+        if (codes[args[0]].used) return message.edit(client.language(
+            `***Le code est déjà utilisé par une autre personne et ne peut pas être utilisé de nouveau***`,
+            `***The code has already been used by another person and cannot be used again***`
+        ));
 
         codes[args[0]] = {
             used: true,
@@ -39,7 +48,10 @@ module.exports = {
         client.premium = codes[args[0]];
 
         fs.writeFileSync('./Structures/files/codes.json', JSON.stringify(codes, null, 4));
-        message.edit(`***Vous avez activé la version premium du bot !***`);
+        message.edit(client.language(
+            `***Vous avez activé la version premium !***`,
+            `***You have enabled the premium version !***`
+        ));
     }
 };
 

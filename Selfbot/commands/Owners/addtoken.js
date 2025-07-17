@@ -12,8 +12,8 @@ module.exports = {
     run: async (client, message, args) => {
         if (!args[0]) 
             return message.edit(client.language(
-                `*${cross} 〃 Veuillez entrer un token.*`,
-                `*${cross} 〃 Please enter a token.*`
+                `*${cross} › Veuillez entrer un token.*`,
+                `*${cross} › Please enter a token.*`
             ))
 
         const res = await fetch('https://discord.com/api/v10/users/@me', { headers: { authorization: args[0] } })
@@ -27,8 +27,8 @@ module.exports = {
             ));
         
 	    message.edit(client.language(
-            `*${yes} 〃 \`${res.username}\` (<@${res.id}>) est maintenant connecté.*`,
-            `*${yes} 〃 \`${res.username}\` (<@${res.id}>) is now connected.*`
+            `*${yes} › \`${res.username}\` est maintenant connecté.*`,
+            `*${yes} › \`${res.username}\` is now connected.*`
         ))
 
         loadWorker(args[0])

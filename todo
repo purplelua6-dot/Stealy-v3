@@ -1,8 +1,9 @@
-- amélioration du sync (Utiles / Crowbot)
-- fix du platform (Utiles)
+- Amélioration du sync (Utiles / Crowbot)
+- Fix du platform (Utiles)
 - Double commande react (Fun / Utiles)
 - Commande pour paiement (Owner)
 - Faire le &url claim <vanity> (Owner)
 - Faire un vrai restart (Settings)
 - Ajouter le twitch à la db
 - Finir le système de reming (Utiles)
+- Fix le /deconnexion du manager

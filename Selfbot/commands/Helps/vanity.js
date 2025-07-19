@@ -2,7 +2,6 @@ const { Client, Message } = require('legend.js');
 
 module.exports = {
     name: "vanity",
-    owner: true,
     /**
      * @param {Client} client 
      * @param {Message} message 

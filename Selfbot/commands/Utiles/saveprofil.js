@@ -37,8 +37,7 @@ module.exports = {
                 { name: '***Status***', value: `${status?.length == 0 ? "<:no:1319225868895260705>" : `${status[0].emoji ?? ''} ${status[0].state}`}` },
                 { name: `***${client.language('à propos', 'about me')}***`, value: `${profil?.bio ?? "<:no:1319225868895260705>"}` },
                 { name: `***${client.language('Pronoms', 'Pronouns')}***`, value: `${profil.pronouns !== '' ? profil.pronouns : "<:no:1319225868895260705>"}` },
-                { name: `***${client.language('Couleurs', 'Colors')}***`, value: `\`${profil?.themeColors ? profil.themeColors.map(r => r == 0 ? "#000000" : `#${r}`).join('\`\n\`') : `#000000\`\n\`#000000`}\`` }
-
+                { name: `***${client.language('Couleurs', 'Colors')}***`, value: `\`#${profil?.themeColors ? profil.themeColors.map(r => r == 0 ? "#000000" : r).join('\`\n\`#') : `#000000\`\n\`#000000`}\`` }
             ]
         }
 

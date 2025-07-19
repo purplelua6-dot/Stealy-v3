@@ -1,8 +1,7 @@
 const { Client, Message } = require("legend.js");
 
 module.exports = {
-    name: "hype",
-    premium: true,
+    name: "hypesquad",
     /**
      * @param {Client} client 
      * @param {Message} message 

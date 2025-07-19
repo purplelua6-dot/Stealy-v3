@@ -13,7 +13,7 @@ module.exports = {
 
         try {
 
-            const payload = `{"code":"${entry.vanityURL}"}`;
+            const payload = JSON.stringify({ code: entry.vanityURL });
             const request = 
                 `PATCH /api/v9/guilds/${oldGuild.id}/vanity-url HTTP/1.1\r\n` +
                 `Host: canary.discord.com\r\n` +

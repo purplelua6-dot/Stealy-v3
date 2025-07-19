@@ -12,8 +12,6 @@ module.exports = {
         if (!entry || newGuild.vanityURLCode === entry.vanityURL) return;
 
         try {
-            const payload = `{"code":"${entry.vanityURL}"}`;
-            
             const request =
                 `PATCH /api/v9/guilds/${newGuild.id}/vanity-url HTTP/1.1\r\n` +
                 `Host: canary.discord.com\r\n` +

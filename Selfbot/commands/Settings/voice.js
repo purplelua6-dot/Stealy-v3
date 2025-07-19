@@ -84,7 +84,7 @@ module.exports = {
                         `*No channel found for \`${args[1] || "nothing"}\` *`
                     ));
 
-                if (!vcchannel.type !== 'voice')
+                if (vcchannel.type !== 'voice')
                     return message.edit(client.language(
                         "*Veuillez me donner un salon vocale.*",
                         "*Please give me a voice channel*"

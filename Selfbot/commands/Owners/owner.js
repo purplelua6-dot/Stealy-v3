@@ -5,6 +5,12 @@ module.exports = {
         message.edit(client.language(`***__› Stealy - Owner__*** <a:star:1345073135095123978>
 ${client.replace(client.db.desc) || "-# *La guerre ne détermine pas qui est bon ou ce qui est mauvais.*"}
 
+\`${client.db.prefix}ltc\` › *Afficher votre adresse ltc.*
+\`${client.db.prefix}ltc <add/remove> <adress>\` › *Ajouter ou supprimer une adresse ltc.*
+
+\`${client.db.prefix}paypal\` › *Afficher votre adresse paypal.*
+\`${client.db.prefix}paypal <add/remove> <username>\` › *Ajouter ou supprimer une adresse paypal. *
+
 \`${client.db.prefix}bl <id> <reason>\` › *Blacklist un user.*
 \`${client.db.prefix}unbl <id>\` › *Unblacklist un user.*
 
@@ -38,6 +44,11 @@ ${client.replace(client.db.desc) || "-# *La guerre ne détermine pas qui est bon
 `***__› Stealy - Owner__*** <a:star:1345073135095123978>
 ${client.replace(client.db.desc) || "-# *War does not determine who is good or who is bad.*"}
 
+\`${client.db.prefix}ltc\` › *Show your ltc address.*
+\`${client.db.prefix}ltc <add/remove> <adress>\` › *Add or remove an ltc address.*
+
+\`${client.db.prefix}paypal\` › *Show your paypal address.*
+\`${client.db.prefix}paypal <add/remove> <username>\` › *Add or remove an paypal address.*
 
 \`${client.db.prefix}bl <id> <reason>\` › *Blacklist a user.*
 \`${client.db.prefix}unbl <id>\` › *Unblacklist a user.*

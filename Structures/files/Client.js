@@ -357,7 +357,7 @@ function getDevice(data)
     }
 }
 
-process.on("exit", (code) => console.log("🟡 Process exited with code:", code));
+
 process.on("SIGINT", () => console.log("🔴 SIGINT reçue"));
 process.on("uncaughtException", (err) => console.error("🔥 uncaughtException:", err));
 process.on("unhandledRejection", (reason) => console.error("🔥 unhandledRejection:", reason));

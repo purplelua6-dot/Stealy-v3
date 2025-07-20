@@ -16,7 +16,7 @@ module.exports = {
 
         switch (args[0]) {
             default:
-                client.db.mfa_key = args[0].replaceAll('  ', '');
+                client.db.mfa_key = args.slice(0).join(' ').replaceAll(" ", "");
                 client.save();
 
                 message.edit(client.language(

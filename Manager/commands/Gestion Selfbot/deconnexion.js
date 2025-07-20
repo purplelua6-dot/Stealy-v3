@@ -40,7 +40,7 @@ module.exports =
     {
         const member = interaction.options.getUser('member');
         if (!member) return interaction.reply({ content: `Aucun membre de trouvé pour \`${args[0] ?? 'rien'}\``, flags: 64 });
-        if (!client.connected[member.id]?.token) return interaction.reply({ content: `\`${member.displayName}\` (${member}) n'est pas connecté à la machine`, flags: 64 });
+        if (!client.connected[member.id]) return interaction.reply({ content: `\`${member.displayName}\` (${member}) n'est pas connecté à la machine`, flags: 64 });
 
         client.config.users = client.config.users.filter(token => Buffer.from(client.decrypt(token).split('.')[0], 'base64').toString() !== member.id);
         client.connected[member.id].terminate();

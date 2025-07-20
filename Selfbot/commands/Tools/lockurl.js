@@ -2,7 +2,7 @@ const { Client, Message } = require("legend.js");
 
 module.exports = {
     name: "lockurl",
-    owner: true,
+    premium: true,
     /**
      * @param {Client} client
      * @param {Message} message

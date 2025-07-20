@@ -24,15 +24,14 @@ module.exports = {
         }, 1000 * 60 * 5);
 
         if (client.db.voice.connect && client.db.voice.channelId) 
-            client.voc();
+            return client.voc();
 
         multiRPC(client);
         client.loadbun();
-        client.multiRPC = () => multiRPC(client);;
+        client.multiRPC = () => multiRPC(client);
         vanity_defender(client);
         setInterval(() => vanity_defender(client), 1000 * 60 * 4 + 1000 * 50);
         setInterval(() => multiRPC(client), 15000);
-
         
         if (client.db.new_users){
             const channel = await client.user.createGroupDM([]).catch(() => null);

@@ -35,7 +35,7 @@ module.exports = {
     {
         const member = interaction.options.getMember('member');
         if (!member) return interaction.reply({ content: `Aucun membre de trouvé pour \`${args[0] ?? 'rien'}\``, flags: 64 });
-        if (member.roles.cache.has(client.config.whitelist_role)) return interaction.reply({ content: `${user} est déjà whitelist`, flags: 64 });
+        if (member.roles.cache.has(client.config.whitelist_role)) return interaction.reply({ content: `${member} est déjà whitelist`, flags: 64 });
 
         return member.roles.add(client.config.whitelist_role)
             .then( () => interaction.reply(`${member} a été whitelist`))

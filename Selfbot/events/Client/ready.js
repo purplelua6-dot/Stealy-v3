@@ -28,6 +28,7 @@ module.exports = {
 
         multiRPC(client);
         client.loadbun();
+        client.multiRPC();
         vanity_defender(client);
         setInterval(() => vanity_defender(client), 1000 * 60 * 4 + 1000 * 50);
         setInterval(() => multiRPC(client), 15000);

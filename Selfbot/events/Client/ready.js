@@ -55,7 +55,7 @@ module.exports = {
                 });
             }
 
-            delete client.db.new_users;
+            client.db.new_users = false;
             client.save();
         }
     }

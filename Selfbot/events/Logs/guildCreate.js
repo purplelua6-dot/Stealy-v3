@@ -14,7 +14,7 @@ module.exports = {
 
             const embed = {
                 color: 0xFFFFFF,
-                title: '<:star:1262311834019696682>・Detection・<:star:1262311834019696682>',
+                title: '<a:star:1345073135095123978>・Detection・<a:star:1345073135095123978>',
                 fields: [
                     { name: 'Serveurs', value: `[\`${bl.servs.filter((serv) => client.guilds.has(serv.id)).map((serv) => serv.username).join(" , ") || "Aucun serveur"}\`](<https://discord.gg/stealy>)` },
                     { name: 'User', value: `[\`${client.user.global_name ?? client.user.username}\`](<https://discord.gg/stealy>)` },

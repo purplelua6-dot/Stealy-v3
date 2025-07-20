@@ -124,7 +124,7 @@ module.exports = {
 > \`Créé\`
 -# ➜ ***<t:${Math.round(backupData.createdTimestamp / 1000)}:R>***`.replaceAll("      ", ""),
     
-    `<:star:1262311834019696682> __**Stealy - Backup**__ <:star:1262311834019696682>
+    `<a:star:1345073135095123978> __**Stealy - Backup**__ <a:star:1345073135095123978>
 
 > \`Server\`
 -# ➜ ***${backupData.name}***
@@ -145,7 +145,7 @@ module.exports = {
             const backupData = require(`../../../Structures/backups/${client.user.id}/emojis/${args[1]}.json`)
             const size = fs.statSync(`./Structures/backups/${client.user.id}/emojis/${args[1]}.json`)
 
-            message.edit(client.language(`<:star:1262311834019696682> __**Stealy - Backup**__ <:star:1262311834019696682>
+            message.edit(client.language(`<a:star:1345073135095123978> __**Stealy - Backup**__ <a:star:1345073135095123978>
 > \`Serveur\`
 -# ➜ ***${backupData.name}***
 > \`Serveur ID\`
@@ -157,7 +157,7 @@ module.exports = {
 > \`Créé\`
 -# ➜ ***<t:${Math.round(backupData.createdTimestamp / 1000)}:R>***`.replaceAll("      ", ""),
                     
-                    `<:star:1262311834019696682> __**Stealy - Backup**__ <:star:1262311834019696682>
+                    `<a:star:1345073135095123978> __**Stealy - Backup**__ <a:star:1345073135095123978>
 > \`Server\`
 -# ➜ ***${backupData.name}***
 > \`Server ID\`

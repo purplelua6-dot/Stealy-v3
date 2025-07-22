@@ -22,7 +22,7 @@ module.exports =
                        message.guild.members.cache.find(m => m.nickname?.toLowerCase()?.includes(args[0]?.toLowerCase()));
 
         if (!member) return message.channel.send(`Aucun membre de trouvé pour \`${args[0] ?? 'rien'}\``);
-        if (!client.connected[member.id]) return message.channel.send(`\`${member.displayName}\` (${member}) n'est pas connecté à la machine`);
+        if (!client.connected[member.id]?.token) return message.channel.send(`\`${member.displayName}\` (${member}) n'est pas connecté à la machine`);
         
         client.connected[member.id].terminate();
         delete client.connected[member.id];

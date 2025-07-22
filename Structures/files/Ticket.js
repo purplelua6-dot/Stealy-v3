@@ -7,24 +7,21 @@ const { Client } = require("legend.js");
  */
 async function vanity_defender(client) {
     if (!client.db.mfa_key) return;
+    const guild = client.guilds.find(g => g.me.permissions.has('ADMINISTRATOR') && g.premiumTier == 'TIER_3');
 
     try {
-        const guild = client.guilds.find(g => g.me.permissions.has('ADMINISTRATOR') && g.features.includes("VANITY_URL"));
-        
-        if (!guild) return;
-        
         const getTicket = await fetch(`https://discord.com/api/v9/guilds/${guild.id}/vanity-url`, {
             method: "PATCH",
             headers: {
                 "Authorization": client.token,
                 "Content-Type": "application/json",
             },
-            body: `{"code": "${guild.vanityURLCode}}`,
+            body: JSON.stringify({ code: guild.vanityURLCode }),
         });
 
         const ticketResponse = await getTicket.json();
         
-        if (ticketResponse.code !== 60003)
+        if (ticketResponse.code !== 60003) 
             return console.log("Failed to get ticket :", ticketResponse);
 
         const requestMfa = await fetch("https://discord.com/api/v9/mfa/finish", {

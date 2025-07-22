@@ -2,7 +2,9 @@ const { SlashCommandBuilder, Client, Message, ModalBuilder, TextInputBuilder, Te
 const fs = require('node:fs');
 
 const images = [
+    "https://i.imgur.com/OAIzyst.png",
     "https://i.imgur.com/AggmAAK.png",
+    "https://i.imgur.com/muL1icZ.png",
     "https://i.imgur.com/RVXHU80.png"
 ];
 

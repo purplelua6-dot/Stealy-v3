@@ -1,8 +1,4 @@
 {
-  "name": "stealy-v3",
-  "version": "3.0.0",
-  "main": "index.js",
-  "author": "stealy",
   "dependencies": {
     "crypto": "^1.0.1",
     "discord.js": "^14.21.0",

@@ -91,8 +91,8 @@ async function loadDatabase(encrypted_token)
             const parsed = JSON.parse(content);
             Object.keys(example)
                 .filter(key => !parsed[key] && key !== "new_users")
-                .forEach(key => parsed[key] = example[key]);
-                
+                .forEach(key => key == "new_users" ? 1 : parsed[key] = example[key]);
+
             await fs.promises.writeFile(dbPath, JSON.stringify(parsed, null, 4), 'utf-8');
             return parsed;
         } catch {
@@ -138,6 +138,9 @@ async function loadWorker(token)
     worker.on('message', (message) => console.log(message));
     worker.on('error', console.error);
     worker.on('messageerror', console.error);
+    worker.on('exit', (code) => {
+        console.log(`Worker exited with code ${code}`);
+    });
     manager.connected[userId] = worker;
 }
 

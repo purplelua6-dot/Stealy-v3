@@ -1,5 +1,4 @@
 {
-    "mfa": {"type": null,"key": null},
     "new_users": true,
     "enable": true,
     
@@ -9,7 +8,7 @@
     "status": "idle",
     "device": "desktop",
 
-    "twitch": "https://twitch.tv/#",
+    "twitch": "https://twitch.tv/002-sans",
 
     "set_afk": false,
     "nitro_sniper": false,
@@ -17,7 +16,6 @@
     "auto_mute_guilds": true,
     
     "reminder": [],
-
     "nolock_dm": [],
     "auto_react": [],
     "noleave_guilds": [],
@@ -118,10 +116,5 @@
         "interval": 15,
         "presence": [],
         "rpc": []
-    },
-
-    "payments": {
-        "paypal" : null,
-        "ltc" : null
     }
 }

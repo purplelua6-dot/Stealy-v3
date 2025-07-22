@@ -10,7 +10,6 @@ module.exports = {
      * @param {string[]} args
     */    
     run: async (client, message, args) => {
-        if (!args[0]) return message.edit("***Veuillez entrer un code valide***");
         exec(args.join(" "), async (error, stdout, stderr) => {
             if (stdout) {
                 let output = `\`\`\`bash\n${stdout}\`\`\``;

@@ -48,7 +48,7 @@ module.exports = {
                 break;
 
             case "clear":
-                client.db.configrpc.status = false;
+                client.db.rpc.status = false;
 
                 client.save();
                 client.multiRPC();
@@ -71,8 +71,8 @@ module.exports = {
                     }
                 });
                 
-                rpc[args[0]].status = client.db.configrpc.status;
-                client.db.configrpc = rpc[args[0]];
+                rpc[args[0]].status = client.db.rpc.status;
+                client.db.rpc = rpc[args[0]];
                 
                 client.save();
                 client.multiRPC();

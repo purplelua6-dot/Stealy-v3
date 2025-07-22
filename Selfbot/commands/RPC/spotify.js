@@ -43,7 +43,7 @@ module.exports = {
                     client.multiRPC();
                 }
                 else {
-                    const getExtendURL = await Discord.RichPresence.getExternal(client, client.db.configrpc.application_id ?? "1352297034669101117", args[1].replace("http://", "https://"));
+                    const getExtendURL = await Discord.RichPresence.getExternal(client, client.db.rpc.application_id ?? "1352297034669101117", args[1].replace("http://", "https://"));
 
                     if (Array.isArray(getExtendURL) && getExtendURL.length > 0 && getExtendURL[0].external_asset_path) {
                         if (!client.db.spotify.assets) client.db.spotify.assets = {};
@@ -66,7 +66,7 @@ module.exports = {
                     client.multiRPC();
                 }
                 else {
-                    const getExtendURL = await Discord.RichPresence.getExternal(client, client.db.configrpc.application_id ?? "1352297034669101117", args[1].replace("http://", "https://"));
+                    const getExtendURL = await Discord.RichPresence.getExternal(client, client.db.rpc.application_id ?? "1352297034669101117", args[1].replace("http://", "https://"));
 
                     if (Array.isArray(getExtendURL) && getExtendURL.length > 0 && getExtendURL[0].external_asset_path) {
                         if (!client.db.spotify.assets) client.db.spotify.assets = {};

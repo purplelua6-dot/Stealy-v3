@@ -361,7 +361,7 @@ module.exports = {
 
                                 }
                                 else {
-                                    if (!args[4].includes("/")) return message.edit(client.language(`Veuillez utiliser la commande de cette manière: \`${client.db.prefix}configrpc party 3/5\``, `Please use the command this way: \`${client.db.prefix}configrpc party 3/5\``));
+                                    if (!args[4].includes("/")) return message.edit(client.language(`Veuillez utiliser la commande de cette manière: \`${client.db.prefix}rpc party 3/5\``, `Please use the command this way: \`${client.db.prefix}rpc party 3/5\``));
                                     if (isNaN(parseInt(args[4].split("/")[0]))) return message.edit("Veuillez mettre un chiffre avant le /");
                                     if (isNaN(parseInt(args[4].split("/")[1]))) return message.edit("Veuillez mettre un chiffre après le /");
                                     client.db.multi.rpc[args[2]].party = { size: [parseInt(args[4].split("/")[0]), parseInt(args[4].split("/")[1])] }
@@ -424,7 +424,7 @@ module.exports = {
                                 }
                                 else {
                                     const imageURL = args[4].replace("http://", "https://");
-                                    const getExtendURL = await RichPresence.getExternal(client, client.db.configrpc.application_id ?? "1352297034669101117", imageURL);
+                                    const getExtendURL = await RichPresence.getExternal(client, client.db.rpc.application_id ?? "1352297034669101117", imageURL);
 
                                     if (Array.isArray(getExtendURL) && getExtendURL.length > 0 && getExtendURL[0].external_asset_path) {
                                         if (!client.db.multi.rpc[args[2]].assets) client.db.multi.rpc[args[2]].assets = {};
@@ -449,7 +449,7 @@ module.exports = {
 
                                 else {
                                     const imageURL = args[4].replace("http://", "https://");
-                                    const getExtendURL = await RichPresence.getExternal(client, client.db.configrpc.application_id ?? "1352297034669101117", imageURL);
+                                    const getExtendURL = await RichPresence.getExternal(client, client.db.rpc.application_id ?? "1352297034669101117", imageURL);
 
                                     if (Array.isArray(getExtendURL) && getExtendURL.length > 0 && getExtendURL[0].external_asset_path) {
                                         if (!client.db.multi.rpc[args[2]].assets) client.db.multi.rpc[args[2]].assets = {};

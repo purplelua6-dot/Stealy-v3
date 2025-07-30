@@ -32,7 +32,7 @@ module.exports = {
             actif: true,
             code: args[0],
             by: client.user.id,
-            expiresAt: Date.now() + ms(codes[args[0]].expiresAt),
+            expiresAt: codes[args[0]].expiresAt == 0 ? 0 : Date.now() + ms(codes[args[0]].expiresAt),
             redeemedAt: Date.now()
         }
 

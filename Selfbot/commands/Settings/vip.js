@@ -16,11 +16,11 @@ module.exports = {
         if (client.premium.actif) return message.edit(client.language(
             `***__› Stealy - VIP__*** <a:star:1345073135095123978>
             > ***Code***・\`${client.premium.code}\`
-            > ***Expire***・<t:${Math.round(client.premium.expiresAt / 1000)}:R>
+            > ***Expire***・${client.premium.expiresAt == 0 ? '`Jamais`' : `<t:${Math.round(client.premium.expiresAt / 1000)}:R>`}
             > ***Utilisé***・<t:${Math.round(client.premium.redeemedAt / 1000)}:R>`.replaceAll('  ', ''),
             `***__› Stealy - VIP__*** <a:star:1345073135095123978>
             > ***Code***・\`${client.premium.code}\`
-            > ***Expire***・<t:${Math.round(client.premium.expiresAt / 1000)}:R>
+            > ***Expire***・${client.premium.expiresAt == 0 ? '`Never`' : `<t:${Math.round(client.premium.expiresAt / 1000)}:R>`}
             > ***Used***・<t:${Math.round(client.premium.redeemedAt / 1000)}:R>`.replaceAll('  ', '')
         ))
 

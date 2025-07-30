@@ -28,7 +28,7 @@ module.exports =
         switch(interaction.options.getSubcommand())
         {
             case 'create':
-                const keyName = interaction.options.getString('nom') ?? Math.floor(10000000 + Math.random() * 90000000);
+                const keyName = interaction.options.getString('nom')?.toLowerCase() ?? Math.floor(10000000 + Math.random() * 90000000);
                 const temps = interaction.options.getString('temps');
                 const user = interaction.options.getUser('utilisateur');
                 let db;

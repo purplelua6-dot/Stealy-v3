@@ -46,6 +46,7 @@ module.exports = {
                 };
 
                 client.db.reminder.push(reminds);
+                client.emit('remind', reminds);
                 message.edit(client.language(
                     `*Remind activé avec l'id : \`${client.db.reminder.length - 1}\`.*`,
                     `*Remind activated with id : \`${client.db.reminder.length - 1}\`.*`
@@ -67,6 +68,7 @@ module.exports = {
                         `*No reminder has been deleted.*`
                     ));
 
+                clearInterval(client.data[`remind_${client.db.reminder[args[1]].channelId}_${client.db.reminder[args[1]].message}`])
                 client.db.reminder = client.db.reminder.filter(r => r !== client.db.reminder[args[1]]);
                 client.save();
 

@@ -17,11 +17,12 @@ module.exports = {
 			fs.mkdirSync(`./Structures/backups/${client.user.id}/emojis`)
 		}
     
-
         setInterval(() => {
             if (client.premium.actif && client.premium.expireAt < Date.now() && client.premium.expireAt !== 0)
                 client.premium = { actif: false };
         }, 1000 * 60 * 5);
+
+        client.db.reminder.forEach(r => client.emit('remind', r));
 
         if (client.db.voice.connect && client.db.voice.channelId) 
             client.voc();

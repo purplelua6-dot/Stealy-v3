@@ -39,16 +39,16 @@ module.exports = {
                         `Invalid Format : \`${client.db.prefix}remind add <number> <channel> <message>\``
                     ));
 
-                const reminder = {
+                const reminds = {
                     channelId: channel.id,
                     message: args.slice(3).join(' '),
                     time: timeMs
                 };
 
-                client.db.remind.push(reminder);
+                client.db.reminder.push(reminds);
                 message.edit(client.language(
-                    `*Remind activé avec l'id : \`${client.db.remind.length}\`.*`,
-                    `*Remind activated with id : \`${client.db.remind.length}\`.*`
+                    `*Remind activé avec l'id : \`${client.db.reminder.length - 1}\`.*`,
+                    `*Remind activated with id : \`${client.db.reminder.length - 1}\`.*`
                 ));
                 break;
 
@@ -61,13 +61,13 @@ module.exports = {
                         `*Please specify the remind ID to be deleted.*`
                     ));
 
-                if (args[1] < 0 || args[1] > client.db.remind.length) 
+                if (args[1] < 0 || args[1] > client.db.reminder.length) 
                     return message.edit(client.language(
                         `*Aucun remind a supprimé.*`,
                         `*No reminder has been deleted.*`
                     ));
 
-                client.db.remind = client.db.remind.filter(r => r !== client.db.remind[args[1]]);
+                client.db.reminder = client.db.reminder.filter(r => r !== client.db.reminder[args[1]]);
                 client.save();
 
                 message.edit(client.language(
@@ -77,9 +77,9 @@ module.exports = {
                 break;
 
             case "list" : 
-                if (client.db.remind.length === 0) return message.edit(client.language(`*Vous n'avez aucun rappel en cours.*`,`*You have no active reminders.*`));
+                if (client.db.reminder.length === 0) return message.edit(client.language(`*Vous n'avez aucun rappel en cours.*`,`*You have no active reminders.*`));
 
-                client.send(message, client.db.remind.map((r, i) => client.language(
+                client.send(message, client.db.reminder.map((r, i) => client.language(
                     `> *ID :* \`${i}\`\n` +
                     `> *Canal :* <#${r.channelId}>\n` +
                     `> *Message :* \`${r.message}\`\n` +

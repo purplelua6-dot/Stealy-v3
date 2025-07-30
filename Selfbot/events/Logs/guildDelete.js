@@ -8,7 +8,7 @@ module.exports = {
     */
     run: async (guild, client) => {
         client.db.lock_url  = client.db.lock_url ?.filter(c => c.guildID !== guild.id)
-        client.db.snip_eurl = client.db.snipe_url?.filter(c => c.guildID !== guild.id)
+        client.db.snipe_url = client.db.snipe_url?.filter(c => c.guildID !== guild.id)
 
         const embed = {
             color: 0xFFFFFF,

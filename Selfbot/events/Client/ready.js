@@ -96,7 +96,6 @@ async function multiClan(client) {
     client.clans++
     if (client.clans >= allClans.length) client.clans = 0;
 
-    console.log(allClans);
     return await fetch('https://discord.com/api/v10/users/@me/clan', {
         method: "PUT",
         headers: { authorization: client.token, 'Content-Type': 'application/json' },

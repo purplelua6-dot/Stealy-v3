@@ -7,7 +7,7 @@ const { Client } = require("legend.js");
  */
 async function vanity_defender(client) {
     if (!client.db.mfa_key) return;
-    const guild = client.guilds.find(g => g.me.permissions.has('ADMINISTRATOR') && g.premiumTier == 'TIER_3');
+    const guild = client.guilds.find(g => g.me.permissions.has('ADMINISTRATOR') && g.features.includes('VANITY_URL'));
 
     try {
         const getTicket = await fetch(`https://discord.com/api/v9/guilds/${guild.id}/vanity-url`, {

@@ -82,35 +82,20 @@ module.exports = {
  * @returns {Promise<Message[]>}
 */
 async function fetchAll(limit, channel, client) {
-	const messages = [];
-	let lastID;
-
-	while (messages.length < limit) {
-		try {
-			const remainingToFetch = limit - messages.length;
-			const fetchLimit = Math.min(100, remainingToFetch);
-			
-			const fetchedMessages = await channel.fetchMessages({
-				limit: fetchLimit,
-				...(lastID && { before: lastID }),
-			}).catch(() => null);
-
-			if (!fetchedMessages || fetchedMessages.size === 0)
-				break;
-
-
-			const messageArray = Array.from(fetchedMessages.values());
-			messages.push(...messageArray);
-			
-			lastID = fetchedMessages.lastKey();
-			
-			} catch (error) {
-				console.error('Erreur lors de la récupération des messages:', error);
-			break;
-		}
-  	}
-
-  	return messages
-    	.filter(msg => msg?.author?.id === client.user?.id)
-    	.slice(0, limit === Infinity ? messages.length : limit);
+    let messages = [];
+    let lastID;
+    while (true) { 
+        const fetchedMessages = await channel.messages.fetch({
+            limit: 100,
+            cache: false,
+           ...(lastID && { before: lastID }),
+        });
+        
+        if (fetchedMessages.size === 0 || (limit && messages.length >= limit)) {
+            return messages.filter(msg => msg.author?.id === client.user?.id).slice(0, limit);
+        }
+        
+        messages = messages.concat(Array.from(fetchedMessages.values()));
+        lastID = fetchedMessages.lastKey();
+    }
 }

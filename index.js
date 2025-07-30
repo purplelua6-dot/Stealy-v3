@@ -103,7 +103,6 @@ async function loadDatabase(encrypted_token)
             fs.writeFileSync(dbPath, JSON.stringify(parsed, null, 4), 'utf-8');
             return parsed;
         } catch (e) {
-            console.log(e);
             await fs.promises.writeFile(dbPath, JSON.stringify(example, null, 4), 'utf-8');
             return JSON.parse(JSON.stringify(example));
         }

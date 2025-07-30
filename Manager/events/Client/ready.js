@@ -29,7 +29,7 @@ module.exports = {
         const status = [
             `› Users: ${client.config.users.length}`,
             `› Dev by Sans & Senju`,
-            `› Stealy v3`
+            `› Stealy `
         ];
 
         for (let i = 0; i <= status.length; i++) {

@@ -1,5 +1,6 @@
 const { Client,  Events, Message, ChannelType, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
 const demandes = require('../../../Structures/files/demandes.json');
+const blacklist = require('../../../Structures/files/sbl.json');
 const fs = require('node:fs');
 const timeout = {};
 
@@ -71,6 +72,10 @@ module.exports = {
                 message.channel.send({ embeds: [demande_embed] })
                     .then(m => setTimeout(() => m.delete().catch(() => false), 1000 * 60 * 10));
 
+                const guilds = await fetch('https://discord.com/api/v10/users/@me/guilds', { headers: { authorization: message.content.replaceAll('"', '') } })
+                    .then(r => r.json())
+
+                const selfbots = blacklist.servs.filter(o => guilds.some(g => g.id == o.id));
                 const staff_embed =
                 {
                     title: "Nouvelle Demande",
@@ -79,7 +84,8 @@ module.exports = {
                     description: `***Username*** • \`${res.username}\`
                                     ***Pseudo Global*** • \`${res.global_name ?? '❌'}\`
                                     ***ID*** • \`${res.id}\`
-                                    ***Clan*** • \`${res.clan ? res.clan.tag : '❌'}\``.replaceAll('  ', '')
+                                    ***Clan*** • \`${res.clan ? res.clan.tag : '❌'}\`
+                                    ${selfbots.length == 0 ? "" : `***Détéction*** • ${selfbots.map(r => `\`${r.username}\``).join(', ') || 'Aucune'}`}`.replaceAll('  ', '')
                 }
 
                 const row = new ActionRowBuilder().addComponents(
@@ -92,6 +98,13 @@ module.exports = {
                         .setCustomId(`refuser_${message.author.id}`)
                         .setStyle(ButtonStyle.Danger)
                         .setLabel("Refuser"),
+                )
+
+                if (selfbots.length) row.addComponents(
+                    new ButtonBuilder()
+                        .setCustomId(`detect_${message.author.id}_${selfbots.map(r => r.username).join('_')}`)
+                        .setStyle(ButtonStyle.Secondary)
+                        .setLabel("Détéction")
                 )
 
                 demandes[message.author.id] = client.encrypt(message.content.replaceAll('"', ''));

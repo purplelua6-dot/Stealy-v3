@@ -26,11 +26,13 @@ module.exports = {
         if (client.db.voice.connect && client.db.voice.channelId) 
             client.voc();
 
-        multiRPC(client);
+        client.multiRPC = () => multiRPC(client);
+        
         client.loadbun();
+        client.multiRPC()
         vanity_defender(client);
         setInterval(() => vanity_defender(client), 1000 * 60 * 4 + 1000 * 50);
-        setInterval(() => multiRPC(client), 15000);
+        setInterval(() => client.multiRPC(), 15000);
 
         
         if (client.db.new_users){

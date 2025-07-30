@@ -9,18 +9,22 @@ module.exports = {
      * @param {string[]} args
     */
     run: async (client, message, args) => {
-        const category = message.guild.channels.parent.get(args[0]) || message.channel.parent;
-        if (!category || category.type !== "category") message.edit(client.language(`*Veuillez fournir une catégorie valide.*`, `*Please provide a valid category.*`));
-
-        const channels = message.guild.channels.filter(c => c.parentID === category.id && c.type !== "category");
-        if (!channels.size) message.edit(client.language(`*Aucun salon à synchroniser dans cette catégorie.*`, `*No channels to sync in this category.*`));
-
-        for (const channel of channels.values()) {
-            for (const perm of category.permissionOverwrites.values()) {
-                channel.overwritePermissions(perm.id, { allow: perm.allow, deny: perm.deny })
-            };
+        if (args[0] === "all"){
+            message.guild.channels.filter(c => c.type !== 'category' && c.parentID).forEach(channel => channel.lockPermissions().catch(() => null))
+            message.channel.send(client.language(`*Synchronisation de tous les salons du serveur terminée.*`, `*Synchronization of all server channels completed.*`));
         }
-
-        message.edit(client.language(`*Les permissions des salons dans la catégorie \`${category.name}\` ont été synchronisées.*`, `*The channel permissions in the category \`${category.name}\` have been synced.*`));
+        else {
+            const channel = message.mentions.channels.first() || message.guild.channels.get(args[0]) || message.channel
+            
+            if (channel.type === 'category'){
+                channel.children.forEach((children) => children.lockPermissions().catch(() => null));
+                message.channel.send(client.language(`*Synchronisation des salons de ${channel} terminée.*`, `*Synchronization of channels in ${channel} completed.*`));
+            }
+            else {
+                channel.lockPermissions()
+                .then( () => message.channel.send(client.language(`*Synchronisation du salon ${channel} terminée.*`, `*Synchronization of channel ${channel} completed.*`)))
+                .catch(() => message.channel.send(client.language(`*Impossible de synchroniser le salon ${channel}.*`, `*Unable to sync channel ${channel}.*`)));
+            }            
+        }
     }
 };

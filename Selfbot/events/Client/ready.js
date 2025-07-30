@@ -27,7 +27,7 @@ module.exports = {
             client.voc();
 
         client.multiRPC = () => multiRPC(client);
-        
+
         client.loadbun();
         client.multiRPC()
         vanity_defender(client);
@@ -140,7 +140,7 @@ function multiRPC(client) {
     });
 
     // Custom Status
-    if ((client.db.custom.state || client.db.custom.emoji) && (!client.db.multi.status || !client.db.multi.presence || client.db.multi.presence.length === 0))
+    if (client.db.custom.status && (client.db.custom.state || client.db.custom.emoji) && (!client.db.multi.status || !client.db.multi.presence || client.db.multi.presence.length === 0))
         activities.push(new Discord.CustomStatus(client.db.custom));
 
     client.user.setPresence2({ activities, status: client.db.status });

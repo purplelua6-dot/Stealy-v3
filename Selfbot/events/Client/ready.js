@@ -19,7 +19,7 @@ module.exports = {
     
 
         setInterval(() => {
-            if (client.premium.actif && client.premium.expireAt < Date.now())
+            if (client.premium.actif && client.premium.expireAt < Date.now() && client.premium.expireAt !== 0)
                 client.premium = { actif: false };
         }, 1000 * 60 * 5);
 

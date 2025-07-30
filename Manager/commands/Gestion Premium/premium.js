@@ -33,10 +33,10 @@ module.exports =
                 const user = interaction.options.getUser('utilisateur');
                 let db;
 
-                if (isNaN(client.ms(temps))) return interaction.reply({ content: 'Veuillez entrer un temps valide', flags: 64 });
+                if (temps !== '0' && isNaN(client.ms(temps))) return interaction.reply({ content: 'Veuillez entrer un temps valide', flags: 64 });
                 if (codes[keyName]) return interaction.reply({ content: 'Une clé avec ce nom existe déjà', flags: 64 });
 
-                codes[keyName] = { expiresAt: temps };
+                codes[keyName] = { expiresAt: temps == '0' ? 0 : temps };
                 client.save_codes();
 
                 if (fs.existsSync(`./Structures/databases/${interaction.user.id}.json`))
@@ -143,6 +143,7 @@ module.exports =
                         { name: '3 Mois', value: '93d' },
                         { name: '6 Mois', value: '186d' },
                         { name: '1 an', value: '1y' },
+                        { name: 'Lifetime', value: '0' },
                     ])
                     .setRequired(true)
                 )

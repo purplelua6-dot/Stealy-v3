@@ -14,6 +14,7 @@ module.exports = {
                     \`${client.db.prefix}clearstatus\` › *Supprimer votre status*
                     \`${client.db.prefix}rpc\` › *Configuration du RPC*
 
+                    \`${client.db.prefix}status <on/off>\` › *Active ou Désactive le status*
                     \`${client.db.prefix}status emoji [emoji]\` › *Mettre un emoji dans votre status*
                     \`${client.db.prefix}status content [text]\` › *Mettre du texte dans votre status*
 
@@ -27,6 +28,7 @@ module.exports = {
                     \`${client.db.prefix}clearstatus\` › *Delete your status*
                     \`${client.db.prefix}rpc\` › *Rich presence configuration*
 
+                    \`${client.db.prefix}status <on/off>\` › *Enable or disable the status*
                     \`${client.db.prefix}status emoji [emoji]\` › *Set an emoji to your status*
                     \`${client.db.prefix}status content [text]\` › *Set a text in your status*
 

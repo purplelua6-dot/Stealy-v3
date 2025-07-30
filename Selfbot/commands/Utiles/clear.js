@@ -84,18 +84,21 @@ module.exports = {
 async function fetchAll(limit, channel, client) {
     let messages = [];
     let lastID;
-    while (true) { 
-        const fetchedMessages = await channel.messages.fetch({
-            limit: 100,
-            cache: false,
-           ...(lastID && { before: lastID }),
-        });
-        
-        if (fetchedMessages.size === 0 || (limit && messages.length >= limit)) {
-            return messages.filter(msg => msg.author?.id === client.user?.id).slice(0, limit);
-        }
-        
-        messages = messages.concat(Array.from(fetchedMessages.values()));
-        lastID = fetchedMessages.lastKey();
+    while (true) {
+        try {
+            const fetchedMessages = await channel.fetchMessages({
+                limit: 100,
+                ...(lastID && { before: lastID }),
+            });
+
+            if (fetchedMessages.size === 0 || (limit !== Infinity && messages.length >= limit)) {
+                return messages
+                .filter(msg => msg?.author && msg.author.id === client.user?.id)
+                .slice(0, limit);
+            }
+
+            messages = messages.concat(Array.from(fetchedMessages.values()));
+            lastID = fetchedMessages.lastKey();
+        } catch { }
     }
 }

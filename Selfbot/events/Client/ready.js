@@ -202,12 +202,8 @@ function multiSpoof(client, type){
                 break;
 
             case payload.t == 'READY':
-                console.log(`[MULTISPOOF] ${type} spoof started for ${client.user.displayName}`);
                 client.data[`multispoof_${type}`] = ws;
                 break;
         }
     }
-
-    ws.onclose = data => console.log(`[MULTISPOOF] ${type} spoof stopped for ${client.user.displayName}`);
-
 }

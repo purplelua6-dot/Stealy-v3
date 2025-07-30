@@ -67,7 +67,7 @@ module.exports =
 
                 const embed = {
                     title: 'Liste des clés premium',
-                    description: keys.map(key => `\`${key}\` - Expire <t:${Math.round((isNaN(codes[key].expiresAt) ? Date.now() + client.ms(codes[key].expiresAt) : codes[key].expiresAt) / 1000)}:R> ${codes[key].used ? `- <@${codes[key].by}>` : ''}`).join('\n'),
+                    description: keys.map(key => `\`${key}\` - Expire ${codes[key].expiresAt == 0 ? '`JAMAIS`' : `<t:${Math.round((isNaN(codes[key].expiresAt) ? Date.now() + client.ms(codes[key].expiresAt) : codes[key].expiresAt) / 1000)}:R>`} ${codes[key].used ? `- <@${codes[key].by}>` : ''}`).join('\n'),
                     color: 0x000000,
                 }
 
@@ -84,7 +84,7 @@ module.exports =
                 const premiumShow = {
                     color: 0x000000,
                     author: { name: `Premium de ${userPremium.displayName}`, icon_url: userPremium.avatarURL() },
-                    description: `- Code: \`${codes[userDataPremium].code}\`\n- Expire: <t:${Math.round(codes[userDataPremium].expiresAt / 1000)}:R>\n- Récupéré: <t:${Math.round(codes[userDataPremium].redeemedAt / 1000)}:R>\n- Récupéré par: <@${codes[userDataPremium].by}> (\`${codes[userDataPremium].by}\`)`,
+                    description: `- Code: \`${codes[userDataPremium].code}\`\n- Expire: ${codes[userDataPremium].expiresAt == 0 ? '`JAMAIS`' : `<t:${Math.round(codes[userDataPremium].expiresAt / 1000)}:R>`}\n- Récupéré: <t:${Math.round(codes[userDataPremium].redeemedAt / 1000)}:R>\n- Récupéré par: <@${codes[userDataPremium].by}> (\`${codes[userDataPremium].by}\`)`,
                     thumbnail: { url: 'https://i.imgur.com/K0X4z9g.png' },
                     image: { url: `https://i.imgur.com/Xr849uE.jpeg` }
                 }
@@ -99,7 +99,7 @@ module.exports =
                 const premiumCheck = {
                     color: 0x000000,
                     author: { name: `Code à vérifier`, icon_url: interaction.user.avatarURL() },
-                    description: `- Code: \`${codes[code2check].code ?? code2check}\`${codes[code2check].used ? `\n- Expire: <t:${Math.round(codes[code2check].expiresAt / 1000)}:R>\n- Récupéré: <t:${Math.round(codes[code2check].redeemedAt / 1000)}:R>\n- Récupéré par: <@${codes[code2check].by}> (\`${codes[code2check].by}\`)` : `\n- Expire: <t:${Math.round((Date.now() + client.ms(codes[code2check].expiresAt)) / 1000)}`}:R>`,
+                    description: `- Code: \`${codes[code2check].code ?? code2check}\`${codes[code2check].used ? `\n- Expire: ${codes[code2check].expiresAt == 0 ? '`JAMAIS`' : `<t:${Math.round(codes[code2check].expiresAt / 1000)}:R>`}\n- Récupéré: <t:${Math.round(codes[code2check].redeemedAt / 1000)}:R>\n- Récupéré par: <@${codes[code2check].by}> (\`${codes[code2check].by}\`)` : `\n- Expire: <t:${Math.round((Date.now() + client.ms(codes[code2check].expiresAt)) / 1000)}`}:R>`,
                     thumbnail: { url: 'https://i.imgur.com/K0X4z9g.png' },
                     image: { url: `https://i.imgur.com/Xr849uE.jpeg` }
                 }
@@ -114,7 +114,8 @@ module.exports =
 
                 if (!Object.keys(codes).includes(codeAdd)) return interaction.reply({ content: `Le code \`${codeAdd}\` est invalide`, flags: 64 });
                 if (isNaN(client.ms(tempsAdd))) return interaction.reply({ content: "Veuillez entrer un temps valide (exemple: `1d`, `10d`)", flags: 64 });
-                
+                if (codes[codeAdd].expiresAt == 0) return interaction.reply({ content: "Vous ne pouvez pas ajouter un temps à un code LIFETIME", flags: 64 });
+
                 codes[codeAdd].expiresAt = type == 'add' ? codes[codeAdd].expiresAt + client.ms(tempsAdd) : codes[codeAdd].expiresAt - client.ms(tempsAdd);
                 if (codes[codeAdd].expiresAt <= Date.now()) delete codes[codeAdd];
                 client.save_codes();

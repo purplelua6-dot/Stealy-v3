@@ -69,6 +69,35 @@ module.exports = {
                     delete demandes[interaction.customId.split('_')[1]];
                     fs.writeFileSync('./Structures/files/demandes.json', JSON.stringify(demandes, null, 4));
                     break;
+
+                case interaction.customId.startsWith('detect_'):
+                    const [_, userId, ...selfbots] = interaction.customId.split('_');
+                    if (!selfbots.length) return interaction.reply({ content: "Aucun selfbot détecté.", ephemeral: true });
+
+                    interaction.deferUpdate().catch(() => false);
+                    interaction.channel.send({ content: `*${interaction.user} a refusé <@${userId}> (\`détéctions\`)*` })
+                    interaction.message.delete();
+
+                    const user = await client.users.fetch(userId).catch(() => false);
+                    const embed = {
+                        title: "Stealy - Refusé",
+                        thumbnail: { url: `https://senju.cc/images/Speed.png` },
+                        color: 0xFFFFFF,
+                        author: {
+                            name: "Stealy",
+                            iconURL: "https://senju.cc/images/Speed.png",
+                            url: `https://discord.gg/stealy`
+                        },
+                        description: `${client.emoji.cross} 〃 Votre demande a été **__refusée__** dû à votre présence sur d'autres machines : \n${selfbots.map(r => `\`${r}\``).join(', ')}`,
+                        footer: {
+                            text: `Stealy - ${new Date().getDate().toString().padStart(2, '0')}/${(new Date().getMonth() + 1).toString().padStart(2, '0')}/${new Date().getFullYear()} ${new Date().getHours().toString().padStart(2, '0')}:${new Date().getMinutes().toString().padStart(2, '0')}`
+                        }
+                    };
+
+                    user.send({ embeds: [embed] })
+                        .then((message) => setTimeout(() => message.delete(), 300000))
+                        .catch(() => false)
+                    break;
             }
         }
     },

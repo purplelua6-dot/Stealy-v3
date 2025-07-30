@@ -28,9 +28,9 @@ module.exports = {
             > ***Numéro de Téléphone Vérifié*** : \`${client.user.mobile ? "Oui" : "Non"}\`
             > ***A2F*** : \`${client.user.mfaEnabled ? "Oui" : "Non"}\`
                         
-            > ***Messages*** : \`${client.db.messagecount}\`
-            > ***Messages Supprimés*** : \`${client.db.deletecount}\`
-            > ***Urls Snipées*** : \`${client.db.snipecount}\``.replaceAll('  ', ''),
+            > ***Messages*** : \`${client.db.stats.messages_created}\`
+            > ***Messages Supprimés*** : \`${client.db.stats.messages_deleted}\`
+            > ***Urls Snipées*** : \`${client.db.stats.sniped}\``.replaceAll('  ', ''),
                         
             `***__› Stealy - Stats__*** <a:star:1345073135095123978>
 
@@ -50,9 +50,9 @@ module.exports = {
             > ***Verified Phone Number*** : \`${client.user.mobile ? "Yes" : "No"}\`
             > ***2FA*** : \`${client.user.mfaEnabled ? "Yes" : "No"}\`
                         
-            > ***Messages*** : \`${client.db.messagecount}\`
-            > ***Deleted Messages*** : \`${client.db.deletecount}\`
-            > ***Sniped Urls*** : \`${client.db.snipecount}\``.replaceAll('  ', '')
+            > ***Messages*** : \`${client.db.stats.messages_created}\`
+            > ***Deleted Messages*** : \`${client.db.stats.messages_deleted}\`
+            > ***Sniped Urls*** : \`${client.db.stats.sniped}\``.replaceAll('  ', '')
         ));
     }
 };

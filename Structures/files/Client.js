@@ -67,7 +67,7 @@ client.login(workerData.token).catch((e) => {
     if (e.message !== "Incorrect login details were provided.") 
         return parentPort.postMessage(e);
 
-    client.config.users = client.config.users.filter(t => t !== encrypt(workerData.token))
+    client.config.users = client.config.users.filter(t => t !== workerData.token)
     fs.writeFileSync("./config.json", JSON.stringify(client.config, null, 2));
 })
 

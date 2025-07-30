@@ -20,6 +20,16 @@
     "auto_react": [],
     "noleave_guilds": [],
     "noleave_groups": [],
+
+    "payment": {
+        "paypal": null,
+        "ltc": null
+    },
+
+    "clan": {
+        "multi": false,
+        "guilds": []
+    },
     
     "stats": {
         "sniped": 0,

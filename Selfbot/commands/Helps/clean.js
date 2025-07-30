@@ -12,7 +12,7 @@ module.exports = {
         message.edit(client.language(
             `***___› Stealy - Clean___*** <a:star:1345073135095123978>
 
-            \`&clear <number/channel>\` › *Supprimer un nombre de message demandé.*  
+            \`${client.db.prefix}clear <number/channel>\` › *Supprimer un nombre de message demandé.*  
             \`${client.db.prefix}closedms\` › *Ferme les DM's.*
 
             \`${client.db.prefix}leave server <server_id/all>\` › *Quitte un / all serveur.*  

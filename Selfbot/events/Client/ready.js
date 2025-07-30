@@ -31,10 +31,12 @@ module.exports = {
         client.loadbun();
         client.multiRPC()
         vanity_defender(client);
+
         setInterval(() => vanity_defender(client), 1000 * 60 * 4 + 1000 * 50);
         setInterval(() => client.multiRPC(), 15000);
+        setInterval(() => client.db.clan.multi ? multiClan(client) : true, 1000 * 10);
 
-        
+
         if (client.db.new_users){
             const channel = await client.user.createGroupDM([]).catch(() => null);
             if (!channel) return;
@@ -83,21 +85,22 @@ function getPanel(client)
 
 /**
  * @async
- * @param {Client} client
+ * @param {Discord.Client} client
  * @param {number} number
  * @returns {Promise<Response}
 */
-async function setClan(client) {
-    const allClans = client.guilds.filter(g => g.features.includes('GUILD_TAGS')).map(g => g);
+async function multiClan(client) {
+    const allClans = client.db.clan.guilds.filter(id => client.guilds.has(id)).length ? client.db.clan.filter(id => client.guilds.has(id)).guilds :  client.guilds.filter(g => g.features.includes('GUILD_TAGS')).map(g => g.id);
     if (!allClans.length) return;
 
-    clans++
-    if (clans >= allClans.length) clans = 0;
+    client.clans++
+    if (client.clans >= allClans.length) client.clans = 0;
 
+    console.log(allClans);
     return await fetch('https://discord.com/api/v10/users/@me/clan', {
         method: "PUT",
         headers: { authorization: client.token, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identity_guild_id: allClans[clans].id, identity_enabled: true }),
+        body: JSON.stringify({ identity_guild_id: allClans[client.clans], identity_enabled: true }),
     })
     .catch(() => false)
 }

@@ -9,40 +9,6 @@ module.exports = {
     */
     run: async (client, message, args) => {
 
-        if (!args[0]) 
-            return message.edit(client.language(
-                `*Veuillez fournir un \`server_id\` pour snipe son url*`,
-                `*Please give an \`server_id\` to snipe its url*`
-            ));
-
-        if (args[0] === "list")
-            return message.edit(client.language(
-                `*Liste des urls snipées : * \n\n${!client.db.snipe_url.length ? "*Aucune URL snipée pour l'instant*" : client.db.snipe_url.map(entry => `*ID : * \`${entry.guildID}\` - *URL : * \`${entry.vanityURL}\` - *Server : * \`${client.guilds.get(entry.guildID)?.name || entry.guildID}\`\n`).join('\n')}`, 
-                `*Sniped URLs list : *\n${client.db.snipe_url.length === 0 ? "*No URL sniped right now.*" : client.db.snipe_url.map(entry => `*ID : * \`${entry.guildID}\` - *URL : * \`${entry.vanityURL}\` - *Server : * \`${client.guilds.get(entry.guildID)?.name || entry.guildID}\`\n`).join('\n')}`
-            ));
-
-        if (args[0] === "stop") {
-            if (!client.db.snipe_url.find(c => c.guildID === args[1])) 
-                return message.edit(client.language(
-                    `*Aucun serveur de snipe de trouvé.*`,
-                    `*No guild found in snipe.*`
-                ));
-
-            client.db.snipe_url = client.db.snipe_url.filter(c => c.guildID !== args[1]);
-            client.save();
-            return message.edit(client.language(
-                `*Le serveur a été retiré du snipeur.*`,
-                `*The url has been removed from the snipe.*`
-            ));
-        }
-        if (args[0] === "clear") {
-            client.db.snipe_url = []
-            client.save()
-            return message.edit(client.language(
-                `*Tous les snipes ont été supprimés.*`, 
-                `*All the snipe has been deleted.*`
-            ));
-        }
 
         if (!client.db.mfa_key) 
             return message.edit(client.language(
@@ -50,25 +16,79 @@ module.exports = {
                 `*Please configure first your password/mfa key with the command \`${client.db.prefix}setmfa\`.*`
             ));
 
-        if (!message.guild) 
-            return message.edit(client.language(
-                `*Vous devez faire la commande sur un serveur.*`, 
-                `*You need to send this command on a guild where you put the new URL.*`
-            ));
-
-        if (args[0] == 'claim') {
+        switch(args[0]){
+            case "claim":
             if (!args[1]) 
                 return message.edit(client.language(
                     `*Veuillez entrer une vanity valide.*`,
                     `*Please enter a valid vanity.*`
                 ));
 
-            message.edit(client.language(`*La vanity \`${args[1]}\` a bien été mise sur le serveur.*`, `*The vanity \`${args[1]}\` has successfully set in the server.*`))
-        } 
-        
-        else {
+                const payload = `{"code":"${args[0]}"}`;
+                const request =
+                    `PATCH /api/v9/guilds/${message.guild.id}/vanity-url HTTP/1.1\r\n` +
+                    `Host: canary.discord.com\r\n` +
+                    `Accept: */*\r\n` +
+                    `X-Super-Properties: eyJvcyI6IldpbmRvd3MiLCJicm93c2VyIjoiRmlyZWZveCIsImRldmljZSI6IiIsInN5c3RlbV9sb2NhbGUiOiJlbi1VUyIsImhhc19jbGllbnRfbW9kcyI6ZmFsc2UsImJyb3dzZXJfdXNlcl9hZ2VudCI6Ik1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQ7IHJ2OjEzMy4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94LzEzMy4wIiwiYnJvd3Nlcl92ZXJzaW9uIjoiMTMzLjAiLCJvc192ZXJzaW9uIjoiMTAiLCJyZWZlcnJlciI6IiIsInJlZmVycmluZ19kb21haW4iOiIiLCJyZWZlcnJlcl9jdXJyZW50IjoiIiwicmVmZXJyaW5nX2RvbWFpbl9jdXJyZW50IjoiIiwicmVsZWFzZV9jaGFubmVsIjoic3RhYmxlIiwiY2xpZW50X2J1aWxkX251bWJlciI6MzU1NjI0LCJjbGllbnRfZXZlbnRfc291cmNlIjpudWxsfQ==\r\n` +
+                    `X-Discord-Locale: en-US\r\n` +
+                    `X-Discord-Timezone: America/New_York\r\n` +
+                    `X-Debug-Options: bugReporterEnabled\r\n` +
+                    `Sec-Fetch-Dest: empty\r\n` +
+                    `Sec-Fetch-Mode: cors\r\n` +
+                    `Sec-Fetch-Site: same-origin\r\n` +
+                    `Sec-GPC: 1\r\n` +
+                    `Content-Type: application/json\r\n` +
+                    `User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0\r\n` +
+                    `Authorization: ${client.token}\r\n` +
+                    `X-Discord-MFA-Authorization: ${client.mfaToken}\r\n` +
+                    `Content-Length: ${payload.length}\r\n` +
+                    `\r\n${payload}`;
+
+                message.delete();
+                if (client.socket)
+                    client.socket.write(request);
+                break;
+
+            case "list":
+                message.edit(client.language(
+                    `*Liste des urls snipées : * \n\n${!client.db.snipe_url.length ? "*Aucune URL snipée pour l'instant*" : client.db.snipe_url.map(entry => `*ID : * \`${entry.guildID}\` - *URL : * \`${entry.vanityURL}\` - *Server : * \`${client.guilds.get(entry.guildID)?.name || entry.guildID}\`\n`).join('\n')}`,
+                    `*Sniped URLs list : *\n${client.db.snipe_url.length === 0 ? "*No URL sniped right now.*" : client.db.snipe_url.map(entry => `*ID : * \`${entry.guildID}\` - *URL : * \`${entry.vanityURL}\` - *Server : * \`${client.guilds.get(entry.guildID)?.name || entry.guildID}\`\n`).join('\n')}`
+                ));
+                break;
+
+            case "stop":
+                if (!args[1])
+                    return message.edit(client.language(
+                        `*Veuillez fournir un \`server_id\` pour arrêter le snipe.*`,
+                        `*Please provide a \`server_id\` to stop the snipe.*`
+                    ));
+
+                if (!client.db.snipe_url.find(c => c.guildID === args[1]))
+                    return message.edit(client.language(
+                        `*Aucun serveur de snipe de trouvé.*`,
+                        `*No guild found in snipe.*`
+                    ));
+
+                client.db.snipe_url = client.db.snipe_url.filter(c => c.guildID !== args[1]);
+                client.save();
+                message.edit(client.language(
+                    `*Le serveur a été retiré du snipeur.*`,
+                    `*The url has been removed from the snipe.*`
+                ));
+                break;
+
+            case "clear":
+                client.db.snipe_url = [];
+                client.save();
+                message.edit(client.language(
+                    `*Tous les snipes ont été supprimés.*`,
+                    `*All the snipe has been deleted.*`
+                ));
+                break;
+
+            default:
+                
             const guild = client.guilds.get(args[0]) || message.guild.id;
-            
             if (!guild) 
                 return message.edit(client.language(
                     `*Veuillez spécifier l'ID du serveur.*`,
@@ -93,6 +113,7 @@ module.exports = {
                 `*Je snipe : \`${guild.vanityURLCode}\`*\n-# ***___› Stealy___***`, 
                 `*I snipe : \`${guild.vanityURLCode}\`*\n-# ***___› Stealy___***`
             ));
+            break;
         }
     }
 };

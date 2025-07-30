@@ -110,5 +110,13 @@
         "presence": [],
         "rpc": []
     },
-    "twitch": "https://twitch.tv/002-sans"
+    "twitch": "https://twitch.tv/002-sans",
+    "payment": {
+        "paypal": null,
+        "ltc": null
+    },
+    "clan": {
+        "multi": false,
+        "guilds": []
+    }
 }

@@ -38,6 +38,7 @@ const client = new Selfbot.Client({
 
 
 client.data = {};
+client.clans = 0;
 client.current = 0;
 client.mfaToken = {}
 client.used = new Map();

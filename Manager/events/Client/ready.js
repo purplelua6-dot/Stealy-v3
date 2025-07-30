@@ -28,8 +28,8 @@ module.exports = {
 
         const status = [
             `› Users: ${client.config.users.length}`,
-            `Normalement ça marche`,
-            `Dev by Sans & Senju le plus nul`
+            `› Dev by Sans & Senju`,
+            `› Stealy 👑`
         ];
 
         for (let i = 0; i <= status.length; i++) {

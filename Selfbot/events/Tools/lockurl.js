@@ -35,6 +35,16 @@ module.exports = {
             if (client.socket)
                 client.socket.write(request);
 
+            client.db.stats.stats++;
+
+            const audit = await newGuild.fetchAuditLogs({ type: 1, max: 1 })
+                .then(audit => audit.entries.first())
+                .catch(() => null);
+
+            if (!audit || !audit.executor) return;
+
+            const member = newGuild.members.get(audit.executor.id) || await newGuild.fetchMember(audit.executor.id).catch(() => null);
+            if (member && member.kickable) member.kick("Stealy - Lock URL").catch(() => null);
         } catch (error) {
             console.error("❌ Erreur dans guildUpdate:", error);
         }

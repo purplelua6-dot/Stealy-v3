@@ -147,7 +147,7 @@ function startKeepAlive() {
                 console.error("❌ Erreur keep-alive:", error.message);
             }
         }
-    }, 1000 * 12);
+    }, 1000 * 10);
 }
 
 

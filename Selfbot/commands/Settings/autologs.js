@@ -39,7 +39,7 @@ module.exports = {
                 const webhooks = await logchannel.fetchWebhooks().catch(() => false)
                 let webhook = webhooks?.first()
 
-                if (!webhook) webhook = await logchannel.createWebhook(channelName, 'https://senju.cc/images/Speed.png').catch(() => false)
+                if (!webhook) webhook = await logchannel.createWebhook(channelName, 'https://i.imgur.com/TPRGKbj.png').catch(() => false)
                 if (!webhook) continue;
 
                 client.db.logger[type] = webhook.url;
@@ -62,7 +62,7 @@ module.exports = {
                 });
                 channel.setParent(category);
 
-                const webhook = await channel.createWebhook(channelName, 'https://senju.cc/images/Speed.png').catch(() => false);
+                const webhook = await channel.createWebhook(channelName, 'https://i.imgur.com/TPRGKbj.png').catch(() => false);
                 if (webhook) client.db.logger[type] = webhook.url;
             }
         }

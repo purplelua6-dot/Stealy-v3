@@ -37,17 +37,18 @@ module.exports =
                 if (codes[keyName]) return interaction.reply({ content: 'Une clé avec ce nom existe déjà', flags: 64 });
 
                 codes[keyName] = { expiresAt: temps == '0' ? 0 : temps };
-                client.save_codes();
+                fs.writeFileSync('./Structures/files/codes.json', JSON.stringify(codes, null, 4));
+                
 
                 if (fs.existsSync(`./Structures/databases/${interaction.user.id}.json`))
                     db = require(`../../../Structures/databases/${interaction.user.id}.json`)
 
 
-                if (user) user.send(`**\`🔑\`・Vous avez reçu une clé VIP\n\`⏳\`・La clé expire <t:${Math.round((Date.now() + client.ms(temps)) / 1000)}:R> (\`${keyName}\`)\n\`💎\`・Utilisez la commande \`${db?.prefix ?? '*'}vip ${keyName}\`**`)
-                    .then(() => interaction.reply({ content: `\`✅\`・La clé VIP \`${keyName}\` (expire <t:${Math.round((Date.now() + client.ms(temps)) / 1000)}:R>) a été envoyé à ${user}`,  flags: 64 }))
-                    .catch(e => interaction.reply({ content: `\`❌\`・La clé VIP n'a pas pu être envoyé à ${user}.\n\`🔑\`・La clé expire <t:${Math.round((Date.now() + client.ms(temps)) / 1000)}:R> (\`${keyName}\`)`, flags: 64 }))
+                if (user) user.send(`**\`🔑\`・Vous avez reçu une clé VIP\n\`⏳\`・La clé expire ${temps == '0' ? '`JAMAIS`' : `<t:${Math.round((Date.now() + client.ms(temps)) / 1000)}:R>`} (\`${keyName}\`)\n\`💎\`・Utilisez la commande \`${db?.prefix ?? '*'}vip ${keyName}\`**`)
+                    .then(() => interaction.reply({ content: `\`✅\`・La clé VIP \`${keyName}\` (expire ${temps == '0' ? '`JAMAIS`' : `<t:${Math.round((Date.now() + client.ms(temps)) / 1000)}:R>`}) a été envoyé à ${user}`,  flags: 64 }))
+                    .catch(e => interaction.reply({ content: `\`❌\`・La clé VIP n'a pas pu être envoyé à ${user}.\n\`🔑\`・La clé expire ${temps == '0' ? '`JAMAIS`' : `<t:${Math.round((Date.now() + client.ms(temps)) / 1000)}:R>`} (\`${keyName}\`)`, flags: 64 }))
 
-                else interaction.reply({ content: `\`✅\`・La clé VIP \`${keyName}\` (expire <t:${Math.round((Date.now() + client.ms(temps)) / 1000)}:R>) a bien été crée`,  flags: 64 });
+                else interaction.reply({ content: `\`✅\`・La clé VIP \`${keyName}\` (expire ${temps == '0' ? '`JAMAIS`' : `<t:${Math.round((Date.now() + client.ms(temps)) / 1000)}:R>`}) a bien été crée`,  flags: 64 });
                 break;
 
             case 'delete':

@@ -11,7 +11,7 @@ module.exports = {
         message.edit("*Création..*");
 
         const channel = await client.user.createGroupDM([]);
-        await channel.setIcon('https://senju.cc/images/Speed.png');
+        await channel.setIcon('https://i.imgur.com/TPRGKbj.png');
         await channel.setName('Stealy - Panel');
 
         const m = await channel.send(getPanel(client)).catch(() => false)

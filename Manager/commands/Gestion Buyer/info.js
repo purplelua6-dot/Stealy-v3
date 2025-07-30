@@ -27,7 +27,7 @@ module.exports =
             color: 0x000000,
             author: { name: `Abonnement de ${interaction.user.displayName}`, icon_url: interaction.user.avatarURL() },
             description: `- Etat: \`${db.enable ? '✅' : '❌'}\`\n- Expiration: **LIFETIME**\n- Prefix: \`${db ? db.prefix : '&'}\``,
-            thumbnail: { url: 'https://i.imgur.com/K0X4z9g.png' },
+            thumbnail: { url: 'https://i.imgur.com/TPRGKbj.png' },
             image: { url: `https://i.imgur.com/Xr849uE.jpeg` }
         };
 

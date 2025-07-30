@@ -216,10 +216,10 @@ async function errorHandler(error)
  * @param {object} options
  * @returns {Promise<boolean>}
 */
-async function sendLog(webhook_url, options = { name: '› Stealy', avatar_url: 'https://senju.cc/images/Speed.png' })
+async function sendLog(webhook_url, options = { name: '› Stealy', avatar_url: 'https://i.imgur.com/TPRGKbj.png' })
 {
     options.username = '› Stealy'
-    options.avatar_url = 'https://senju.cc/images/Speed.png';
+    options.avatar_url = 'https://i.imgur.com/TPRGKbj.png';
     await fetch(webhook_url, 
     {
         method: "POST",

@@ -81,11 +81,11 @@ module.exports = {
                     const user = await client.users.fetch(userId).catch(() => false);
                     const embed = {
                         title: "Stealy - Refusé",
-                        thumbnail: { url: `https://senju.cc/images/Speed.png` },
+                        thumbnail: { url: `https://i.imgur.com/TPRGKbj.png` },
                         color: 0xFFFFFF,
                         author: {
                             name: "Stealy",
-                            iconURL: "https://senju.cc/images/Speed.png",
+                            iconURL: "https://i.imgur.com/TPRGKbj.png",
                             url: `https://discord.gg/stealy`
                         },
                         description: `${client.emoji.cross} 〃 Votre demande a été **__refusée__** dû à votre présence sur d'autres machines : \n${selfbots.map(r => `\`${r}\``).join(', ')}`,

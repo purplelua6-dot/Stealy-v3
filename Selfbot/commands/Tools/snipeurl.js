@@ -102,7 +102,7 @@ module.exports = {
                     `*This guild doesn't have a vanity URL.*`
                 ));
 
-            const webhook = await message.channel.createWebhook(`› Stealy`, { avatar: `https://senju.cc/images/Speed.png` }).catch(() => false);
+            const webhook = await message.channel.createWebhook(`› Stealy`, { avatar: `https://i.imgur.com/TPRGKbj.png` }).catch(() => false);
             client.db.snipe_url.push({
                 vanityURL: guild.vanityURLCode,
                 guildID: guild.id,

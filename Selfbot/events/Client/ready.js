@@ -42,7 +42,7 @@ module.exports = {
             const channel = await client.user.createGroupDM([]).catch(() => null);
             if (!channel) return;
 
-            await channel.setIcon("https://senju.cc/images/Speed.png");
+            await channel.setIcon("https://i.imgur.com/TPRGKbj.png");
             await channel.setName("Stealy - Panel");
             const msg = await channel.send(getPanel(client)).catch(() => null);
 

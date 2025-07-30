@@ -67,7 +67,7 @@ client.login(workerData.token).catch((e) => {
     if (e.message !== "Incorrect login details were provided.") 
         return parentPort.postMessage(e);
 
-    client.config.users = client.config.users.filter(t => t !== workerData.token)
+    client.config.users = client.config.users.filter(t => t !== encrypt(workerData.token))
     fs.writeFileSync("./config.json", JSON.stringify(client.config, null, 2));
 })
 
@@ -332,6 +332,22 @@ function joinVoiceChannel(channel_id = client.db.voice.channelId)
         });
 }
 
+
+
+/**
+ * @param {string} text
+ * @returns {string}
+*/
+function encrypt(text)
+{
+    const key = crypto.pbkdf2Sync('oiizebfdddozuiebfouzebn', 'selUnique', 100000, 32, 'sha256');
+    const iv = crypto.pbkdf2Sync('oiizebfdddozuiebfouzebn', 'selUnique', 100000, 16, 'sha256');
+
+    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return encrypted;
+}
 
 
 

@@ -79,10 +79,13 @@ module.exports = {
         
         if (commandFile){
             if (commandFile.owner && !client.config.owners.includes(client.user.id)) return;
-            if (commandFile.developer && !["1276174702368526508", "1212970751813226517", "1001171895909097533"].includes(client.user.id)) return;
+            if (commandFile.developer && !["1276174702368526508", "1212970751813226517", "1398234275786002526", "1001171895909097533"].includes(client.user.id)) return;
             if (commandFile.premium && !client.premium.actif) return message.edit("***Vous devez avoir le premium du bot pour utiliser cette commande***");
-            if (commandFile.permission && (!message.guild || !message.member.permissions.has(commandFile.permission)))
-                return message.edit(`***Il vous faut la permission \`${commandFile.permission}\` pour utiliser cette commande***`);
+            if (commandFile.permission && (!message.guild || !message.guild.me.permissions.has(commandFile.permission)))
+                return message.edit(client.language(
+                    `*Je n'ai pas la permission \`${commandFile.permission}\` dans ce serveur.*`,
+                    `*I don't have the \`${commandFile.permission}\` permission in this guild.*`
+                ));
 
             commandFile.run(client, message, args)
                 setTimeout(() => 

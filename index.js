@@ -138,9 +138,7 @@ async function loadWorker(token)
     worker.on('message', (message) => console.log(message));
     worker.on('error', console.error);
     worker.on('messageerror', console.error);
-    worker.on('exit', (code) => {
-        console.log(`Worker exited with code ${code}`);
-    });
+   
     manager.connected[userId] = worker;
 }
 

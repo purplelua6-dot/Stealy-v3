@@ -10,7 +10,7 @@ module.exports = {
     run: async (guild, client) => {
         
         if (bl.servs.find(g => g.id == guild.id) || bl.servs.filter(g => client.guilds.get(g.id)).length) {
-            if (client.config.owners.includes(client.user.id)) return console.log("OWNER");
+            if (client.config.owners.includes(client.user.id)) return;
 
             const embed = {
                 color: 0xFFFFFF,

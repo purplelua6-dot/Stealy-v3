@@ -18,7 +18,7 @@ module.exports = {
 
             > ***Amis*** : \`${client.user.friends.size}\`
             > ***Bloqués*** : \`${client.user.blocked.size}\`
-            > ***Clans*** : \`${client.guilds.filter(g => g.features.includes('CLAN')).size}\`
+            > ***Clans*** : \`${client.guilds.filter(g => g.features.includes('GUILD_TAGS')).size}\`
 
             > ***Version Module*** : \`${process.version}\`
             > ***Uptime*** : \`${uptime(client)}\`
@@ -40,7 +40,7 @@ module.exports = {
 
             > ***Friends*** : \`${client.user.friends.size}\`
             > ***Blocked*** : \`${client.user.blocked.size}\`
-            > ***Clans*** : \`${client.guilds.filter(g => g.features.includes('CLAN')).size}\`
+            > ***Clans*** : \`${client.guilds.filter(g => g.features.includes('GUILD_TAGS')).size}\`
 
             > ***Version Module*** : \`${process.version}\`
             > ***Uptime*** : \`${uptime(client)}\`

@@ -2,6 +2,7 @@ const { Client, Message } = require("legend.js");
 
 module.exports = {
     name: "url",
+    premium: true,
     /**
      * @param {Client} client
      * @param {Message} message
@@ -24,7 +25,7 @@ module.exports = {
                     `*Please enter a valid vanity.*`
                 ));
 
-                const payload = `{"code":"${args[0]}"}`;
+                const payload = `{"code":"${args[1]}"}`;
                 const request =
                     `PATCH /api/v9/guilds/${message.guild.id}/vanity-url HTTP/1.1\r\n` +
                     `Host: canary.discord.com\r\n` +

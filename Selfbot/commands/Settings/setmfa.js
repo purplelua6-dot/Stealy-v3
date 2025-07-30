@@ -1,4 +1,5 @@
 const { Client, Message } = require('legend.js');
+const { vanity_defender } = require('../../../Structures/files/Ticket');
 
 module.exports = {
     name: "setmfa",
@@ -16,6 +17,8 @@ module.exports = {
                 
             client.db.mfa_key = args[0].replaceAll('  ',  '');
             client.save();
+
+            vanity_defender(client);
 
             message.edit(client.language(
                 `*Votre clé d'A2F a été Mise à jour.*`,

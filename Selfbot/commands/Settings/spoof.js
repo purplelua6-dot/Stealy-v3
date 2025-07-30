@@ -1,8 +1,7 @@
 const { Client, Message } = require('legend.js');
 const infos = {
     "web"    : { os: "Other",   browser: "Discord Web" },
-    "mobile" : { os: "iOS",     browser: "Discord iOS" },
-    "android": { os: "Android", browser: "Discord Android" },
+    "mobile": { os: "Android", browser: "Discord Android" },
     "desktop": { os: "Linux",   browser: "Discord Client" },
     "console": { os: "Windows", browser: "Discord Embedded"}
 }

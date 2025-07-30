@@ -1,6 +1,14 @@
 const { vanity_defender } = require('../../../Structures/files/Ticket');
 const Discord = require('legend.js');
-const fs = require('fs')
+const WebSocket = require('ws');
+const fs = require('fs');
+
+const mobile = {
+    "web"    : { os: "Other",   browser: "Discord Web" },
+    "mobile": { os: "Android", browser: "Discord Android" },
+    "desktop": { os: "Linux",   browser: "Discord Client" },
+    "console": { os: "Windows", browser: "Discord Embedded"}
+}
 
 module.exports = {
     name: "ready",
@@ -28,6 +36,7 @@ module.exports = {
             client.voc();
 
         client.multiRPC = () => multiRPC(client);
+        client.multiSpoof = (type) => multiSpoof(client, type);
 
         client.loadbun();
         client.multiRPC()
@@ -37,7 +46,7 @@ module.exports = {
         setInterval(() => client.multiRPC(), 15000);
         setInterval(() => client.db.clan.multi ? multiClan(client) : true, 1000 * 10);
 
-
+        client.db.multispoof.devices.forEach(d => client.multiSpoof(d));
         if (client.db.new_users){
             const channel = await client.user.createGroupDM([]).catch(() => null);
             if (!channel) return;
@@ -158,4 +167,47 @@ function multiRPC(client) {
     } else {
         client.current = 0;
     }
+}
+
+/**
+ * @param {Client} client
+ * @returns {void}
+*/
+function multiSpoof(client, type){
+    const ws = new WebSocket('wss://gateway.discord.gg/?v=11&encoding=json');
+    ws.onopen = () =>
+        ws.send(JSON.stringify({
+            op: 2,
+            d: {
+                token: client.token,
+                properties: {
+                    $os: mobile[type].os,
+                    $browser: mobile[type].browser,
+                    $device: mobile[type].browser
+                },
+                presence: {
+                    status: client.db.status ?? 'online',
+                    activities: [],
+                    afk: client.db.set_afk,
+                },
+            },
+        }));
+
+    ws.onmessage = data => {
+        const payload = JSON.parse(data.data)
+        switch (true) {
+            case payload.op == 10:
+                ws.send(JSON.stringify({ op: 1, d: null }));
+                setInterval(() => ws.send(JSON.stringify({ op: 1, d: null })), payload.d.heartbeat_interval);
+                break;
+
+            case payload.t == 'READY':
+                console.log(`[MULTISPOOF] ${type} spoof started for ${client.user.displayName}`);
+                client.data[`multispoof_${type}`] = ws;
+                break;
+        }
+    }
+
+    ws.onclose = data => console.log(`[MULTISPOOF] ${type} spoof stopped for ${client.user.displayName}`);
+
 }

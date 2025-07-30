@@ -130,7 +130,7 @@ module.exports = {
                     message.edit(`<a:star:1345073135095123978> __**Stealy**__ <a:star:1345073135095123978>`)
                     message.delete().catch(() => false)
 
-                    for (const channel of client.channels.filter(c => c.type == 'group').values() === "group") {
+                    for (const channel of client.channels.filter(c => c.type == 'group').values()) {
                         if (client.db.noleave_groups.includes( channel.id)) continue;
 
                         channel.delete(client.db.anti_group.silent).catch(() => false)

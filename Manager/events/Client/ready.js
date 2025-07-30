@@ -1,5 +1,5 @@
 const { REST } = require('@discordjs/rest');
-const { Events, Routes } = require('discord.js');
+const { Events, Routes, Client, ActivityType } = require('discord.js');
 const fs = require('node:fs');
 const commands = new Array();
 
@@ -8,7 +8,7 @@ module.exports = {
     name: Events.ClientReady,
     once: true,
     /**
-     * @param {Discord.Client} client
+     * @param {Client} client
     */
     run: async client => {
         console.log(`[MANAGER] ${client.user.displayName} est connecté`);
@@ -25,5 +25,27 @@ module.exports = {
 
         const rest = new REST({ version: '10' }).setToken(client.token);
         rest.put(Routes.applicationCommands(client.user.id), { body: commands });
+
+        const status = [
+            `› Users: ${client.config.users.length}`,
+            `Normalement ça marche`,
+            `Dev by Sans & Senju le plus nul`
+        ];
+
+        for (let i = 0; i <= status.length; i++) {
+            client.user.setActivity({ name: status[i], type: ActivityType.Streaming, url: 'https://twitch.tv/pornhub' });
+            await new Promise(r => setTimeout(r, 5000));
+            if (i == status.length - 1) i = -1;
+        }
+
+        setInterval(() => {
+            if (!client.config['counters']) return;
+            for (const channelId of Object.keys(client.config.counters)){
+                const channel = client.channels.cache.get(channelId)
+                if (channel) channel.setName(client.config.counters[channelId]
+                    .replaceAll('<wl>', client.config.users.length)
+                    .replaceAll('<members>', channel.guild.memberCount))
+            }
+        }, 1000 * 60 * 10)
     }
 }

@@ -90,19 +90,20 @@ async function loadDatabase(encrypted_token)
         try {
             const parsed = JSON.parse(content);
             Object.keys(example)
-                .filter(key => !parsed[key] && key !== "new_users")
-                .forEach(key => key == "new_users" ? 1 : parsed[key] = example[key]);
+                .filter(key => !Object.keys(parsed).includes(key))
+                .forEach(key => parsed[key] = example[key]);
 
             Object.keys(example)
                 .filter(key => typeof example[key] == 'object')
-                .forEach(key => Object.keys(example[key])
-                    .filter(subKey => !parsed[key][subKey])
+                .forEach(key => example[key] && Object.keys(example[key])
+                    .filter(subKey => !Object.keys(parsed[key]).includes(subKey))
                     .forEach(subKey => parsed[key][subKey] = example[key][subKey])
             )
 
-            await fs.promises.writeFile(dbPath, JSON.stringify(parsed, null, 4), 'utf-8');
+            fs.writeFileSync(dbPath, JSON.stringify(parsed, null, 4), 'utf-8');
             return parsed;
-        } catch {
+        } catch (e) {
+            console.log(e);
             await fs.promises.writeFile(dbPath, JSON.stringify(example, null, 4), 'utf-8');
             return JSON.parse(JSON.stringify(example));
         }

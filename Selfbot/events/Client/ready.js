@@ -38,7 +38,7 @@ module.exports = {
         setInterval(() => client.db.clan.multi ? multiClan(client) : true, 1000 * 10);
 
 
-        if (client.db.new_users){
+        if (client.db.new_users == 1){
             const channel = await client.user.createGroupDM([]).catch(() => null);
             if (!channel) return;
 

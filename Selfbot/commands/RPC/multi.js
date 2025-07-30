@@ -25,8 +25,10 @@ module.exports = {
 \`${client.db.prefix}multi status remove <ID>\` › *Retire un status précis*  
 \`${client.db.prefix}multi status list\` › *Affiche la liste des statuses*  
 
-\`${client.db.prefix}multi clan on\` › *Change le tag du clan automatiquement*  
-\`${client.db.prefix}multi clan off\` › *Arrête le changement automatique du clan*  
+\`${client.db.prefix}multi presence add\` › *Ajoute une presence*  
+\`${client.db.prefix}multi presence <ID> <type>\` › *Modifie la presence du status*
+\`${client.db.prefix}multi remove <ID>\` › *Supprime unee presence*
+\`${client.db.prefix}multi presence list\` › *Affiche les presences du status*
 
 \`${client.db.prefix}multi interval <seconds>\` › *Change l'intervalle du changement d'activité*  
 
@@ -49,8 +51,10 @@ module.exports = {
 \`${client.db.prefix}multi status remove <ID>\` › *Remove a status*  
 \`${client.db.prefix}multi status list\` › *Displays the list of statuses*  
 
-\`${client.db.prefix}multi clan on\` › *Change the clan tag automatically*  
-\`${client.db.prefix}multi clan off\` › *Stop the automatic change of the clan tag*  
+\`${client.db.prefix}multi presence add\` › *Add a presence*  
+\`${client.db.prefix}multi presence <ID> <type>\` › *Edits the presence of the status*
+\`${client.db.prefix}multi remove <ID>\` › *Remove a presence*
+\`${client.db.prefix}multi presence list\` › *Displays thee list of presences*
 
 \`${client.db.prefix}multi interval <seconds>\` › *Change the interval of activity change*  
 
@@ -197,28 +201,52 @@ module.exports = {
 
             case "clear":
                 client.db.multi.rpc = []
+                client.db.multi.type = []
                 client.db.multi.presence = []
                 client.save()
                 await message.edit(client.language(`*Le multi a été supprimé*`, `The multi has been deleted`))
                 break
 
-            case "clan":
+            case 'presence':
                 switch(args[1]){
-                    case "on":
-                        if (client.db.multi.guilds) return message.edit(client.language('*Le multi guild est déjà activé.*', '*The multi guild is already enable.*'))
-                        client.db.multi.guilds = true
+                    case "add":
+                        client.db.multi.type.push({ status: client.db.status });
                         client.save()
-                        message.edit(client.language('*Le multi guild a été activé.*', '*The multi guild is now enable.*'))
+                        await message.edit(client.language(`*La présence ${client.db.multi.type.length - 1} a été crée vous pouvez commencer à le modifier*`, `The presencee has been created with the ID ${client.db.multi.type.length - 1} you can now edit it`));
                         break
 
-                    case "off":
-                        if (!client.db.multi.guilds) return message.edit(client.language('*Le multi guild est déjà désactivé.*', '*The multi guild is already disable.*'))
-                        client.db.multi.guilds = false
+                    case "remove":
+                        if (!client.db.multi.type[args[2]]) return message.edit(client.language(`*Aucun ID de presence existant pour ${args[2]}*`, `No presence found with the ID ${args[2]}`))
+
+                        client.db.multi.type = client.db.multi.type.filter(o => o !== client.db.multi.type[args[2]])
                         client.save()
-                        message.edit(client.language('*Le multi guild a été désactivé.*', '*The multi guild is now disable.*'))
+
+                        await message.edit(client.language(`*Le presence a été supprimé. ID: ${args[2]}*`, `Le presence a été supprimé. ID: ${args[2]}`))
                         break
+
+                    case "list":
+                        if (!client.db.multi.rpc.length) return message.edit(client.language(`*Aucun presence n'est enregistré*`, `No presence saved in the multi`))
+
+                        client.send(message, 
+                            client.db.multi.type.map(
+                                (r, i) => `> ***ID: \`${i}\`***\n> *Status :* \`${r.status ?? client.db.status}\``
+                                .replaceAll('  ', '')).join('\n'))
+                        break
+
+                    case "edit":
+                        if (!client.db.multi.type[args[2]]) 
+                            return message.edit(client.language(`*Aucun ID de presence existant pour ${args[2]}*`, `No presence found with the ID ${args[2]}`))
+                        
+                        if (!args[3] || !['online', 'idle', 'dnd'].includes(args[3]))
+                            return message.edit(client.language(`*Veuillez choisir un status entre \`online\`, \`idle\` et \`dnd\`*`, `Please choose a status between \`online\`, \`idle\` and \`dnd\``))
+
+                        client.db.multi.type[args[2]].status = args[3].toLowerCase();
+                        client.save();
+
+                        message.edit(client.language(`*Le status de la présence a été modifié en \`${args[3]}\`*`, `The status of the presence has been changed to \`${args[3]}\``));
+                        break;
                 }
-                break
+                break;
 
             case "rpc":
                 switch (args[1]) {

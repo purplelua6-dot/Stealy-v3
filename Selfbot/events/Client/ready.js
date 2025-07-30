@@ -145,7 +145,7 @@ function multiRPC(client) {
     if (client.db.custom.status && (client.db.custom.state || client.db.custom.emoji) && (!client.db.multi.status || !client.db.multi.presence || client.db.multi.presence.length === 0))
         activities.push(new Discord.CustomStatus(client.db.custom));
 
-    client.user.setPresence2({ activities, status: client.db.status });
+    client.user.setPresence2({ activities, status: client.db.multi.type[client.current]?.status || client.db.status });
 
     // Rotation sécurisée
     const rpcLen = Array.isArray(client.db.multi.rpc) ? client.db.multi.rpc.length : 0;

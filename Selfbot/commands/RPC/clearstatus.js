@@ -17,7 +17,7 @@ module.exports = {
         client.db.setgame.status = false;
         client.db.custom.status = false;
         client.db.multi.status = false;
-        client.db.multi.guilds = false;
+        client.db.clan.multi = false;
         client.db.rpc.status = false;
         
         client.save();

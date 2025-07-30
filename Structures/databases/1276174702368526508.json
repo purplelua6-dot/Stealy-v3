@@ -1,9 +1,11 @@
 {
+    "new_users": true,
     "enable": true,
     "prefix": "&",
     "language": "fr",
     "status": "idle",
     "device": "desktop",
+    "twitch": "https://twitch.tv/002-sans",
     "set_afk": false,
     "nitro_sniper": false,
     "description": null,
@@ -13,10 +15,18 @@
     "auto_react": [],
     "noleave_guilds": [],
     "noleave_groups": [],
+    "payment": {
+        "paypal": null,
+        "ltc": null
+    },
+    "clan": {
+        "multi": false,
+        "guilds": []
+    },
     "stats": {
         "sniped": 0,
         "messages_deleted": 0,
-        "messages_created": 10
+        "messages_created": 0
     },
     "anti_group": {
         "status": false,
@@ -107,16 +117,8 @@
         "status": true,
         "guilds": false,
         "interval": 15,
+        "type": [],
         "presence": [],
         "rpc": []
-    },
-    "twitch": "https://twitch.tv/002-sans",
-    "payment": {
-        "paypal": null,
-        "ltc": null
-    },
-    "clan": {
-        "multi": false,
-        "guilds": []
     }
 }

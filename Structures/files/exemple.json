@@ -122,8 +122,8 @@
 
     "multi": {
         "status": true,
-        "guilds": false,
         "interval": 15,
+        "type": [],
         "presence": [],
         "rpc": []
     }

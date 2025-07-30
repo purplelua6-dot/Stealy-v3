@@ -61,7 +61,7 @@ client.language = (fr, en) => client.db.language == "fr" ? fr : en
 client.save = () => fs.writeFileSync(`./Structures/databases/${userId}.json`, JSON.stringify(client.db, null, 4))
 
 const userPremium = Object.keys(codes).find(code => codes[code].by == userId);
-client.premium = client.config["premium_disable"] ? { actif: true, code: "VIP (free)", expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 7, redeemedAt: Date.now() } : userPremium ? codes[userPremium] : { actif: false }
+client.premium = client.config["premium_enable"] ? { actif: true, code: "VIP (free)", expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 7, redeemedAt: Date.now() } : userPremium ? codes[userPremium] : { actif: false }
 
 client.login(workerData.token).catch((e) => {
     if (e.message !== "Incorrect login details were provided.") 

@@ -5,6 +5,7 @@ const platformes = ["ps5", "ps4", "xbox", "desktop", "samsung", "ios"]
 
 module.exports = {
     name: "multi",
+    premium: true,
     run: async (client, message, args) => {
 
         if (!args[0]) return message.edit(client.language(`***___› Stealy - Multi___***  <a:star:1345073135095123978>

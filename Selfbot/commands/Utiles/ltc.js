@@ -18,7 +18,7 @@ module.exports = {
                         `***___› Stealy - LTC___*** <a:star:1345073135095123978>
 
                         \`${client.db.prefix}ltc [nombre]\` › *Send your LTC adress.*
-                        \`${client.db.prefix}paypal set <adress>\` › *Edit your LTC adress.*`
+                        \`${client.db.prefix}ltc set <adress>\` › *Edit your LTC adress.*`
                     ))
 
 

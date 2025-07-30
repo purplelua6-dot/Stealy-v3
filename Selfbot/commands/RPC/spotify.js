@@ -2,6 +2,7 @@ const Discord = require("legend.js")
 
 module.exports = {
     name: "spotify",
+    premium: true,
     run: async (client, message, args) => {
 
         switch (args[0]) {

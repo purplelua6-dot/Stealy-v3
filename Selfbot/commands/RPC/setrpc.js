@@ -3,6 +3,7 @@ const rpc = require('../../../Structures/files/rpcs.json');
 
 module.exports = {
     name: "setrpc",
+    premium: true,
     /**
      * @param {Client} client
      * @param {Message} message

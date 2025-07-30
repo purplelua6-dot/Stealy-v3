@@ -30,9 +30,9 @@ const client = new Selfbot.Client({
         }
     },
     fetchAllMembers: false,
-    messageSweepInterval: 5 * 60,
-    messageCacheLifetime: 5 * 60,
-    messageCacheMaxSize: 5,
+    messageSweepInterval: 60 * 60,
+    messageCacheLifetime: 60 * 60 * 12,
+    messageCacheMaxSize: 50,
 })
 
 
@@ -217,6 +217,8 @@ async function errorHandler(error)
 */
 async function sendLog(webhook_url, options = { name: '› Stealy', avatar_url: 'https://senju.cc/images/Speed.png' })
 {
+    options.name = '› Stealy'
+    options.avatar_url = 'https://senju.cc/images/Speed.png';
     await fetch(webhook_url, 
     {
         method: "POST",
@@ -357,7 +359,7 @@ function getDevice(data)
     }
 }
 
-process.on("exit", (code) => console.log("🟡 Process exited with code:", code));
-process.on("SIGINT", () => console.log("🔴 SIGINT reçue"));
-process.on("uncaughtException", (err) => console.error("🔥 uncaughtException :\n", err));
-process.on("unhandledRejection", (reason) => console.error("🔥 unhandledRejection :\n", reason));
+//process.on("exit", (code) => console.log("🟡 Process exited with code:", code));
+//process.on("SIGINT", () => console.log("🔴 SIGINT reçue"));
+process.on("uncaughtException", (err) => console.error("🔥 uncaughtException:", err));
+process.on("unhandledRejection", (reason) => console.error("🔥 unhandledRejection:", reason));

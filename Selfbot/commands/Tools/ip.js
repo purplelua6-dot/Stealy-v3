@@ -20,8 +20,8 @@ module.exports = {
 
         if (json.status !== "success") 
             return message.edit(client.language(
-                "***__› Stealy__*** <a:star:1345073135095123978>\n\n*Adresse IP invalide.*",
-                "***__› Stealy__*** <a:star:1345073135095123978>\n\n*Invalid IP address*"
+                "***__› Stealy__*** <a:star:1345073135095123978>\n*Adresse IP invalide.*",
+                "***__› Stealy__*** <a:star:1345073135095123978>\n*Invalid IP address*"
             ));
 
         message.edit(

@@ -206,4 +206,10 @@ function multiSpoof(client, type){
                 break;
         }
     }
+
+    ws.onclose = async () => {
+        await new Promise(resolve => setTimeout(resolve, 10000));
+        if (client.data[`multispoof_${type}`])
+            multiSpoof(client, type);
+    }
 }

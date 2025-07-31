@@ -145,7 +145,7 @@ async function loadWorker(token)
     worker.on('message', (message) => console.log(message));
     worker.on('error', console.error);
     worker.on('messageerror', console.error);
-   
+
     manager.connected[userId] = worker;
 }
 

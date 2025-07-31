@@ -9,6 +9,10 @@ async function vanity_defender(client) {
     if (!client.db.mfa_key) return;
     const guild = client.guilds.find(g => g.me.permissions.has('ADMINISTRATOR') && g.features.includes('VANITY_URL'));
 
+    if (!guild || !guild.id){
+        await new Promise(r => setTimeout(r, 1000 * 60));
+        return vanity_defender(client);
+    }
     try {
         const getTicket = await fetch(`https://discord.com/api/v9/guilds/${guild.id}/vanity-url`, {
             method: "PATCH",

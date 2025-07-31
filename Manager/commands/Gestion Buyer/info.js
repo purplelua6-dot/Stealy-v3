@@ -43,11 +43,11 @@ module.exports =
                 .setLabel('Redémarrer')
                 .setDisabled(client.connected[interaction.user.id] ? false : true),
 
-            new ButtonBuilder()
-                .setCustomId('edit-token')
-                .setLabel('Modifier le token')
-                .setStyle(ButtonStyle.Secondary)
-                .setDisabled(client.connected[interaction.user.id] ? false : true)
+            // new ButtonBuilder()
+            //     .setCustomId('edit-token')
+            //     .setLabel('Modifier le token')
+            //     .setStyle(ButtonStyle.Secondary)
+            //     .setDisabled(client.connected[interaction.user.id] ? false : true)
         )
 
         const msg = await interaction.reply({ embeds: [embed], components: [row], files: [{ attachment:  images[Math.floor(Math.random()* images.length)], name: 'hex.png' }] });
@@ -63,83 +63,188 @@ module.exports =
                 case 'start':
                     await i.deferReply({ flags: 64 });
                     
-                    const userStartToken = client.config.users.find(t => Buffer.from(client.decrypt(t).split('.')[0], 'base64').toString() == interaction.user.id);
-                    if (userStartToken){
-                        db.enable = true;
-                        fs.writeFileSync(`./Structures/databases/${interaction.user.id}.json`, JSON.stringify(db, null, 4));
+                    try {
+                        const userStartToken = client.config.users.find(t => {
+                            try {
+                                return Buffer.from(client.decrypt(t).split('.')[0], 'base64').toString() == interaction.user.id;
+                            } catch (error) {
+                                console.error('Erreur lors du décryptage du token:', error);
+                                return false;
+                            }
+                        });
+                        
+                        if (userStartToken){
+                            db.enable = true;
+                            fs.writeFileSync(`./Structures/databases/${interaction.user.id}.json`, JSON.stringify(db, null, 4));
+                        }
+                        
+                        const userToken = client.config.users.find(t => {
+                            try {
+                                return Buffer.from(client.decrypt(t).split('.')[0], 'base64').toString() == interaction.user.id;
+                            } catch (error) {
+                                console.error('Erreur lors du décryptage du token:', error);
+                                return false;
+                            }
+                        });
+                        
+                        if (userToken) {
+                            try {
+                                await client.load_token(client.decrypt(userToken));
+                            } catch (error) {
+                                console.error('Erreur lors du chargement du token:', error);
+                                return i.editReply({ content: 'Erreur lors du démarrage de la machine' });
+                            }
+                        }
+                        
+                        setTimeout(() => { 
+                            editMessage(); 
+                            i.editReply({ content: 'Votre machine a démarré' });
+                        }, 1000 * 2);
+                    } catch (error) {
+                        console.error('Erreur lors du démarrage:', error);
+                        i.editReply({ content: 'Une erreur est survenue lors du démarrage' });
                     }
-                    
-                    const userToken = client.config.users.find(t => Buffer.from(client.decrypt(t).split('.')[0], 'base64').toString() == interaction.user.id);
-                    if (userToken) client.load_token(client.decrypt(userToken));
-                    setTimeout(() => { editMessage(); i.editReply({ content: 'Votre machine a démarré' }) }, 1000 * 2);
                     break;
 
                 case 'shutdown':
                     i.deferUpdate();
 
-                    const userSToken = client.config.users.find(t => Buffer.from(client.decrypt(t).split('.')[0], 'base64').toString() == interaction.user.id);
-                    if (userSToken){
-                        db.enable = false;
-                        fs.writeFileSync(`./Structures/databases/${interaction.user.id}.json`, JSON.stringify(db, null, 4));
+                    try {
+                        const userSToken = client.config.users.find(t => {
+                            try {
+                                return Buffer.from(client.decrypt(t).split('.')[0], 'base64').toString() == interaction.user.id;
+                            } catch (error) {
+                                console.error('Erreur lors du décryptage du token:', error);
+                                return false;
+                            }
+                        });
+                        
+                        if (userSToken){
+                            db.enable = false;
+                            fs.writeFileSync(`./Structures/databases/${interaction.user.id}.json`, JSON.stringify(db, null, 4));
+                        }
+
+                        if (client.connected[interaction.user.id]) {
+                            client.connected[interaction.user.id].terminate();
+                            delete client.connected[interaction.user.id];
+                        }
+
+                        editMessage();
+                    } catch (error) {
+                        console.error('Erreur lors de l\'arrêt:', error);
                     }
-
-                    client.connected[interaction.user.id].terminate();
-                    delete client.connected[interaction.user.id];
-
-                    editMessage();
                     break;
 
                 case 'restart':
                     await i.deferReply({flags: 64 });
 
-                    const tokenToRestart = client.config.users.find(t => Buffer.from(client.decrypt(t).split('.')[0], 'base64').toString() == interaction.user.id);
-                    if (tokenToRestart)
-                    {
-                        client.connected[interaction.user.id].terminate();
-                        delete client.connected[interaction.user.id];
-                        client.load_token(client.decrypt(tokenToRestart));
-                    }
+                    try {
+                        const tokenToRestart = client.config.users.find(t => {
+                            try {
+                                return Buffer.from(client.decrypt(t).split('.')[0], 'base64').toString() == interaction.user.id;
+                            } catch (error) {
+                                console.error('Erreur lors du décryptage du token:', error);
+                                return false;
+                            }
+                        });
+                        
+                        if (tokenToRestart) {
+                            if (client.connected[interaction.user.id]) {
+                                client.connected[interaction.user.id].terminate();
+                                delete client.connected[interaction.user.id];
+                            }
+                            
+                            try {
+                                await client.load_token(client.decrypt(tokenToRestart));
+                            } catch (error) {
+                                console.error('Erreur lors du chargement du token:', error);
+                                return i.editReply({ content: 'Erreur lors du redémarrage de la machine' });
+                            }
+                        }
 
-                    i.editReply({ content: 'Votre machine a redémarré' });
+                        i.editReply({ content: 'Votre machine a redémarré' });
+                        
+                        setTimeout(() => {
+                            editMessage();
+                        }, 2000);
+                    } catch (error) {
+                        console.error('Erreur lors du redémarrage:', error);
+                        i.editReply({ content: 'Une erreur est survenue lors du redémarrage' });
+                    }
                     break;
 
                 case 'edit-token':
-                    const modal = new ModalBuilder()
-                        .setTitle("Changement de token")
-                        .setCustomId('token')
-                        .setComponents(
-                            new ActionRowBuilder().addComponents(
-                                new TextInputBuilder()
-                                    .setCustomId('token')
-                                    .setLabel("Veuillez entrer votre token ici")
-                                    .setStyle(TextInputStyle.Short)
-                                    .setRequired(true)
+                    try {
+                        const modal = new ModalBuilder()
+                            .setTitle("Changement de token")
+                            .setCustomId('token')
+                            .setComponents(
+                                new ActionRowBuilder().addComponents(
+                                    new TextInputBuilder()
+                                        .setCustomId('token')
+                                        .setLabel("Veuillez entrer votre token ici")
+                                        .setStyle(TextInputStyle.Short)
+                                        .setRequired(true)
+                                )
                             )
-                        )
 
-                    await i.showModal(modal);
+                        await i.showModal(modal);
 
-                    const collector = await i.awaitModalSubmit({ time: 1000 * 60 * 10 }).catch(() => null);
-                    if (!collector) return;
-                    
-                    await collector.deferReply({ flags: 64 })
-                    const newToken = collector.fields.getTextInputValue('token');
+                        const modalCollector = await i.awaitModalSubmit({ time: 1000 * 60 * 10 }).catch(() => null);
+                        if (!modalCollector) return;
+                        
+                        await modalCollector.deferReply({ flags: 64 })
+                        const newToken = modalCollector.fields.getTextInputValue('token');
 
-                    const res = await fetch('https://discord.com/api/users/@me', { headers: { authorization: newToken } }).then(r => r.json()).catch(() => null);
-                    if (!res || !res?.id)
-                        return collector.editReply({ content: 'Le token est invalide' });
+                        const res = await fetch('https://discord.com/api/users/@me', { 
+                            headers: { authorization: newToken.replaceAll('"', '') } 
+                        }).then(r => r.json()).catch(() => null);
+                        
+                        if (!res || !res?.id)
+                            return modalCollector.editReply({ content: 'Le token est invalide' });
 
-                    if (res.id !== interaction.user.id)
-                        return collector.editReply({ content: "Le token n'est pas votre token" });
-                    
-                    const tokenToStop = client.config.users.find(t => Buffer.from(client.decrypt(t).split('.')[0], 'base64').toString() == interaction.user.id);
-                    if (tokenToStop)
-                    {
-                        client.connected[interaction.user.id].terminate()
-                        delete client.connected[interaction.user.id];
+                        if (res.id !== interaction.user.id)
+                            return modalCollector.editReply({ content: "Le token n'est pas votre token" });
+                        
+                        // Arrêter la connexion existante de manière sécurisée
+                        try {
+                            const tokenToStop = client.config.users.find(t => {
+                                try {
+                                    return Buffer.from(client.decrypt(t).split('.')[0], 'base64').toString() == interaction.user.id;
+                                } catch (error) {
+                                    console.error('Erreur lors du décryptage du token:', error);
+                                    return false;
+                                }
+                            });
+                            
+                            if (tokenToStop && client.connected[interaction.user.id]) {
+                                client.connected[interaction.user.id].terminate();
+                                delete client.connected[interaction.user.id];
+                            }
+                        } catch (error) {
+                            console.error('Erreur lors de l\'arrêt de la connexion:', error);
+                        }
+                        
+                        // Charger le nouveau token
+                        await client.load_token(newToken);
+                        
+                        modalCollector.editReply({ content: 'Le changement de token a bien été effectué' });
+                        
+                        // Mettre à jour le message après un délai
+                        setTimeout(() => {
+                            editMessage();
+                        }, 2000);
+                        
+                    } catch (error) {
+                        console.error('Erreur lors du changement de token:', error);
+                        if (i.replied || i.deferred) {
+                            try {
+                                await i.editReply({ content: 'Une erreur est survenue lors du changement de token' });
+                            } catch (e) {
+                                console.error('Erreur lors de l\'édition de la réponse:', e);
+                            }
+                        }
                     }
-                    client.load_token(newToken);
-                    collector.editReply({ content: 'Le changement de token a bien été effectué' });
                     break;
             }
         })
@@ -169,11 +274,11 @@ module.exports =
                     .setLabel('Redémarrer')
                     .setDisabled(client.connected[interaction.user.id] ? false : true),
 
-                new ButtonBuilder()
-                    .setCustomId('edit-token')
-                    .setLabel('Modifier le token')
-                    .setStyle(ButtonStyle.Secondary)
-                    .setDisabled(client.connected[interaction.user.id] ? false : true)
+                // new ButtonBuilder()
+                //     .setCustomId('edit-token')
+                //     .setLabel('Modifier le token')
+                //     .setStyle(ButtonStyle.Secondary)
+                //     .setDisabled(client.connected[interaction.user.id] ? false : true)
             )
 
             return msg.edit({ embeds: [embed], components: [row] });

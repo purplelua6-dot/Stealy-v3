@@ -26,9 +26,12 @@ module.exports = {
 		}
     
         setInterval(() => {
-            if (client.premium.actif && client.premium.expireAt < Date.now() && client.premium.expireAt !== 0)
+            const json_codes = fs.readFileSync('./Structures/files/codes.json', 'utf8');
+            const codes = JSON.parse(json_codes);
+
+            if (!Object.keys(codes).includes(client.premium.code) || (client.premium.actif && client.premium.expireAt < Date.now() && client.premium.expireAt !== 0))
                 client.premium = { actif: false };
-        }, 1000 * 60 * 5);
+        }, 1000 * 60);
 
         client.db.reminder.forEach(r => client.emit('remind', r));
 

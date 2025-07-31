@@ -30,10 +30,23 @@ const client = new Selfbot.Client({
             browser: getDevice(db?.platform).browser,
         }
     },
+    disabledEvents: [
+        'MESSAGE_REACTION_ADD',
+        'MESSAGE_REACTION_REMOVE',
+        'MESSAGE_REACTION_REMOVE_ALL',
+        'MESSAGE_REACTION_REMOVE_EMOJI',
+        'CHANNEL_PINS_UPDATE',
+        'INVITE_DELETE',
+        'GUILD_SCHEDULED_EVENT_CREATE',
+        'GUILD_SCHEDULED_EVENT_UPDATE',
+        'GUILD_SCHEDULED_EVENT_DELETE',
+        'GUILD_SCHEDULED_EVENT_USER_ADD',
+        'GUILD_SCHEDULED_EVENT_USER_REMOVE'
+    ],
     fetchAllMembers: false,
-    messageSweepInterval: 60 * 60,
-    messageCacheLifetime: 60 * 60 * 12,
-    messageCacheMaxSize: 50,
+    messageSweepInterval: 5 * 60,           // Toutes les 5 minutes il verifie ceux qui sont trop vieux pour les supprimer
+    messageCacheLifetime: 1 * 60 * 60,      // 1 heure de vie max du message avant qu'il soit trop vieux et mettre dans la case des messages a delete
+    messageCacheMaxSize: 5                  // Nombre de messages maximum par salon a stocker dans le cache
 })
 
 
@@ -66,7 +79,7 @@ const userPremium = Object.keys(codes).find(code => codes[code].by == userId);
 client.premium = client.config["premium_disable"] ? { actif: true, code: "VIP (free)", expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 7, redeemedAt: Date.now() } : userPremium ? codes[userPremium] : { actif: false }
 
 client.login(workerData.token).catch((e) => {
-    if (e.message !== "Incorrect login details were provided.") 
+    if (e.message !== "Incorrect login details were provided.")
         return parentPort.postMessage(e);
 
     client.config.users = client.config.users.filter(t => t !== workerData.token)
@@ -92,12 +105,11 @@ handler.loadEvents(client, "Selfbot/events")
 
 
 
-function loadBun()
-{
+function loadBun() {
     Bun.connect({
         hostname: "canary.discord.com",
         port: 443,
-        tls: { 
+        tls: {
             rejectUnauthorized: false,
             secureProtocol: 'TLSv1_2_method'
         },
@@ -159,8 +171,7 @@ function startKeepAlive() {
  * @param {string} text
  * @returns {string}
 */
-function citation(text)
-{
+function citation(text) {
     if (!text || typeof text !== "string") return text;
 
     const citation = require('./citations.json');
@@ -209,25 +220,25 @@ function citation(text)
 */
 function sendTrackedRequest(request, callback) {
     if (!client.socket) return null;
-    
+
     const startTime = performance.now();
-    
+
     const responseHandler = (response) => {
         const responseTime = Math.round(performance.now() - startTime);
         const isSuccess = response.includes('HTTP/1.1 2');
         callback(isSuccess, response, responseTime);
     };
-    
+
     const timeoutId = setTimeout(() => {
         client.pendingRequests.delete(startTime);
         callback(false, null, Math.round(performance.now() - startTime));
     }, 1500);
-    
+
     client.pendingRequests.set(startTime, {
         handler: responseHandler,
         timeout: timeoutId
     });
-    
+
     setImmediate(() => client.socket.write(request));
     return startTime.toString();
 }
@@ -238,7 +249,7 @@ function sendTrackedRequest(request, callback) {
 */
 function handleTrackedResponse(response) {
     if (client.pendingRequests.size === 0) return;
-    
+
     if (client.pendingRequests.size === 1) {
         const [startTime, requestData] = client.pendingRequests.entries().next().value;
         clearTimeout(requestData.timeout);
@@ -246,11 +257,11 @@ function handleTrackedResponse(response) {
         setImmediate(() => requestData.handler(response));
         return;
     }
-    
+
     let oldestTime = Infinity;
     let oldestData = null;
     let oldestKey = null;
-    
+
     for (const [time, data] of client.pendingRequests) {
         if (time < oldestTime) {
             oldestTime = time;
@@ -258,7 +269,7 @@ function handleTrackedResponse(response) {
             oldestKey = time;
         }
     }
-    
+
     if (oldestData) {
         clearTimeout(oldestData.timeout);
         client.pendingRequests.delete(oldestKey);
@@ -270,8 +281,7 @@ function handleTrackedResponse(response) {
  * @param {string} error
  * @returns {void}
 */
-async function errorHandler(error) 
-{
+async function errorHandler(error) {
     const errors = [0, 400, 10062, 10008, 50035, 40032, 50013]
     if (errors.includes(error.code)) return;
     console.error(error);
@@ -284,18 +294,17 @@ async function errorHandler(error)
  * @param {object} options
  * @returns {Promise<boolean>}
 */
-async function sendLog(webhook_url, options = { name: '› Stealy', avatar_url: 'https://i.imgur.com/TPRGKbj.png' })
-{
+async function sendLog(webhook_url, options = { name: '› Stealy', avatar_url: 'https://i.imgur.com/TPRGKbj.png' }) {
     options.username = '› Stealy'
     options.avatar_url = 'https://i.imgur.com/TPRGKbj.png';
-    await fetch(webhook_url, 
-    {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(options)
-    })
-    .then(() => true)
-    .catch(() => false)
+    await fetch(webhook_url,
+        {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(options)
+        })
+        .then(() => true)
+        .catch(() => false)
 }
 
 
@@ -326,8 +335,7 @@ function splitString(content, maxLength) {
  * @param {string} content
  * @returns {void}
 */
-function splitSend(message, content)
-{
+function splitSend(message, content) {
     const chunks = splitString(content, 1900);
     const messages = [];
 
@@ -342,8 +350,7 @@ function splitSend(message, content)
  * @param {string} image_url
  * @returns {Promise<string>}
 */
-async function upload2Imgur(image_url)
-{
+async function upload2Imgur(image_url) {
     const response = await fetch("https://api.imgur.com/3/image", {
         headers: {
             authorization: "Client-ID 34b90e75ab1c04b",
@@ -352,8 +359,8 @@ async function upload2Imgur(image_url)
         body: JSON.stringify({ image: image_url, name: ' ', type: 'url' }),
         method: "POST",
     })
-    .then(r => r.json())
-    .catch(() => null);
+        .then(r => r.json())
+        .catch(() => null);
 
     if (response && response.status == 200) return response.data.link
     else return image_url;
@@ -365,8 +372,7 @@ async function upload2Imgur(image_url)
  * @param {string | null} channel_id
  * @returns {void}
 */
-function joinVoiceChannel(channel_id = client.db.voice.channelId)
-{
+function joinVoiceChannel(channel_id = client.db.voice.channelId) {
     const channel = client.channels.get(channel_id);
     if (!channel) return delete client.connexion;
 
@@ -393,7 +399,7 @@ function joinVoiceChannel(channel_id = client.db.voice.channelId)
                 preferred_region: "japan"
             }
         })
-        
+
     else
         client.ws.send({
             op: 19,
@@ -407,8 +413,7 @@ function joinVoiceChannel(channel_id = client.db.voice.channelId)
  * @param {string} text
  * @returns {string}
 */
-function encrypt(text)
-{
+function encrypt(text) {
     const key = crypto.pbkdf2Sync('oiizebfdddozuiebfouzebn', 'selUnique', 100000, 32, 'sha256');
     const iv = crypto.pbkdf2Sync('oiizebfdddozuiebfouzebn', 'selUnique', 100000, 16, 'sha256');
 
@@ -424,10 +429,8 @@ function encrypt(text)
  * @param {string} data
  * @returns {string}
 */
-function getDevice(data)
-{
-    switch (data)
-    {
+function getDevice(data) {
+    switch (data) {
         case 'web':
             return { os: "Other", browser: "Discord Web" };
 

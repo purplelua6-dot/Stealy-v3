@@ -1,5 +1,5 @@
 {
-    "new_users": true,
+    "new_users": false,
     "enable": true,
     "prefix": "&",
     "language": "fr",
@@ -26,7 +26,7 @@
     "stats": {
         "sniped": 0,
         "messages_deleted": 0,
-        "messages_created": 0
+        "messages_created": 7
     },
     "anti_group": {
         "status": false,
@@ -111,7 +111,8 @@
     "custom": {
         "status": true,
         "state": "/stealy",
-        "emoji": null
+        "emoji": null,
+        "details": "love"
     },
     "multi": {
         "status": true,

@@ -1,5 +1,6 @@
 const ms = require('ms');
 const { RichPresence, Util } = require("legend.js");
+const custom_types = [ "love", "think", "question", "excited", "recommend", "leave" ];
 const types = ["playing", "listening", "watching", "competing", "streaming"]
 const platformes = ["ps5", "ps4", "xbox", "desktop", "samsung", "ios"]
 
@@ -557,15 +558,15 @@ module.exports = {
                         const emoji = Util.parseEmoji(args[2])
                         
                         if (!args[2]) {
-                            client.db.multi.presence.push({ onoff: true })
+                            client.db.multi.presence.push({ status: true, details: client.db.custom.details ?? null });
                             client.save()
                         }
                         else if (/\p{Extended_Pictographic}/ug.test(emoji.name) || emoji.id) {
-                            client.db.multi.presence.push({ onoff: true, emoji: { animated: emoji.animated, name: emoji.name, id: emoji.id }, state: args.slice(3).join(' ') ?? null })
+                            client.db.multi.presence.push({ status: true, details: client.db.custom.details ?? null, emoji: { animated: emoji.animated, name: emoji.name, id: emoji.id }, state: args.slice(3).join(' ') ?? null })
                             client.save()
                         }
                         else {
-                            client.db.multi.presence.push({ onoff: true, state: args.slice(2).join(' ') })
+                            client.db.multi.presence.push({ status: true, details: client.db.custom.details ?? null, state: args.slice(2).join(' ') })
                             client.save()
                         }
                         break
@@ -608,6 +609,23 @@ module.exports = {
                                 client.save()
                                 message.edit(client.language("Le texte a été modifié", "The text of the state has been updated"))
                             }
+                        }
+                        else if (args[3] == 'type') {
+                            if (!types.includes(args[4]))
+                                return message.edit(client.language(
+                                    `*Veuillez entrer l'un de ses types de status: ${types.map((t,i)=>`\`${t}\``).join(', ')}`, 
+                                    `*Please enter one of these status types: ${types.map((t,i)=>`\`${t}\``).join(', ')}`
+                                ));
+
+                            client.db.multi.presence[args[2]].details = args[4] == "leave" ? null : args[4];
+
+                            client.save();
+                            client.multiRPC();
+
+                            message.edit(client.language(
+                                `*Le type de status a été changé en \`${args[4] == "leave" ? 'rien' : args[4]}\`.*`, 
+                                `*The status type has been changed to \`${args[4] == "leave" ? 'nothing' : args[4]}\`.*`
+                            ));   
                         }
                         break
 

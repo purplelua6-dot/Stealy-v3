@@ -124,8 +124,6 @@ function loadBun() {
             data: (socket, data) => {
                 const response = data.toString();
                 handleTrackedResponse(response);
-                if (response.includes('HTTP/1.1 4') || response.includes('HTTP/1.1 5'))
-                    console.log("⚠️ Réponse:", response.split('\r\n')[0]);
             },
             close: socket => {
                 const uptime = client.connectionStartTime ? ((Date.now() - client.connectionStartTime) / 1000 / 60).toFixed(1) : 0;

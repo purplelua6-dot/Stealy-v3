@@ -14,29 +14,38 @@ module.exports = {
     run: async (client, message, args) => {   
         backup.setStorageFolder(path.join(__dirname, `../../../Structures/backups/${client.user.id}/serveurs`));
 
-        if (!args[0]) return message.edit(client.language(`***__› Stealy__*** <a:star:1345073135095123978>
+        if (!args[0]) 
+            return message.edit(client.language(
+                `***__› Stealy__*** <a:star:1345073135095123978>
 
-\`${client.db.prefix}backup c <id serveur>\` › *Création de la backup du serveur voulu.*
-\`${client.db.prefix}backup load <id backup>\` › *Charge la backup voulu sur le serveur ou vous êtes.*
+                \`${client.db.prefix}backup c <id serveur>\` › *Création de la backup du serveur voulu.*
+                \`${client.db.prefix}backup load <id backup>\` › *Charge la backup voulu sur le serveur ou vous êtes.*
 
-\`${client.db.prefix}backup info <id backup>\` › *Vous donne les infos sur la backup.*
-\`${client.db.prefix}backup emoji <id serveur>\` › *Création de la backup emojis du serveur voulu.*
+                \`${client.db.prefix}backup template <id serveur>\` › *Récupère un modèle serveur.*
+                \`${client.db.prefix}backup template <on/off>\` › *Permet d’activer / desactiver pour recevoir dans un salon la template automatiquement après le load d’une backup.*
 
-\`${client.db.prefix}backup delete <id backup>\` › *Supprime la backup voulue.*
-\`${client.db.prefix}backup list\` › *Affiche la liste de vos backups.*
-\`${client.db.prefix}backup clear\` › *Clear toutes vos backups.*`,
-`***__› Stealy__*** <a:star:1345073135095123978>
+                \`${client.db.prefix}backup info <id backup>\` › *Vous donne les infos sur la backup.*
+                \`${client.db.prefix}backup emoji <id serveur>\` › *Création de la backup emojis du serveur voulu.*
 
-\`${client.db.prefix}backup c <id serveur>\` › *Create the backup of the desired server.*
-\`${client.db.prefix}backup load <id backup>\` › *Charge the backup you want on the server or you are on.*
+                \`${client.db.prefix}backup roles <id serveur>\` › *Création de la backup des rôles du serveur voulu.*
+                \`${client.db.prefix}backup stickers <id serveur>\` › *Création de la backup des stickers du serveur voulu.*
 
-\`${client.db.prefix}backup info <id backup>\` › *Displays information about the backup.*
-\`${client.db.prefix}backup emoji <id serveur>\` › *Create the backup emojis of the desired server.*
+                \`${client.db.prefix}backup delete <id backup>\` › *Supprime la backup voulue.*
+                \`${client.db.prefix}backup list\` › *Affiche la liste de vos backups.*
+                \`${client.db.prefix}backup clear\` › *Clear toutes vos backups.*`.replaceAll('  ', ''),
+                `***__› Stealy__*** <a:star:1345073135095123978>
 
-\`${client.db.prefix}backup delete <id backup>\` › *Delete the backup you want.*
-\`${client.db.prefix}backup list\` › *Displays the list of your backups.*
-\`${client.db.prefix}backup clear\` › *Clear all your backups.*`))
-    
+                \`${client.db.prefix}backup c <id serveur>\` › *Create the backup of the desired server.*
+                \`${client.db.prefix}backup load <id backup>\` › *Charge the backup you want on the server or you are on.*
+
+                \`${client.db.prefix}backup info <id backup>\` › *Displays information about the backup.*
+                \`${client.db.prefix}backup emoji <id serveur>\` › *Create the backup emojis of the desired server.*
+
+                \`${client.db.prefix}backup delete <id backup>\` › *Delete the backup you want.*
+                \`${client.db.prefix}backup list\` › *Displays the list of your backups.*
+                \`${client.db.prefix}backup clear\` › *Clear all your backups.*`.replaceAll('  ', '')
+            ))
+        
 
     else if (args[0] === "create" || args[0] === "c"){
         const guild = client.guilds.get(args[1]) || message.guild

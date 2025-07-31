@@ -11,7 +11,7 @@ module.exports = {
         const user = message.mentions.users.first() || client.users.get(args[0]) || message.author;      
         const response = await fetch(`https://nekos.life/api/v2/img/slap`).then(r => r.json()).catch(() => null);
         
-        if (response && response.message)
+        if (response && response.url)
             message.edit(client.language(
                 `*[${client.user.username} met une claque à ${user.username}](${response.url}) *`,
                 `*[${client.user.username} slaps ${user.username}](${response.url}) *`))

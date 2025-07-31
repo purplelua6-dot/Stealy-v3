@@ -7,7 +7,6 @@ module.exports = {
      * @param {Client} client
     */
     run: async (message, client) => {
-        let start = Date.now();
         const codes = message.content.match(/(discord.gift|discord\.com\/gifts|discordapp\.com\/gifts)\/\w{16,25}/gim)
         if (!codes) return;
 
@@ -45,7 +44,7 @@ module.exports = {
                             const embed = {
                                 title: `***__› ${client.language("Nitro Sniper", "Nitro Sniper")}__*** <a:star:1345073135095123978>`,
                                 description: client.language("*Un nitro a été snipé avec succès !*", "*A nitro has been successfully sniped!*"),
-                                color: 0x00FF00,
+                                color: 0xFFFFFF,
                                 fields: [
                                     { name: client.language('Auteur :', 'Author :'), value: `<@${message.author.id}> (\`${message.author.username} / ${message.author.id}\`)` },
                                     { name: 'Code :', value: `\`${code}\`` },

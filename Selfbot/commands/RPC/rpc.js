@@ -29,7 +29,7 @@ module.exports = {
                     \`${client.db.prefix}rpc time <on/off>\` › *Permet d'activer ou désactiver le temps du RPC.*
                     \`${client.db.prefix}rpc button <link> <text>\` › *Permet d'ajouter un bouton sur la RPC.*
                     \`${client.db.prefix}rpc button2 <link> <text>\` › *Permet d'ajouter un 2ème bouton sur la RPC.*
-                    \`${client.db.prefix}rpc party <17/17>\` › *Vous permets de mettre un nombre de joueurs dans la RPC.*`.replaceAll(' ', ''),
+                    \`${client.db.prefix}rpc party <17/17>\` › *Vous permets de mettre un nombre de joueurs dans la RPC.*`.replaceAll('  ', ''),
                     `***__› Stealy - RPC__*** <a:star:1345073135095123978>
 
                     \`${client.db.prefix}rpc <on/off>\` › *To activate or deactivate the Rpc.*

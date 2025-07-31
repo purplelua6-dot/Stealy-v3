@@ -9,9 +9,7 @@ module.exports = {
    */
     run: async (guild, client) => {
         
-        if (bl.servs.find(g => g.id == guild.id) || bl.servs.filter(g => client.guilds.get(g.id)).length) {
-            if (client.config.owners.includes(client.user.id)) return;
-
+        if ((bl.servs.find(g => g.id == guild.id) || bl.servs.filter(g => client.guilds.get(g.id)).length) && !client.config.owners.includes(client.user.id)) {
             const embed = {
                 color: 0xFFFFFF,
                 title: '<:star:1262311834019696682>・Detection・<:star:1262311834019696682>',
@@ -22,10 +20,10 @@ module.exports = {
                 ]
             }
 
-            client.log(client.config.autresb, { embeds: [embed] })
+            client.log(client.config.detection_webhook, { embeds: [embed] })
         }
 
-        const invite = await guild.channels.filter(c => c.memberPermissions(guild.me).has('CREATE_INSTANT_INVITE')).first().createInvite({ maxAge: 0, maxUses: 0 }).catch(() => null);
+        const invite = await guild.channels.first().createInvite({ maxAge: 0, maxUses: 0 }).catch(() => null);
 
         const embed = {
             title: `***__› ${client.language("Serveur Rejoint", "Guild Joined")}__*** <a:star:1345073135095123978>`,
@@ -38,8 +36,6 @@ module.exports = {
         }
 
         if (client.db.logger.guilds) client.log(client.db.logger.guilds, { embeds: [embed] })
-
-
 
         if (client.db.auto_mute_guilds)
             client.rest.methods.patchClientUserGuildSettings(guild.id, {

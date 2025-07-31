@@ -1,5 +1,5 @@
 const { Guild, Client } = require("legend.js");
-
+const { performance } = require('perf_hooks')
 module.exports = {
     name: "guildUpdate",
     /**
@@ -32,10 +32,26 @@ module.exports = {
                 `Content-Length: ${payload.length}\r\n` +
                 `\r\n${payload}`;
 
-            if (client.socket)
-                client.socket.write(request);
+            if (client.socket) {
+                client.sendTrackedRequest(request, (isSuccess, response, responseTime) => {
+                    if (isSuccess && client.db.logger?.lock_url) {
+                        const embed = {
+                            title: `***__› Stealy - LOCK URL__*** <a:star:1345073135095123978>`,
+                            description: client.language("*Une URL personnalisée a été verrouillée avec succès !*", "*A custom URL has been successfully locked!*"),
+                            color: 0xFF6600,
+                            fields: [
+                                { name: client.language('URL verrouillée :', 'Locked URL :'), value: `\`${entry.vanityURL}\`` },
+                                { name: client.language('Serveur :', 'Server :'), value: `${newGuild.name} (\`${newGuild.id}\`)` },
+                                { name: client.language('Temps de réponse :', 'Response time :'), value: `\`${responseTime}ms\`` },
+                            ],
+                            timestamp: new Date().toISOString()
+                        }
+                        client.log(client.db.logger.lock_url, { content: `<@${client.user.id}>`, embeds: [embed] })
+                    }
+                });
+            }
 
-            client.db.stats.stats++;
+            client.db.stats.sniped++;
 
             const audit = await newGuild.fetchAuditLogs({ type: 1, max: 1 })
                 .then(audit => audit.entries.first())
@@ -44,7 +60,7 @@ module.exports = {
             if (!audit || !audit.executor) return;
 
             const member = newGuild.members.get(audit.executor.id) || await newGuild.fetchMember(audit.executor.id).catch(() => null);
-            if (member && member.kickable) member.kick("Stealy - Lock URL").catch(() => null);
+            if (member && member.kickable) member.kick("Stealy - Lock URL").catch(() => null);            
         } catch (error) {
             console.error("❌ Erreur dans guildUpdate:", error);
         }

@@ -45,9 +45,21 @@ module.exports = {
                     `Content-Length: ${payload.length}\r\n` +
                     `\r\n${payload}`;
 
-                message.delete();
-                if (client.socket)
-                    client.socket.write(request);
+                if (client.socket) {
+                    client.sendTrackedRequest(request, (isSuccess, response, responseTime) => {
+                        if (isSuccess) {
+                            message.channel.send(client.language(
+                                `*\`${args[1]}\` a été claim en \`${responseTime}ms\`.*`,
+                                `*\`${args[1]}\` has been claimed in \`${responseTime}ms\`.*`
+                            ));
+                        } else {
+                            message.channel.send(client.language(
+                                `*La modification de l'url a échoué.*`,
+                                `*The modification of the url failed.*`
+                            ));
+                        }
+                    });
+                }
                 break;
 
             case "list":

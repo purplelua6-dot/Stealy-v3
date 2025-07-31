@@ -226,7 +226,8 @@ module.exports = {
                         break
 
                     case "list":
-                        if (!client.db.multi.rpc.length) return message.edit(client.language(`*Aucun presence n'est enregistré*`, `No presence saved in the multi`))
+                        if (!client.db.multi.type.length) 
+                            return message.edit(client.language(`*Aucun presence n'est enregistré*`, `No presence saved in the multi`))
 
                         client.send(message, 
                             client.db.multi.type.map(
@@ -267,7 +268,8 @@ module.exports = {
                         break
 
                     case "list":
-                        if (!client.db.multi.rpc.length) return message.edit(client.language(`*Aucun RPC n'est enregistré*`, `No RPC saved in the multi`))
+                        if (!client.db.multi.rpc.length) 
+                            return message.edit(client.language(`*Aucun RPC n'est enregistré*`, `No RPC saved in the multi`))
 
                         client.send(message, 
                             client.db.multi.rpc.map((r, i) => client.language(`> ***ID: \`${i}\`***
@@ -610,7 +612,8 @@ module.exports = {
                         break
 
                         case "list":
-                            if (client.db.multi.presence.length == 0) return message.edit(client.language(`*Aucun status n'est enregistré*`, `No status saved in the multi`))
+                            if (!client.db.multi.presence.length) 
+                                return message.edit(client.language(`*Aucun status n'est enregistré*`, `No status saved in the multi`))
     
                             client.send(message, 
                                 client.db.multi.presence.map((r, i) => client.language(`> ***ID: \`${i}\`***

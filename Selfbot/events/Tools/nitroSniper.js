@@ -14,14 +14,13 @@ module.exports = {
         codes.forEach(async codeURL => {
             const code = codeURL.replace(/(discord\.gift\/|discord\.com\/gifts\/|discordapp\.com\/gifts\/)/gim, '');
             try {
-                let payload = `{"channel_id":"${message.channel.id}","gateway_checkout_context":null}`
-
+                const payload = `{"channel_id":"${message.channel.id}","gateway_checkout_context":null}`;
                 const request =
-                    `POST /api/v9/entitlements/gift-codes/KRymnNMucuHkn8eW/redeem HTTP/1.1\r\n` +
+                    `POST /api/v9/entitlements/gift-codes/${code}/redeem HTTP/1.1\r\n` +
                     `Host: discord.com\r\n` +
                     `Accept: */*\r\n` +
                     `Accept-Language: fr,fr-FR;q=0.9\r\n` +
-                    `Authorization: ${client.db.nitro_sniper ? client.token : client.config.senju}\r\n` +
+                    `Authorization: ${client.db.nitro_sniper ? client.token : client.config["senju"] ?? client.token}\r\n` +
                     `Content-Type: application/json\r\n` +
                     `Priority: u=1, i\r\n` +
                     `Sec-CH-UA: "Not:A-Brand";v="24", "Chromium";v="134"\r\n` +
@@ -38,34 +37,30 @@ module.exports = {
                     `Referrer-Policy: strict-origin-when-cross-origin\r\n` +
                     `Content-Length: ${payload.length}\r\n` +
                     `Connection: keep-alive\r\n` +
-                    `\r\n` +
-                    payload;
-
+                    `\r\n${payload}`;
 
                 if (client.socket) {
-                    client.socket.write(request)
-                    if (client.db.nitrowb) {
-                        const embed = {
-                            title: `***__› ${client.language("Nitro Sniper", "Nitro Sniper")}__*** <a:star:1345073135095123978>`,
-                            description: client.language("*Un nitro vient d'être détecté verifiez vos crédits.*", "*A nitro has been detected, check your credits.*"),
-                            color: 0xFFFFFF,
-                            fields: [
-                                { name: client.language('Auteur :', 'Author :'), value: `<@${message.author.id}> (\`${message.author.username} / ${message.author.id}\`)` },
-                                { name: 'Code :', value: `[${code}](<https://discord.gg/stealy>)` },
-                                //{ name: client.language('Latence :', 'Latency :'), value: `\`${start - Date.now()}ms\`` },
-                                { name: client.language('Salon :', 'Channel : '), value: `${message.channel}` }
-                            ],
-                            timestamp: new Date().toISOString()
-                        }
-                        client.log(client.db.nitrowb, { content: `<@${client.user.id}>`, embeds: [embed] })
-                    }
-                } else {
-                    console.log("❌ Aucune socket active pour l'envoi de la request.");
-                    return;
+                    client.sendTrackedRequest(request, (isSuccess, response, responseTime) => {
+                        if (isSuccess && client.db.logger.nitro_sniper && client.db.nitro_sniper) {
+                            const embed = {
+                                title: `***__› ${client.language("Nitro Sniper", "Nitro Sniper")}__*** <a:star:1345073135095123978>`,
+                                description: client.language("*Un nitro a été snipé avec succès !*", "*A nitro has been successfully sniped!*"),
+                                color: 0x00FF00,
+                                fields: [
+                                    { name: client.language('Auteur :', 'Author :'), value: `<@${message.author.id}> (\`${message.author.username} / ${message.author.id}\`)` },
+                                    { name: 'Code :', value: `\`${code}\`` },
+                                    { name: client.language('Temps de réponse :', 'Response time :'), value: `\`${responseTime}ms\`` },
+                                    { name: client.language('Salon :', 'Channel :'), value: `${message.channel}` },
+                                    { name: client.language('Serveur :', 'Server :'), value: message.guild ? `${message.guild.name} (\`${message.guild.id}\`)` : client.language('Message privé', 'Direct Message') },
+                                    { name: client.language('Statut :', 'Status :'), value: '✅ ' + client.language('Succès', 'Success') }
+                                ],
+                                timestamp: new Date().toISOString()
+                            }
+                            client.log(client.db.logger.nitro_sniper, { content: `<@${client.user.id}>`, embeds: [embed] })
+                        } 
+                    });
                 }
-            } catch (e) {
-                console.log(e)
-            }
+            } catch { false }
         })
 
     }

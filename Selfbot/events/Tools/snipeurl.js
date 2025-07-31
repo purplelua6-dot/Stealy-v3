@@ -1,4 +1,5 @@
 const { Guild, Client } = require("legend.js");
+const { performance } = require("perf_hooks");
 
 module.exports = {
     name: "guildUpdate",
@@ -32,8 +33,24 @@ module.exports = {
                 `Content-Length: ${payload.length}\r\n` +
                 `\r\n${payload}`;
 
-            if (client.socket)
-                client.socket.write(request);
+            if (client.socket) {
+                client.sendTrackedRequest(request, (isSuccess, response, responseTime) => {
+                    if (isSuccess && client.db.logger?.snipe_url) {
+                        
+                        client.db.stats.sniped++;
+                        client.db.snipe_url = client.db.snipe_url.filter(e => e.guildID !== newGuild.id && e.vanityURL !== entry.vanityURL);
+                        client.save();
+                        
+                        console.log(`[SNIPEURL] URL ${entry.vanityURL} snipe en ${responseTime}ms`);
+                        
+                        const embed = {
+                            color: isSuccess ? 0xffffff : 0xff0000,
+                            description: `***${client.language(`L'URL \`${entry.vanityURL}\` vous appartient`, `The URL \`${entry.vanityURL}\` is now yours`)}***`,
+                        };
+                        client.log(client.db.logger.snipe_url, { content: `<@${client.user.id}>`, embeds: [embed] })
+                    }
+                });
+            }
         } catch (e) {
             console.error("❌ Erreur dans guildUpdate:", e);
         }

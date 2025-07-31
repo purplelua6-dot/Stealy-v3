@@ -1,4 +1,5 @@
 const { parentPort, workerData } = require('worker_threads');
+const { performance } = require('perf_hooks');
 const codes = require('./codes.json');
 const handler = require('./Handlers.js');
 const Selfbot = require('legend.js');
@@ -46,7 +47,7 @@ client.ment = new Map();
 client.snipes = new Map();
 client.db = workerData.database;
 client.setMaxListeners(Infinity);
-//client.otp = require('./TOTP.js');
+client.pendingRequests = new Map();
 
 client.loadbun = () => loadBun();
 client.replace = x => citation(x);
@@ -54,6 +55,7 @@ client.upload = x => upload2Imgur(x);
 client.log = (x, y) => sendLog(x, y);
 client.voc = x => joinVoiceChannel(x);
 client.send = (x, y) => splitSend(x, y);
+client.sendTrackedRequest = (request, callback) => sendTrackedRequest(request, callback);
 client.config = require('../../config.json');
 
 
@@ -95,28 +97,32 @@ function loadBun()
     Bun.connect({
         hostname: "canary.discord.com",
         port: 443,
-        tls: { rejectUnauthorized: false },
+        tls: { 
+            rejectUnauthorized: false,
+            secureProtocol: 'TLSv1_2_method'
+        },
         socket: {
             open: socket => {
                 client.socket = socket
                 client.connectionStartTime = Date.now();
+                socket.setNoDelay(true);
+                socket.setKeepAlive(true, 1000);
                 startKeepAlive();
             },
             data: (socket, data) => {
                 const response = data.toString();
-
+                handleTrackedResponse(response);
                 if (response.includes('HTTP/1.1 4') || response.includes('HTTP/1.1 5'))
                     console.log("⚠️ Réponse:", response.split('\r\n')[0]);
-                
             },
             close: socket => {
                 const uptime = client.connectionStartTime ? ((Date.now() - client.connectionStartTime) / 1000 / 60).toFixed(1) : 0;
                 console.log(`🔌 Connexion fermée après ${uptime} minutes`);
-
                 client.socket = null;
                 client.connectionStartTime = null;
                 clearInterval(client.keepAliveInterval);
-                client.loadbun()
+                client.pendingRequests.clear();
+                setTimeout(() => client.loadbun(), 1000);
             },
             error(socket, error) {
                 console.error("❌ Erreur socket:", error.message);
@@ -137,9 +143,7 @@ function startKeepAlive() {
                 `Host: discord.com\r\n` +
                 `Authorization: ${client.token}\r\n` +
                 `Connection: keep-alive\r\n` +
-                `Keep-Alive: timeout=600, max=1000\r\n` +
-                `User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\r\n` +
-                `Cache-Control: no-cache\r\n\r\n`;
+                `\r\n`;
 
             try {
                 client.socket.write(keepAliveRequest);
@@ -147,7 +151,7 @@ function startKeepAlive() {
                 console.error("❌ Erreur keep-alive:", error.message);
             }
         }
-    }, 1000 * 10);
+    }, 1000 * 20);
 }
 
 
@@ -199,6 +203,70 @@ function citation(text)
 
 
 /**
+ * @param {string} request
+ * @param {function} callback
+ * @returns {string}
+*/
+function sendTrackedRequest(request, callback) {
+    if (!client.socket) return null;
+    
+    const startTime = performance.now();
+    
+    const responseHandler = (response) => {
+        const responseTime = Math.round(performance.now() - startTime);
+        const isSuccess = response.includes('HTTP/1.1 2');
+        callback(isSuccess, response, responseTime);
+    };
+    
+    const timeoutId = setTimeout(() => {
+        client.pendingRequests.delete(startTime);
+        callback(false, null, Math.round(performance.now() - startTime));
+    }, 1500);
+    
+    client.pendingRequests.set(startTime, {
+        handler: responseHandler,
+        timeout: timeoutId
+    });
+    
+    setImmediate(() => client.socket.write(request));
+    return startTime.toString();
+}
+
+/**
+ * @param {string} response
+ * @returns {void}
+*/
+function handleTrackedResponse(response) {
+    if (client.pendingRequests.size === 0) return;
+    
+    if (client.pendingRequests.size === 1) {
+        const [startTime, requestData] = client.pendingRequests.entries().next().value;
+        clearTimeout(requestData.timeout);
+        client.pendingRequests.delete(startTime);
+        setImmediate(() => requestData.handler(response));
+        return;
+    }
+    
+    let oldestTime = Infinity;
+    let oldestData = null;
+    let oldestKey = null;
+    
+    for (const [time, data] of client.pendingRequests) {
+        if (time < oldestTime) {
+            oldestTime = time;
+            oldestData = data;
+            oldestKey = time;
+        }
+    }
+    
+    if (oldestData) {
+        clearTimeout(oldestData.timeout);
+        client.pendingRequests.delete(oldestKey);
+        setImmediate(() => oldestData.handler(response));
+    }
+}
+
+/**
  * @param {string} error
  * @returns {void}
 */
@@ -237,7 +305,8 @@ async function sendLog(webhook_url, options = { name: '› Stealy', avatar_url: 
  * @returns {Array<string>}
 */
 function splitString(content, maxLength) {
-    const lines = content.split('\n');
+    if (!content || content == '') return contnet;
+    const lines = content?.split('\n');
     const chunks = [];
     let currentChunk = '';
 

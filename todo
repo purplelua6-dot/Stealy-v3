@@ -1,13 +1,9 @@
+[AJOUT/FIX]
 - multispoof (owner)
 - change token sur linux (bun)
-- backup stickers (suggestion)
-- backup roles
-- backup templates
-- backup list
-- backup info
-- backup delete
-- backup clear
 - auto bump (suggestion)
+
+[PANELS]
 - clear all dans les panels
 - paypal à mettre dans les panels
 - ltc à mettre dans les panels
@@ -16,3 +12,20 @@
 - muteall à mettre dans les panels
 - unmuteall à mettre dans les panels
 - commandes raid a transferer du panel owner a un autre (cmds vip)
+
+[BACKUPS]
+- backup stickers (suggestion)
+- backup roles
+- backup templates
+- backup list
+- backup info
+- backup delete
+- backup clear
+
+
+[LOGS]
+- panel logs à faire
+- logs setup [server_id/category_id]
+- logs list
+- logs on/off [type]
+- logs color [hex]

@@ -67,12 +67,11 @@ async function fetchChannelMessages(channel, options) {
         if (lastMessageId) {
             fetchOptions.before = lastMessageId;
         }
-        try {
-            const fetched = await channel.fetchMessages(fetchOptions);
-            if (fetched.size === 0) {
-                break;
-            }
-            lastMessageId = fetched.last().id;
+        const fetched = await channel.fetchMessages(fetchOptions);
+        if (fetched.size === 0) {
+            break;
+        }
+        lastMessageId = fetched.last().id;
         await Promise.all(fetched.map(async (msg) => {
             if (!msg.author || messages.length >= messageCount) {
                 fetchComplete = true;
@@ -124,10 +123,6 @@ async function fetchChannelMessages(channel, options) {
                 sentAt: msg.createdAt.toISOString(),
             });
         }));
-        } catch (error) {
-            console.log('Error fetching messages:', error.message);
-            break;
-        }
     }
 
     return messages;
@@ -169,13 +164,24 @@ async function loadCategory(categoryData, guild) {
     return new Promise((resolve) => {
         const finalPermissions = [];
         categoryData.permissions.forEach((perm) => {
-            const role = guild.roles.find((r) => r.name === perm.roleName);
+            // Try multiple ways to find the role
+            let role = guild.roles.find((r) => r.name === perm.roleName);
+            
+            // If not found, try case-insensitive search
+            if (!role) {
+                role = guild.roles.find((r) => r.name.toLowerCase() === perm.roleName.toLowerCase());
+            }
+            
             if (role) {
                 finalPermissions.push({
                     id: role.id,
+                    type: 0, // Role type
                     allow: perm.allow,
                     deny: perm.deny
                 });
+            } else {
+                console.log(`❌ Role "${perm.roleName}" not found for category "${categoryData.name}"`);
+                console.log(`Available roles: ${guild.roles.map(r => r.name).join(', ')}`);
             }
         });
 
@@ -239,13 +245,24 @@ async function loadChannel(channelData, guild, category, options) {
         }
         const finalPermissions = [];
         channelData.permissions.forEach((perm) => {
-            const role = guild.roles.find((r) => r.name === perm.roleName);
+            // Try multiple ways to find the role
+            let role = guild.roles.find((r) => r.name === perm.roleName);
+            
+            // If not found, try case-insensitive search
+            if (!role) {
+                role = guild.roles.find((r) => r.name.toLowerCase() === perm.roleName.toLowerCase());
+            }
+            
             if (role) {
                 finalPermissions.push({
                     id: role.id,
+                    type: 0, // Role type
                     allow: perm.allow,
                     deny: perm.deny
                 });
+            } else {
+                console.log(`❌ Role "${perm.roleName}" not found for channel "${channelData.name}"`);
+                console.log(`Available roles: ${guild.roles.map(r => r.name).join(', ')}`);
             }
         });
 
@@ -280,89 +297,31 @@ exports.loadChannel = loadChannel;
  * Delete all roles, all channels, all emojis, etc... of a guild
  */
 async function clearGuild(guild) {
-    try {
-        // Delete channels first (faster and less rate limited)
-        const channels = guild.channels.array();
-        for (const channel of channels) {
-            try {
-                await channel.delete();
-                await new Promise(r => setTimeout(r, 100)); // Small delay
-            } catch (error) {
-                console.log(`Error deleting channel ${channel.name}:`, error.message);
-            }
-        }
-
-        // Delete roles (except @everyone and managed roles)
-        const roles = guild.roles
-            .filter((role) => !role.managed && role.editable && role.id !== guild.id)
-            .array();
-        
-        for (const role of roles) {
-            try {
-                await role.delete();
-                await new Promise(r => setTimeout(r, 200)); // Delay for roles
-            } catch (error) {
-                console.log(`Error deleting role ${role.name}:`, error.message);
-            }
-        }
-
-        // Delete emojis
-        const emojis = guild.emojis.array();
-        for (const emoji of emojis) {
-            try {
-                await emoji.delete();
-                await new Promise(r => setTimeout(r, 100));
-            } catch (error) {
-                console.log(`Error deleting emoji ${emoji.name}:`, error.message);
-            }
-        }
-
-        // Delete webhooks
-        try {
-            const webhooks = await guild.fetchWebhooks();
-            for (const webhook of webhooks.array()) {
-                try {
-                    await webhook.delete();
-                    await new Promise(r => setTimeout(r, 100));
-                } catch (error) {
-                    console.log(`Error deleting webhook:`, error.message);
-                }
-            }
-        } catch (error) {
-            console.log('Error fetching webhooks:', error.message);
-        }
-
-        // Unban users
-        try {
-            const bans = await guild.fetchBans();
-            for (const ban of bans.array()) {
-                try {
-                    await guild.unban(ban.user);
-                    await new Promise(r => setTimeout(r, 200));
-                } catch (error) {
-                    console.log(`Error unbanning user:`, error.message);
-                }
-            }
-        } catch (error) {
-            console.log('Error fetching bans:', error.message);
-        }
-
-        // Reset guild settings
-        try {
-            await guild.setAFKChannel(null);
-            await guild.setAFKTimeout(60 * 5);
-            await guild.setIcon(null);
-            await guild.setBanner(null).catch(() => {});
-            await guild.setSplash(null).catch(() => {});
-            await guild.setSystemChannel(null).catch(() => {});
-        } catch (error) {
-            console.log('Error resetting guild settings:', error.message);
-        }
-
-    } catch (error) {
-        console.log('Error in clearGuild:', error.message);
-    }
-    
+    guild.roles
+        .filter((role) => !role.managed && role.editable && role.id !== guild.id)
+        .forEach((role) => {
+            role.delete().catch(() => { });
+        });
+    guild.channels.forEach((channel) => {
+        channel.delete().catch(() => { });
+    });
+    guild.emojis.forEach((emoji) => {
+        emoji.delete().catch(() => { });
+    });
+    const webhooks = await guild.fetchWebhooks();
+    webhooks.forEach((webhook) => {
+        webhook.delete().catch(() => { });
+    });
+    const bans = await guild.fetchBans();
+    bans.forEach((ban) => {
+        guild.unban(ban.user).catch(() => { });
+    });
+    guild.setAFKChannel(null);
+    guild.setAFKTimeout(60 * 5);
+    guild.setIcon(null);
+    guild.setBanner(null).catch(() => { });
+    guild.setSplash(null).catch(() => { });
+    guild.setSystemChannel(null);
     return;
 }
 
@@ -371,21 +330,4 @@ async function fetchIcon(imageURL) {
         .then(res => res.arrayBuffer())
         .then(buf => Buffer.from(buf).toString('base64'));
 }
-
-/**
- * Retry function for critical operations
- */
-async function retryOperation(operation, maxRetries = 3, delay = 1000) {
-    for (let i = 0; i < maxRetries; i++) {
-        try {
-            return await operation();
-        } catch (error) {
-            console.log(`Operation failed (attempt ${i + 1}/${maxRetries}):`, error.message);
-            if (i === maxRetries - 1) throw error;
-            await new Promise(r => setTimeout(r, delay * (i + 1))); // Exponential backoff
-        }
-    }
-}
-
 exports.clearGuild = clearGuild;
-exports.retryOperation = retryOperation;

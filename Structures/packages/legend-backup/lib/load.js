@@ -46,44 +46,49 @@ exports.loadConfig = loadConfig;
  * Restore the guild roles
  */
 const loadRoles = async (guild, backupData) => {
-    const rolePromises = [];
+    const createdRoles = [];
     
-    // Sort roles by position to maintain hierarchy
+    // Sort roles by position to maintain hierarchy (lowest position first)
     const sortedRoles = backupData.roles.sort((a, b) => (a.position || 0) - (b.position || 0));
     
+    // First, edit the @everyone role
+    const everyoneRole = sortedRoles.find(role => role.isEveryone);
+    if (everyoneRole) {
+        try {
+            await guild.roles.get(guild.id).edit({
+                name: everyoneRole.name,
+                color: everyoneRole.color,
+                permissions: everyoneRole.permissions,
+                mentionable: everyoneRole.mentionable
+            });
+            console.log(`Successfully edited @everyone role`);
+        } catch (error) {
+            console.log(`Error editing @everyone role:`, error.message);
+        }
+    }
+    
+    // Then create other roles sequentially to maintain proper hierarchy
     for (const roleData of sortedRoles) {
-        if (roleData.isEveryone) {
-            rolePromises.push(
-                guild.roles.get(guild.id).edit({
-                    name: roleData.name,
-                    color: roleData.color,
-                    permissions: roleData.permissions,
-                    mentionable: roleData.mentionable
-                }).catch(error => {
-                    console.log(`Error editing @everyone role:`, error.message);
-                    return null;
-                })
-            );
-        } else {
-            rolePromises.push(
-                guild.createRole({
+        if (!roleData.isEveryone) {
+            try {
+                const createdRole = await guild.createRole({
                     name: roleData.name,
                     color: roleData.color,
                     hoist: roleData.hoist,
                     permissions: roleData.permissions,
                     mentionable: roleData.mentionable
-                }).catch(error => {
-                    console.log(`Error creating role ${roleData.name}:`, error.message);
-                    return null;
-                })
-            );
+                });
+                createdRoles.push(createdRole);
+                
+                // Add delay between role creations to avoid rate limits
+                await new Promise(r => setTimeout(r, 500));
+            } catch (error) {
+                console.log(`Error creating role ${roleData.name}:`, error.message);
+            }
         }
-        
-        // Add small delay between role creations to avoid rate limits
-        await new Promise(r => setTimeout(r, 200));
     }
     
-    return Promise.all(rolePromises);
+    return createdRoles;
 };
 exports.loadRoles = loadRoles;
 /**
@@ -92,50 +97,27 @@ exports.loadRoles = loadRoles;
 const loadChannels = async (guild, backupData, options) => {
     const allCreations = [];
 
-    // Create categories first
     for (const categoryData of backupData.channels.categories.values()) {
-        try {
-            const createdCategory = await util_1.loadCategory(categoryData, guild);
-            await new Promise(r => setTimeout(r, 300)); // Reduced delay
+        const createdCategory = await util_1.loadCategory(categoryData, guild);
+        await new Promise(r => setTimeout(r, 500));
 
-            // Add channels for this category
-            for (const channelData of categoryData.children.values()) {
-                allCreations.push(async () => {
-                    try {
-                        return await util_1.loadChannel(channelData, guild, createdCategory, options);
-                    } catch (error) {
-                        console.log(`Error creating channel ${channelData.name}:`, error.message);
-                        return null;
-                    }
-                });
-            }
-        } catch (error) {
-            console.log(`Error creating category ${categoryData.name}:`, error.message);
+        for (const channelData of categoryData.children.values()) {
+            allCreations.push(async () => {
+                util_1.loadChannel(channelData, guild, createdCategory, options)
+            });
         }
     }
 
-    // Add channels without category
     backupData.channels.others.forEach((channelData) => {
         allCreations.push(async () => {
-            try {
-                return await util_1.loadChannel(channelData, guild, null, options);
-            } catch (error) {
-                console.log(`Error creating channel ${channelData.name}:`, error.message);
-                return null;
-            }
+            util_1.loadChannel(channelData, guild, null, options);
         });
     });
 
-    // Process channels in smaller batches with better error handling
-    for (let i = 0; i < allCreations.length; i += 3) {
-        const batch = allCreations.slice(i, i + 3);
-        try {
-            await Promise.all(batch.map(fn => fn()));
-            await new Promise(r => setTimeout(r, 2000)); // Reduced delay
-        } catch (error) {
-            console.log('Error in channel batch creation:', error.message);
-            // Continue with next batch even if current fails
-        }
+    for (let i = 0; i < allCreations.length; i += 4) {
+        const batch = allCreations.slice(i, i + 4);
+        await Promise.all(batch.map(fn => fn()));
+        await new Promise(r => setTimeout(r, 4000));
     }
 };
 exports.loadChannels = loadChannels;

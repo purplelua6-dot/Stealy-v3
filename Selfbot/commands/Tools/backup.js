@@ -138,10 +138,11 @@ module.exports = {
     else if (args[0] === "roles"){
         const guild = client.guilds.get(args[1]) || message.guild
         if (!guild) return message.edit(client.language(`*Veuillez utiliser cette commande dans un serveur*`,`*Please use this command in a server.*`))
-        
-        await message.edit(client.language(`*La backup des rôles du serveur ${guild.name} est en cours de création...*`, `*The backup of the roles of guild ${guild.name} is under creation..*`), client.language(`*La backup du serveur ${guild.name} est en cours de création avec l'ID \`${backupID}\`.*`, `*The backup of the guild ${guild.name} is under creation with the ID \`${backupID}\`.*`))
 
-        const backupid = makeid(8)
+            
+        await message.edit(client.language(`*La backup des rôles du serveur ${guild.name} est en cours de création...*`, `*The backup of the roles of guild ${guild.name} is under creation..*`))
+
+        const backupid = makeid(8)        
         const rolesData = []
         
         guild.roles.forEach(role => {

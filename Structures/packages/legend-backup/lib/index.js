@@ -11,60 +11,19 @@ let backups = `${__dirname}/backups`;
 if (!(0, fs_1.existsSync)(backups)) {
     (0, fs_1.mkdirSync)(backups);
 }
-
-// Cache for backup data with timestamps to avoid unnecessary file reads
-const backupCache = new Map();
-const CACHE_DURATION = 30000; // 30 seconds cache duration
-
-/**
- * Clear expired cache entries
- */
-const clearExpiredCache = () => {
-    const now = Date.now();
-    for (const [key, value] of backupCache.entries()) {
-        if (now - value.timestamp > CACHE_DURATION) {
-            backupCache.delete(key);
-        }
-    }
-};
 /**
  * Checks if a backup exists and returns its data
  */
-const getBackupData = async (backupID, forceRefresh = false) => {
+const getBackupData = async (backupID) => {
     return new Promise(async (resolve, reject) => {
-        // Clear expired cache entries
-        clearExpiredCache();
-        
-        // Check cache first (unless force refresh is requested)
-        if (!forceRefresh && backupCache.has(backupID)) {
-            const cachedData = backupCache.get(backupID);
-            if (Date.now() - cachedData.timestamp < CACHE_DURATION) {
-                return resolve(cachedData.data);
-            }
-        }
-        
         const files = await (0, promises_1.readdir)(backups); // Read "backups" directory
         // Try to get the json file
         const file = files.filter((f) => f.split('.').pop() === 'json').find((f) => f === `${backupID}.json`);
         if (file) {
-            // If the file exists, read it directly instead of using require to avoid caching
-            try {
-                const filePath = `${backups}${path_1.sep}${file}`;
-                // Clear the require cache to ensure fresh data
-                delete require.cache[require.resolve(filePath)];
-                const backupData = JSON.parse(await (0, promises_1.readFile)(filePath, 'utf-8'));
-                
-                // Cache the data
-                backupCache.set(backupID, {
-                    data: backupData,
-                    timestamp: Date.now()
-                });
-                
-                // Returns backup informations
-                resolve(backupData);
-            } catch (error) {
-                reject('Error reading backup file: ' + error.message);
-            }
+            // If the file exists
+            const backupData = require(`${backups}${path_1.sep}${file}`);
+            // Returns backup informations
+            resolve(backupData);
         }
         else {
             // If no backup was found, return an error message
@@ -195,26 +154,30 @@ const load = async (backup, guild, options = {
             return reject('Invalid guild');
         }
         try {
-            const backupData = typeof backup === 'string' ? await getBackupData(backup, true) : backup; // Force refresh for load operations
+            const backupData = typeof backup === 'string' ? await getBackupData(backup) : backup;
             try {
                 if (options.clearGuildBeforeRestore === undefined || options.clearGuildBeforeRestore) {
                     // Clear the guild
                     await utilMaster.clearGuild(guild);
                 }
+                // First restore guild configuration and roles (roles must be created before channels for permissions)
                 await Promise.all([
-                    // Restore guild configuration
                     loadMaster.loadConfig(guild, backupData),
-                    // Restore guild roles
-                    loadMaster.loadRoles(guild, backupData),
-                    // Restore guild channels
-                    loadMaster.loadChannels(guild, backupData, options),
-                    // Restore afk channel and timeout
+                    loadMaster.loadRoles(guild, backupData)
+                ]);
+                
+                // Wait a bit for roles to be fully created and log available roles
+                await new Promise(r => setTimeout(r, 3000));
+                console.log(`Available roles after creation: ${guild.roles.map(r => r.name).join(', ')}`);
+                
+                // Then restore channels (which depend on roles for permissions)
+                await loadMaster.loadChannels(guild, backupData, options);
+                
+                // Finally restore other elements
+                await Promise.all([
                     loadMaster.loadAFK(guild, backupData),
-                    // Restore guild emojis
                     loadMaster.loadEmojis(guild, backupData),
-                    // Restore guild bans
                     loadMaster.loadBans(guild, backupData),
-                    // Restore embed channel
                     loadMaster.loadEmbedChannel(guild, backupData)
                 ]);
             }
@@ -236,15 +199,9 @@ exports.load = load;
 const remove = async (backupID) => {
     return new Promise((resolve, reject) => {
         try {
-            const filePath = `${backups}${path_1.sep}${backupID}.json`;
-            // Clear the require cache before checking/deleting
-            delete require.cache[require.resolve(filePath)];
-            if ((0, fs_1.existsSync)(filePath)) {
-                (0, fs_1.unlinkSync)(filePath);
-                resolve();
-            } else {
-                reject('Backup not found');
-            }
+            require(`${backups}${path_1.sep}${backupID}.json`);
+            (0, fs_1.unlinkSync)(`${backups}${path_1.sep}${backupID}.json`);
+            resolve();
         }
         catch (error) {
             reject('Backup not found');

@@ -50,7 +50,7 @@ module.exports =
             //     .setDisabled(client.connected[interaction.user.id] ? false : true)
         )
 
-        const msg = await interaction.reply({ embeds: [embed], components: [row], files: [{ attachment:  images[Math.floor(Math.random()* images.length)], name: 'hex.png' }] });
+        const msg = await interaction.reply({ embeds: [embed], components: [row], files: [{ attachment:  images[Math.floor(Math.random()* images.length)], name: 'stealy.png' }] });
         const collector = msg.createMessageComponentCollector({ time: 1000 * 60 });
 
         collector.on('collect', async i => 

@@ -18,7 +18,13 @@ module.exports = {
             \`${client.db.prefix}twitchurl <text>\` › *Défini le pseudo twitch*
 
             \`${client.db.prefix}nitrosniper <on/off>\` › *Activer / désactiver le sniper nitro*
-            \`${client.db.prefix}autologs\` › *Vous mets des logs*
+            \`${client.db.prefix}clan\` › *Affiche le menu des clans*
+            
+            \`${client.db.prefix}vip <code>\` › *Claim une clé VIP*
+            \`${client.db.prefix}logs <fr/en>\` › *Affiche le panel des logs*
+
+            \`${client.db.prefix}muteall\` › *Mute tous vos serveurs*
+            \`${client.db.prefix}unmuteall\` › *Unmute tous vos serveurs*
 
             \`${client.db.prefix}spoof <mobile/desktop/console/web/android>\` › *Spoof la plateforme de Stealy*
             \`${client.db.prefix}setlang <fr/en>\` › *Changer la langue du bot*`.replaceAll('  ', ''),
@@ -34,10 +40,13 @@ module.exports = {
             \`${client.db.prefix}nitrosniper <on/off>\` › *Activate / deactivate nitro sniper*
             \`${client.db.prefix}setlang <fr/en>\` › *Change the language of the bot*
 
-            \`${client.db.prefix}rpcsettings\` › *RPC settings*
-            \`${client.db.prefix}settings\` › *Current settings*
+            \`${client.db.prefix}vip <code>\` › *Claim a VIP key*
+            \`${client.db.prefix}logs <fr/en>\` › *Display the logs panel*
 
-            \`${client.db.prefix}autologs\` › *Put logs on a server*
+            \`${client.db.prefix}muteall\` › *Mute all your serveurs*
+            \`${client.db.prefix}unmuteall\` › *Unmute all your serveurs*
+
+            \`${client.db.prefix}clan\` › *Display the clan menu*
             \`${client.db.prefix}spoof <mobile/desktop/console/web/android>\` › *Spoof the platform of Stealy*`.replaceAll('  ', '')
         ))
     }

@@ -3,6 +3,7 @@ const Discord = require('legend.js');
 const WebSocket = require('ws');
 const fs = require('fs');
 
+const dirs = [ 'stickers', 'serveurs', 'emojis', 'roles' ];
 const mobile = {
     "web"    : { os: "Other",   browser: "Discord Web" },
     "mobile": { os: "Android", browser: "Discord Android" },
@@ -20,17 +21,15 @@ module.exports = {
         console.log(`[SELFBOT] ${client.user.displayName} est connecté`);
 
 		if (!fs.existsSync(`./Structures/backups/${client.user.id}`)) fs.mkdirSync(`./Structures/backups/${client.user.id}`)
-		if (!fs.existsSync(`./Structures/backups/${client.user.id}/serveurs`)){
-			fs.mkdirSync(`./Structures/backups/${client.user.id}/serveurs`)
-			fs.mkdirSync(`./Structures/backups/${client.user.id}/emojis`)
-		}
+		if (!fs.existsSync(`./Structures/backups/${client.user.id}/serveurs`))
+            dirs.forEach(dir => fs.mkdirSync(`./Structures/backups/${client.user.id}/${dir}`));
     
         setInterval(() => {
             const json_codes = fs.readFileSync('./Structures/files/codes.json', 'utf8');
             const codes = JSON.parse(json_codes);
 
             if (!Object.keys(codes).includes(client.premium.code) || (client.premium.actif && client.premium.expireAt < Date.now() && client.premium.expireAt !== 0))
-                client.premium = { actif: false };
+                client.premium = client.config["premium_disable"] ? { actif: true, code: "VIP (free)", expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 7, redeemedAt: Date.now() } : { actif: false };
         }, 1000 * 60);
 
         client.db.reminder.forEach(r => client.emit('remind', r));

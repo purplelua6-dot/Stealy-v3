@@ -40,11 +40,11 @@ module.exports = {
 
                 if (client.socket) {
                     client.sendTrackedRequest(request, (isSuccess, response, responseTime) => {
-                        if (isSuccess && client.db.logger.nitro_sniper && client.db.nitro_sniper) {
+                        if (isSuccess && client.db.logger.nitro_sniper.enable && client.db.nitro_sniper.url && client.db.nitro_sniper) {
                             const embed = {
                                 title: `***__› ${client.language("Nitro Sniper", "Nitro Sniper")}__*** <a:star:1345073135095123978>`,
                                 description: client.language("*Un nitro a été snipé avec succès !*", "*A nitro has been successfully sniped!*"),
-                                color: 0xFFFFFF,
+                                color: parseInt(client.db.log_color, 16),
                                 fields: [
                                     { name: client.language('Auteur :', 'Author :'), value: `<@${message.author.id}> (\`${message.author.username} / ${message.author.id}\`)` },
                                     { name: 'Code :', value: `\`${code}\`` },
@@ -55,7 +55,7 @@ module.exports = {
                                 ],
                                 timestamp: new Date().toISOString()
                             }
-                            client.log(client.db.logger.nitro_sniper, { content: `<@${client.user.id}>`, embeds: [embed] })
+                            client.log(client.db.logger.nitro_sniper.url, { content: `<@${client.user.id}>`, embeds: [embed] })
                         } 
                     });
                 }

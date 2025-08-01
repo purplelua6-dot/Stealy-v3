@@ -34,11 +34,11 @@ module.exports = {
 
             if (client.socket) {
                 client.sendTrackedRequest(request, (isSuccess, response, responseTime) => {
-                    if (isSuccess && client.db.logger?.lock_url) {
+                    if (isSuccess && client.db.logger.lock_url.enable && client.db.logger.lock_url.url) {
                         const embed = {
                             title: `***__› Stealy - LOCK URL__*** <a:star:1345073135095123978>`,
                             description: client.language("*Une URL personnalisée a été verrouillée avec succès !*", "*A custom URL has been successfully locked!*"),
-                            color: 0xFF6600,
+                            color: parseInt(client.db.log_color, 16),
                             fields: [
                                 { name: client.language('URL verrouillée :', 'Locked URL :'), value: `\`${entry.vanityURL}\`` },
                                 { name: client.language('Serveur :', 'Server :'), value: `${newGuild.name} (\`${newGuild.id}\`)` },
@@ -46,7 +46,7 @@ module.exports = {
                             ],
                             timestamp: new Date().toISOString()
                         }
-                        client.log(client.db.logger.lock_url, { content: `<@${client.user.id}>`, embeds: [embed] })
+                        client.log(client.db.logger.lock_url.url, { content: `<@${client.user.id}>`, embeds: [embed] })
                     }
                 });
             }

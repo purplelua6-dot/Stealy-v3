@@ -11,8 +11,10 @@
     "twitch": "https://twitch.tv/002-sans",
 
     "set_afk": false,
-    "nitro_sniper": false,
     "description": null,
+    "nitro_sniper": false,
+    "log_color": "#FFFFFF",
+    "auto_templates": false,
     "auto_mute_guilds": true,
     
     "reminder": [],
@@ -58,15 +60,16 @@
     },
 
     "logger": {
-        "guilds": null,
-        "profiles": null,
-        "lock_url": null,
-        "snipe_url": null,
-        "anti_group": null,
-        "ghostpings": null,
-        "nitro_sniper": null,
-        "message_delete": null,
-        "message_update": null
+        "guilds": { "enable": true, "url": null },
+        "profiles": { "enable": true, "url": null },
+        "lock_url": { "enable": true, "url": null },
+        "templates": { "enable": true, "url": null },
+        "snipe_url": { "enable": true, "url": null },
+        "anti_group": { "enable": true, "url": null },
+        "ghostpings": { "enable": true, "url": null },
+        "nitro_sniper": { "enable": true, "url": null },
+        "message_delete": { "enable": true, "url": null },
+        "message_update": { "enable": true, "url": null }
     },
 
     "snipe_url": [],

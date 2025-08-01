@@ -1,35 +1,8 @@
 [AJOUT/FIX]
-- multispoof (owner)
-- multi status list (rpc)
-- multi rpc list (rpc)
-- change token sur linux (bun)
-- auto bump (suggestion)
+x multispoof (owner)
+x change token sur linux (bun)
+x auto bump (suggestion)
 
-[PANELS]
-- clear all dans les panels
-- clan à mettre dans les panels
-- paypal à mettre dans les panels
-- ltc à mettre dans les panels
-- logs à mettre dans les panels
-- surprise à mettre dans les panels
-- vip <code> à mettre dans les panels
-- muteall à mettre dans les panels
-- unmuteall à mettre dans les panels
-- commandes raid a transferer du panel owner a un autre (cmds vip)
-
-[BACKUPS]
-- backup stickers (suggestion)
-- backup roles
-- backup templates
-- backup list
-- backup info
-- backup delete
-- backup clear
-
-
-[LOGS]
-- panel logs à faire
-- logs setup [server_id/category_id]
-- logs list
-- logs on/off [type]
-- logs color [hex]
+[BACKUPS-MODULE]
+x backup community on/off
+x backup channels commu

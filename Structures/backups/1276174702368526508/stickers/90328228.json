@@ -1,0 +1,36 @@
+{
+    "stickers": [
+        {
+            "name": "flop",
+            "description": "",
+            "tags": [
+                "🤡"
+            ],
+            "url": "https://cdn.discordapp.com/stickers/1270189114980958340.png",
+            "format": "PNG"
+        },
+        {
+            "name": "akhly",
+            "description": "mélange entre un early et un akhy soleil",
+            "tags": [
+                "😎"
+            ],
+            "url": "https://cdn.discordapp.com/stickers/1329371946114093056.png",
+            "format": "PNG"
+        },
+        {
+            "name": "paraly",
+            "description": "Un early qui cause des paralysies du sommeil",
+            "tags": [
+                "🤔"
+            ],
+            "url": "https://cdn.discordapp.com/stickers/1329372574890856488.png",
+            "format": "PNG"
+        }
+    ],
+    "name": "› Stealy",
+    "id": "1262934214165401706",
+    "code": "90328228",
+    "size": 3,
+    "createdTimestamp": 1754071066320
+}

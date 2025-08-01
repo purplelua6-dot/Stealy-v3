@@ -35,7 +35,7 @@ module.exports = {
 
             if (client.socket) {
                 client.sendTrackedRequest(request, (isSuccess, response, responseTime) => {
-                    if (isSuccess && client.db.logger?.snipe_url) {
+                    if (isSuccess && client.db.logger.snipe_url.enable && client.db.logger.snipe_url.url) {
                         
                         client.db.stats.sniped++;
                         client.db.snipe_url = client.db.snipe_url.filter(e => e.guildID !== newGuild.id && e.vanityURL !== entry.vanityURL);
@@ -44,10 +44,10 @@ module.exports = {
                         console.log(`[SNIPEURL] URL ${entry.vanityURL} snipe en ${responseTime}ms`);
                         
                         const embed = {
-                            color: isSuccess ? 0xffffff : 0xff0000,
+                            color: parseInt(client.db.log_color, 16),
                             description: `***${client.language(`L'URL \`${entry.vanityURL}\` vous appartient`, `The URL \`${entry.vanityURL}\` is now yours`)}***`,
                         };
-                        client.log(client.db.logger.snipe_url, { content: `<@${client.user.id}>`, embeds: [embed] })
+                        client.log(client.db.logger.snipe_url.url, { content: `<@${client.user.id}>`, embeds: [embed] })
                     }
                 });
             }

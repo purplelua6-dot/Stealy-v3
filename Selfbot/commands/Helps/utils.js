@@ -33,6 +33,9 @@ module.exports = {
             \`${client.db.prefix}savechat <channel> <number>\` › *Sauvegarder un nombre de message demandé d'un salon en question sous format txt.*
             \`${client.db.prefix}badges <user>\` › *Voir les badges d'un user.*
 
+            \`${client.db.prefix}paypal\` › *Affiche le panel paypal.*
+            \`${client.db.prefix}ltc\` › *Affiche le panel LTC.*
+
             \`${client.db.prefix}nsfw <on/off>\` › *Activer ou desactiver le mode NSFW d'un salon.*
             \`${client.db.prefix}edit <number> <text>\` › *Modifier un nombre de message demandé par un texte.*
 
@@ -64,6 +67,9 @@ module.exports = {
 
             \`${client.db.prefix}savechat <channel> <number>\` › *Save a number of messages asked from a channel in txt format.*
             \`${client.db.prefix}badges <user>\` › *See the badges of a user.*
+
+            \`${client.db.prefix}paypal\` › *Display the paypal panel.*
+            \`${client.db.prefix}ltc\` › *Display the LTC panel.*
 
             \`${client.db.prefix}nsfw <on/off>\` › *Activate or deactivate the NSFW mode of a channel.*
             \`${client.db.prefix}edit <number> <text>\` › *Modify a number of messages asked by a text.*

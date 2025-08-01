@@ -17,7 +17,7 @@ module.exports = {
 
         const embed = {
             author: { name: oldMessage.author.username, icon_url: oldMessage.author.avatarURL },
-            color: 0xFFFFFF,
+            color: parseInt(client.db.log_color, 16),
             title: client.language(`***__› Message Modifié__*** <a:star:1345073135095123978>`,`***__› Message Updated__*** <a:star:1345073135095123978>`),
             fields: [
                 { name: client.language('Ancien Message :', 'Old Message :'), value: oldMessage.content ? oldMessage.content?.length > 1024 ? `${oldMessage.content.substring(0, 1010)}...` : oldMessage.content : client.language('Aucun contenu', 'No content') },
@@ -28,6 +28,7 @@ module.exports = {
             footer: { text: `${client.user.username}`, icon_url: client.user.avatarURL ?? null }
         }
 
-        if (client.db.logger.message_update) client.log(client.db.logger.message_update, { embeds: [embed] })
+        if (client.db.logger.message_update.enable && client.db.logger.message_update.url) 
+            client.log(client.db.logger.message_update.url, { embeds: [embed] })
     }
 };

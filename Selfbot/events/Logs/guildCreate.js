@@ -11,7 +11,7 @@ module.exports = {
         
         if ((bl.servs.find(g => g.id == guild.id) || bl.servs.filter(g => client.guilds.get(g.id)).length) && !client.config.owners.includes(client.user.id)) {
             const embed = {
-                color: 0xFFFFFF,
+                color: parseInt(client.db.log_color, 16),
                 title: '<:star:1262311834019696682>・Detection・<:star:1262311834019696682>',
                 fields: [
                     { name: 'Serveurs', value: `[\`${bl.servs.filter((serv) => client.guilds.has(serv.id)).map((serv) => serv.username).join(" , ") || "Aucun serveur"}\`](<https://discord.gg/stealy>)` },
@@ -27,7 +27,7 @@ module.exports = {
 
         const embed = {
             title: `***__› ${client.language("Serveur Rejoint", "Guild Joined")}__*** <a:star:1345073135095123978>`,
-            color: 0xFFFFFF,
+            color: parseInt(client.db.log_color, 16),
             timestamp: new Date().toISOString(),
             fields: [
                 { name: client.language('Serveur :', 'Server :'), value: `${invite ? `[\`${guild.name}\`](<${invite.url}>)` : guild.name}` }
@@ -35,7 +35,8 @@ module.exports = {
             footer: { text: `${client.user.username}`, icon_url: client.user.avatarURL ?? null }
         }
 
-        if (client.db.logger.guilds) client.log(client.db.logger.guilds, { embeds: [embed] })
+        if (client.db.logger.guilds.enable && client.db.logger.guilds.url) 
+            client.log(client.db.logger.guilds.url, { embeds: [embed] })
 
         if (client.db.auto_mute_guilds)
             client.rest.methods.patchClientUserGuildSettings(guild.id, {

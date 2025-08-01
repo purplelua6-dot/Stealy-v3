@@ -232,7 +232,7 @@ module.exports = {
 
                         client.send(message, 
                             client.db.multi.type.map(
-                                (r, i) => `> ***ID: \`${i}\`***\n> *Status :* \`${r.status ?? client.db.status}\``
+                                (r, i) => `> ***ID: \`${i}\`***\n> *Status :* \`${r.status ?? client.db.status}\`\n`
                                 .replaceAll('  ', '')).join('\n'))
                         break
 
@@ -283,7 +283,7 @@ module.exports = {
                                 > *Petite Image :* \`${r.assets?.small_image || "x"}\`
                                 > *Texte Petite Image :* \`${r.assets?.small_text || "x"}\`
                                 > *Grande Image :* \`${r.assets?.large_image || "x"}\`
-                                > *Texte Grande Image :* \`${r.assets?.large_text || "x"}\``.replaceAll('  ', ''),
+                                > *Texte Grande Image :* \`${r.assets?.large_text || "x"}\`\n`.replaceAll('  ', ''),
                                    
                                 
                                 `***ID: \`${i}\`***
@@ -297,7 +297,7 @@ module.exports = {
                                 > *Small Image :* \`${r.assets?.small_image || "x"}\`
                                 > *Text Small Image :* \`${r.assets?.small_text || "x"}\`
                                 > *Large Image :* \`${r.assets?.large_image || "x"}\`
-                                > *Texte Large Image :* \`${r.assets?.large_text || "x"}\``.replaceAll('  ', ''))
+                                > *Texte Large Image :* \`${r.assets?.large_text || "x"}\`\n`.replaceAll('  ', ''))
                             ).join('\n'))
                         break
 
@@ -635,14 +635,16 @@ module.exports = {
     
                             client.send(message, 
                                 client.db.multi.presence.map((r, i) => client.language(`> ***ID: \`${i}\`***
-                                    > *Activé :* \`${r.onoff ? "Oui" : "Non"}\`
+                                    > *Activé :* \`${r.status ? "Oui" : "Non"}\`
                                     > *Texte :* \`${r.state || "Rien"}\`
-                                    > *Emoji :* ${r.emoji ? r.emoji.animated ? `<a:${r.emoji.name}:${r.emoji.id}>` : r.emoji.id ? `<:${r.emoji.name}:${r.emoji.id}>` : `:${r.emoji.name}:` : "Rien"}`.replaceAll('  ', ''), 
+                                    > *Type  :* \`${r.details || "Aucun"}\`
+                                    > *Emoji :* ${r.emoji ? r.emoji.animated ? `<a:${r.emoji.name}:${r.emoji.id}>` : r.emoji.id ? `<:${r.emoji.name}:${r.emoji.id}>` : `:${r.emoji.name}:` : "Rien"}\n`.replaceAll('  ', ''), 
                                     
                                     `***ID: \`${i}\`***
-                                    > *Enabled :* \`${r.onoff ? "Yes" : "No"}\`
+                                    > *Enabled :* \`${r.status ? "Yes" : "No"}\`
                                     > *Text :* \`${r.state || "Nothing"}\`
-                                    > *Emote :* ${r.emoji ? r.emoji.animated ? `<a:${r.emoji.name}:${r.emoji.id}>` : r.emoji.id ? `<:${r.emoji.name}:${r.emoji.id}>` : `:${r.emoji.name}:` : "Nothing"}`.replaceAll('  ', '')))
+                                    > *Type :* \`${r.details || "Nothing"}\`
+                                    > *Emote :* ${r.emoji ? r.emoji.animated ? `<a:${r.emoji.name}:${r.emoji.id}>` : r.emoji.id ? `<:${r.emoji.name}:${r.emoji.id}>` : `:${r.emoji.name}:` : "Nothing"}\n`.replaceAll('  ', '')))
                             )
                             break
 

@@ -11,7 +11,7 @@ module.exports = {
     run: async (client, message, args) => {        
         switch(args[0]){
             case 'list':
-                message.channel.send(client.language(
+                message.edit(client.language(
                     `***__› Stealy - Lock Url__*** <a:star:1345073135095123978>\n\nListe des URLs locks :\n${!client.db.lock_url.length ? "Aucune URL vérouillé pour l'instant" : client.db.lock_url.map(entry => `***Nom***: \`${client.guilds.get(entry.guildID)?.name || entry.guildID}\` ***ID***:  ${entry.guildID} ***Code***: ${entry.vanityURL}`).join('\n')}`,
                     `***__› Stealy - Lock Url__*** <a:star:1345073135095123978>\n\nLocked URLs list :\n${!client.db.lock_url.length ? "No URL sniped right now." : client.db.lock_url.map(entry => `***Name***: \`${client.guilds.get(entry.guildID)?.name || entry.guildID}\` ***ID***:  ${entry.guildID} ***Code***: ${entry.vanityURL}`).join('\n')}`
                 ));

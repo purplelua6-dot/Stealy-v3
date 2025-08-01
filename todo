@@ -1,12 +1,16 @@
 [AJOUT/FIX]
 - multispoof (owner)
+- multi status list (rpc)
+- multi rpc list (rpc)
 - change token sur linux (bun)
 - auto bump (suggestion)
 
 [PANELS]
 - clear all dans les panels
+- clan à mettre dans les panels
 - paypal à mettre dans les panels
 - ltc à mettre dans les panels
+- logs à mettre dans les panels
 - surprise à mettre dans les panels
 - vip <code> à mettre dans les panels
 - muteall à mettre dans les panels

@@ -12,11 +12,7 @@ module.exports = {
         message.edit(client.language(
             `***___› Stealy - Clean___*** <a:star:1345073135095123978>
 
-<<<<<<< Updated upstream
-            \`${client.db.prefix}clear <number/channel/all>\` › *Supprimer des messages dans les salons voulus.*  
-=======
             \`${client.db.prefix}clear <all/number/channel>\` › *Supprimer des messages dans les salons voulus.*  
->>>>>>> Stashed changes
             \`${client.db.prefix}closedms\` › *Ferme les DM's.*
 
             \`${client.db.prefix}leave server <server_id/all>\` › *Quitte un / all serveur.*  

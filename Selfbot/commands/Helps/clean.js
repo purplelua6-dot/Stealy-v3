@@ -23,7 +23,7 @@ module.exports = {
 
             `***___› Stealy - Clean___*** <a:star:1345073135095123978>
 
-            \`${client.db.prefix}clear <number/channel>\` › *Delete a number of messages requested.*  
+            \`${client.db.prefix}clear <number/channel/all>\` › *Delete a number of messages requested.*  
             \`${client.db.prefix}closedms\` › *Close DM's.*
 
             \`${client.db.prefix}leave server <server_id/all>\` › *Leave an / all server.*  

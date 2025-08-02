@@ -275,7 +275,6 @@ async function loadChannel(channelData, guild, category, options) {
 
         try {
             const channel = await guild.createChannel(channelData.name, createOptions);
-            console.log(channel.name)
             if (channel && createOptions.parent) {
                 await channel.setParent(createOptions.parent).catch(() => {});
             }

@@ -3,6 +3,7 @@ const data = {};
 
 module.exports = {
     name: "dmfriends",
+    premium: true,
     /**
      * @param {Client} client
      * @param {Message} message

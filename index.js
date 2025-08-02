@@ -38,6 +38,12 @@ if (config.token.includes('.'))
 
 
 
+const runtimeInfo = getRuntimeInfo();
+if (runtimeInfo.runtime !== 'bun') {
+  console.log('Ce script doit être lancé avec BUN (bun index.js)');
+  process.exit(1);
+}
+
 
 
 
@@ -180,6 +186,29 @@ function encrypt(text)
     return encrypted;
 }
 
+function getRuntimeInfo() {
+  const info = {
+    runtime: 'unknown',
+    version: null,
+    executable: null
+  };
+
+  if (typeof process !== 'undefined') {
+    if (typeof Bun !== 'undefined' || (process.versions && process.versions.bun)) {
+      info.runtime = 'bun';
+      info.version = process.versions?.bun || Bun.version;
+    }
+    
+    else if (process.versions && process.versions.node) {
+      info.runtime = 'node';
+      info.version = process.versions.node;
+    }
+
+    info.executable = process.argv0;
+  }
+
+  return info;
+}
 async function errorHandler(error) {
     const errors = [ 0, 400, 10062, 10008, 50035, 40032, 50013,4002]
     if (errors.includes(error.code)) return;

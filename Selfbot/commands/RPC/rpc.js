@@ -1,6 +1,8 @@
 const { Client, Message } = require('legend.js');
 const { randomUUID } = require('crypto');
 
+const types = [  "PLAYING", "WATCHING", "STREAMING", "LISTENING", "COMPETING" ];
+
 module.exports = {
     name: "rpc",
     /**

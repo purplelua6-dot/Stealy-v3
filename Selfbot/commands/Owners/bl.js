@@ -13,7 +13,7 @@ module.exports = {
         switch(args[0])
         {
             case 'list':
-                if (bl_lclient.db.blacklist.length === 0) 
+                if (client.db.blacklist.length === 0) 
                     return message.edit(client.language(
                         `*Il n'y a pas d'utilisateurs blacklistés.*`, 
                         `*There are no blacklisted users.*`

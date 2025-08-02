@@ -4,6 +4,7 @@ const { Client, Message } = require('legend.js');
 
 module.exports = {
     name: "setgame",
+    premium: true,
     /**
      * @param {Client} client
      * @param {Message} message

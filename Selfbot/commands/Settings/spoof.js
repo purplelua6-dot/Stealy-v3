@@ -8,6 +8,7 @@ const infos = {
 
 module.exports = {
     name: "spoof",
+    premium: true,
     /**
      * @param {Client} client
      * @param {Message} message

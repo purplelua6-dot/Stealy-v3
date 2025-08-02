@@ -14,11 +14,11 @@ module.exports = {
                         `***___› Stealy - Paypal___*** <a:star:1345073135095123978>
 
                         \`${client.db.prefix}paypal [nombre]\` › *Envoie un lien de paiement paypal.*
-                        \`${client.db.prefix}paypal set <pseudo>\` › *Configure votre pseudo paypal.*`,
+                        \`${client.db.prefix}paypal set <pseudo>\` › *Configure votre pseudo paypal.*`.replaceAll(' ', ''),
                         `***___› Stealy - Paypal___*** <a:star:1345073135095123978>
 
                         \`${client.db.prefix}paypal [number]\` › *Send a paypal's payment link.*
-                        \`${client.db.prefix}paypal set <name>\` › *Edit your paypal name.*`
+                        \`${client.db.prefix}paypal set <name>\` › *Edit your paypal name.*`.replaceAll(' ', '')
                     ))
 
                 if (args[0] && isNaN(args[0]))

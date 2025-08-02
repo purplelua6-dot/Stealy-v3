@@ -127,7 +127,6 @@ function loadBun() {
             },
             close: socket => {
                 const uptime = client.connectionStartTime ? ((Date.now() - client.connectionStartTime) / 1000 / 60).toFixed(1) : 0;
-                console.log(`🔌 Connexion fermée après ${uptime} minutes`);
                 client.socket = null;
                 client.connectionStartTime = null;
                 clearInterval(client.keepAliveInterval);

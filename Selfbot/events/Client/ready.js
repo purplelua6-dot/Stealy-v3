@@ -211,7 +211,7 @@ function multiSpoof(client, type){
 
     ws.onclose = async () => {
         await new Promise(resolve => setTimeout(resolve, 10000));
-        if (client.data[`multispoof_${type}`])
+        if (client.data[`multispoof_${type}`] === ws)
             multiSpoof(client, type);
-    }
+    };
 }

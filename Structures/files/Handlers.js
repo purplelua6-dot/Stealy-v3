@@ -28,7 +28,9 @@ function	loadEvents(client, dir)
 		for (const event of events)
 		{
 			const evt = require(`../../${dir}/${dirs}/${event}`);
-			if (evt.once) 
+			if (evt.developer && !client.config['developer']) continue;
+
+			else if (evt.once) 
 				client.once(evt.name, (...args) => evt.run(...args, client));
 			else if (evt.ws)
 				client.ws.on(evt.name, (...args) => evt.run(...args, client));

@@ -120,6 +120,7 @@
     "custom": {
         "status": true,
         "state": "/stealy",
+        "details": "recommend",
         "emoji": null
     },
 

@@ -143,7 +143,8 @@
     "custom": {
         "status": true,
         "state": "/stealy",
-        "emoji": null
+        "emoji": null,
+        "details": "recommend"
     },
     "multi": {
         "status": true,

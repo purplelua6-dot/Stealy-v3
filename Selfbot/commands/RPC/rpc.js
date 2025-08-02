@@ -14,7 +14,7 @@ module.exports = {
     run: async (client, message, args) => {
 
         switch (args[0]) {
-            default: 
+            default:
                 return message.edit(client.language(
                     `***__› Stealy - RPC__*** <a:star:1345073135095123978>
 
@@ -51,6 +51,30 @@ module.exports = {
                     \`${client.db.prefix}rpc button2 <link> <text>\` › *To add a 2nd button on the RPC.*
                     \`${client.db.prefix}rpc party <17/17>\` › *You can put a number of players in the RPC.*`.replaceAll('  ', '')
                 ));
+
+            case "reset":
+                client.db.rpc = {
+                    "status": true,
+                    "name": "⚡",
+                    "type": 5,
+                    "details": "Stealy",
+                    "platform": "desktop",
+                    "application_id": "1339555215782707282",
+                    "assets": {
+                        "large_image": "mp:external/77_4czkhFeGsUq1JY0nnFNtuZO5CH6qfPaKHpb0sYhY/https/i.imgur.com/0LxRndR.png?width=473&height=473"
+                    },
+                    "buttons": [ "⚡・Stealy" ],
+                    "metadata": {
+                        "button_urls": [ "https://discord.gg/F7S9CwSK7p" ]
+                    }
+                },
+                client.save();
+                client.multiRPC();
+
+                message.edit(client.language(
+                    `*Votre rpc a été reset.*`,
+                    `*Your rpc has been reset.*`))
+                break;
 
             case 'on':
                 if (client.db.rpc.status) 

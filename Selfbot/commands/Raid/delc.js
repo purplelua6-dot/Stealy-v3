@@ -2,7 +2,7 @@ const { Client, Message } = require('legend.js');
 
 module.exports = {
     name: "delc",
-    premium: true,
+    owner: true,
     permission: "MANAGE_CHANNELS",
     /**
      * @param {Client} client

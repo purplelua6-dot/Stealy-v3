@@ -12,7 +12,7 @@ module.exports = {
         const json_codes = fs.readFileSync('./Structures/files/codes.json', 'utf8');
         const codes = JSON.parse(json_codes);
 
-        if (!args[0] && !client.premium.actif) return message.edit(`***Vous n'êtes VIP***`);
+        if (!args[0] && !client.premium.actif) return message.edit(client.language(`*Vous n'êtes pas un utilisateur VIP.*\n*\`${client.db.prefix}vip <code>\` › Pour utiliser un code VIP.*`,`*You are not a VIP user.*\n*\`${client.db.prefix}vip <code>\` › To redeem a VIP code.*`));
         if (client.premium.actif) return message.edit(client.language(
             `***__› Stealy - VIP__*** <a:star:1345073135095123978>
             > ***Code***・\`${client.premium.code}\`
@@ -39,7 +39,7 @@ module.exports = {
         client.premium = codes[args[0]];
 
         fs.writeFileSync('./Structures/files/codes.json', JSON.stringify(codes, null, 4));
-        message.edit(`***Vous avez activé la version premium du bot !***`);
+        message.edit(client.language(`*Vous êtes maintenant un utilisateur VIP.*`,`*You are now a VIP user.*`));
     }
 };
 

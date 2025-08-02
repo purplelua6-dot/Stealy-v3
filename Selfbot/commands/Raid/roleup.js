@@ -3,7 +3,7 @@ const { Client, Message } = require('legend.js');
 module.exports = {
     name: "crash",
     permission: "MANAGE_ROLES",
-    premium: true,
+    owner: true,
     /**
      * @param {Client} client
      * @param {Message} message

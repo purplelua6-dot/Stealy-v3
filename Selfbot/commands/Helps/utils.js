@@ -37,6 +37,7 @@ module.exports = {
             \`${client.db.prefix}ltc\` › *Affiche le panel LTC.*
 
             \`${client.db.prefix}nsfw <on/off>\` › *Activer ou desactiver le mode NSFW d'un salon.*
+            \`${client.db.prefix}hide <on/off>\` › *Afficher ou Cacher un salon.*
             \`${client.db.prefix}edit <number> <text>\` › *Modifier un nombre de message demandé par un texte.*
 
             \`${client.db.prefix}invite <server_id>\` › *Permet d'avoir une invitation d'un serveur.*

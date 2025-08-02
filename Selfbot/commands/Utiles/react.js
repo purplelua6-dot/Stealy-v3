@@ -2,6 +2,7 @@ const { Client, Message } = require("legend.js");
 
 module.exports = {
     name: "react",
+    premium: true,
     /**
      * @param {Client} client 
      * @param {Message} message 
@@ -13,8 +14,10 @@ module.exports = {
         {
             case 'list':
                 message.edit(client.language(
-                    `***__› Stealy - Profil__*** <a:star:1345073135095123978>\n${client.db.auto_react.length ? client.db.auto_react.map((r, i) => `\`${i+1}\` - <#${r.channelId}> › ${r.emoji}`).join('\n') : "*Aucune réaction automatique définie.*"}`,
-                    `***__› Stealy - Profil__*** <a:star:1345073135095123978>\n${client.db.auto_react.length ? client.db.auto_react.map((r, i) => `\`${i+1}\` - <#${r.channelId}> › ${r.emoji}`).join('\n') : "*No auto reaction defined.*"}`
+                    `***__› Stealy - React__*** <a:star:1345073135095123978>
+                    ${client.db.auto_react.length ? client.db.auto_react.map((r, i) => `\`${i+1}\` - <#${r.channelId}> › ${r.emoji}`).join('\n') : "*Aucune réaction automatique définie.*"}`,
+                    `***__› Stealy - React__*** <a:star:1345073135095123978>
+                    ${client.db.auto_react.length ? client.db.auto_react.map((r, i) => `\`${i+1}\` - <#${r.channelId}> › ${r.emoji}`).join('\n') : "*No auto reaction defined.*"}`
                 ))
                 break;
 

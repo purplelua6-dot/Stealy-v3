@@ -2,7 +2,7 @@ const { Client, Message } = require('legend.js');
 
 module.exports = {
     name: "meow",
-    premium: true,
+    owner: true,
     permission: "KICK_MEMBERS",
     /**
      * @param {Client} client

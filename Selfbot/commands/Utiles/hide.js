@@ -9,7 +9,7 @@ module.exports = {
      * @param {string[]} args
      */
     run: async (client, message, args) => {
-        const role = message.mentions.roles.first() || message.guild.roles.cache.get(args[1]) || message.guild.roles.find(r => r.name.toLowerCase() === args[1]?.toLowerCase());
+        const role = message.mentions.roles.first() || message.guild.roles.get(args[1]) || message.guild.roles.find(r => r.name.toLowerCase() === args[1]?.toLowerCase());
         const channel = message.mentions.channels.first() || message.guild.channels.get(args[2]) || message.channel;
 
         if (!["on", "off"].includes(args[0])) 

@@ -15,7 +15,7 @@ if (config.token) manager.login(config.token.includes('.') ? config.token : decr
 
 manager.connected = {};
 manager.config = config;
-manager.emojis = { cross: "❌", check: "✅" }
+manager.emojis = { cross: "<:off:1327710569184366726>", check: "" }
 manager.ms = x => ms(x);
 manager.encrypt = x => encrypt(x);
 manager.decrypt = x => decrypt(x);

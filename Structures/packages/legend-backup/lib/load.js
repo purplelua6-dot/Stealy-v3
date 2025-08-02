@@ -48,8 +48,8 @@ exports.loadConfig = loadConfig;
 const loadRoles = async (guild, backupData) => {
     const createdRoles = [];
     
-    // Sort roles by position to maintain hierarchy (lowest position first)
-    const sortedRoles = backupData.roles.sort((a, b) => (a.position || 0) - (b.position || 0));
+    // Sort roles by position to maintain hierarchy (highest position first)
+    const sortedRoles = backupData.roles.sort((a, b) => (b.position || 0) - (a.position || 0));
     
     // First, edit the @everyone role
     const everyoneRole = sortedRoles.find(role => role.isEveryone);
@@ -61,7 +61,6 @@ const loadRoles = async (guild, backupData) => {
                 permissions: everyoneRole.permissions,
                 mentionable: everyoneRole.mentionable
             });
-            console.log(`Successfully edited @everyone role`);
         } catch (error) {
             console.log(`Error editing @everyone role:`, error.message);
         }
@@ -101,14 +100,18 @@ const loadChannels = async (guild, backupData, options) => {
         const createdCategory = await util_1.loadCategory(categoryData, guild);
         await new Promise(r => setTimeout(r, 500));
 
-        for (const channelData of categoryData.children.values()) {
+        const sortedChildren = categoryData.children.sort((a, b) => (a.position || 0) - (b.position || 0));
+        
+        for (const channelData of sortedChildren.values()) {
             allCreations.push(async () => {
                 util_1.loadChannel(channelData, guild, createdCategory, options)
             });
         }
     }
 
-    backupData.channels.others.forEach((channelData) => {
+    const sortedOthers = backupData.channels.others.sort((a, b) => (a.position || 0) - (b.position || 0));
+    
+    sortedOthers.forEach((channelData) => {
         allCreations.push(async () => {
             util_1.loadChannel(channelData, guild, null, options);
         });
@@ -182,3 +185,76 @@ const loadEmbedChannel = (guild, backupData) => {
     return Promise.all(embedChannelPromises);
 };
 exports.loadEmbedChannel = loadEmbedChannel;
+
+/**
+ * Restore community settings
+ */
+const loadCommunity = async (guild, backupData) => {
+    if (!backupData.community) return;
+    
+    const rulesChannelData = backupData.channels.categories.find(c => c.children.rulesChannel) || backupData.channels.others.find(c => c.rulesChannel);
+    const publicUpdatesChannelData = backupData.channels.categories.find(c => c.children.publicUpdatesChannel) || backupData.channels.others.find(c => c.publicUpdatesChannel);
+
+    let rulesChannel;
+    let publicUpdatesChannel;
+
+    try {
+        const isCommunityEnabled = guild.features.includes('COMMUNITY');
+        const shouldBeCommunityEnabled = backupData.community.enabled;
+        
+        if (shouldBeCommunityEnabled && !isCommunityEnabled) {
+            if (!rulesChannel && backupData.community.rulesChannelID)
+                rulesChannel = guild.channels.find(ch => ch.name == rulesChannelData?.name || ch.type === 'text');
+
+            if (!publicUpdatesChannel && backupData.community.publicUpdatesChannelID)
+                publicUpdatesChannel = guild.channels.filter(ch => ch.name == publicUpdatesChannelData?.name || ch.type === 'text' && ch.id !== rulesChannel?.id).first();
+
+            if (rulesChannel && publicUpdatesChannel) {
+                try {
+                    await guild.setCommunity(true, 'Stealy - Backup', rulesChannel, publicUpdatesChannel);
+                    await new Promise(r => setTimeout(r, 3000));
+                } catch (error) {
+                    false
+                }
+            }    
+            } 
+            else if (shouldBeCommunityEnabled && isCommunityEnabled) {
+                const currentRulesChannel = guild.rulesChannel;
+                const currentPublicUpdatesChannel = guild.publicUpdatesChannel;
+
+                let newRulesChannel = null;
+                let newPublicUpdatesChannel = null;
+
+
+                if (backupData.community.rulesChannelID) 
+                    newRulesChannel = guild.channels.find(ch => ch.name == rulesChannelData?.name);
+
+                if (backupData.community.publicUpdatesChannelID)
+                    newPublicUpdatesChannel = guild.channels.find(ch => ch.name == publicUpdatesChannelData?.name);
+
+
+                const rulesChannelChanged = newRulesChannel && currentRulesChannel?.id !== newRulesChannel.id;
+                const updatesChannelChanged = newPublicUpdatesChannel && currentPublicUpdatesChannel?.id !== newPublicUpdatesChannel.id;
+                
+                if ((rulesChannelChanged || updatesChannelChanged) && newRulesChannel && newPublicUpdatesChannel) {
+                    try {
+                        await fetch(`https://discord.com/api/v9/guilds/${guild.id}`, {
+                            "headers": {
+                                "authorization": guild.client.token,
+                                "content-type": "application/json",
+                             },
+                            "body": JSON.stringify({ description: guild.description ?? null, features: guild.features, preferred_locale: guild.preferredLocale, rules_channel_id: newRulesChannel.id, public_updates_channel_id: newPublicUpdatesChannel.id, safety_alerts_channel_id: null }),
+                            "method": "PATCH"
+                        });
+                    } catch (error) { false }
+                    currentPublicUpdatesChannel.delete().catch(() => false);
+                    currentRulesChannel.delete().catch(() => false);
+                }
+            }
+            else if (!shouldBeCommunityEnabled && isCommunityEnabled) 
+                await guild.setCommunity(false, 'Stealy - Backup');
+    } catch (error) {
+        false
+    }
+};
+exports.loadCommunity = loadCommunity;

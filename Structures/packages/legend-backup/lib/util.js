@@ -138,9 +138,12 @@ async function fetchTextChannelData(channel, options) {
             name: channel.name,
             nsfw: channel.nsfw,
             rateLimitPerUser: channel.type === "text" ? channel.rateLimitPerUser : undefined,
+            position: channel.type == 'forum' ? channel.position : null,
             parent: channel.parent ? channel.parent.name : null,
             topic: channel.topic,
             permissions: fetchChannelPermissions(channel),
+            rulesChannel: channel.guild.rulesChannelID == channel.id ? true : false,
+            publicUpdatesChannel: channel.guild.publicUpdatesChannelID == channel.id ? true : false,
             messages: [],
             isNews: channel.type === "news",
             threads: []
@@ -181,7 +184,6 @@ async function loadCategory(categoryData, guild) {
                 });
             } else {
                 console.log(`❌ Role "${perm.roleName}" not found for category "${categoryData.name}"`);
-                console.log(`Available roles: ${guild.roles.map(r => r.name).join(', ')}`);
             }
         });
 
@@ -238,6 +240,10 @@ async function loadChannel(channelData, guild, category, options) {
             createOptions.type =
                 channelData.isNews && guild.features.includes("news") ? "news" : "text";
         }
+        else if (channelData.type === 'forum') {
+            createOptions.type = 'forum';
+            createOptions.position = channelData.position;
+        }
         else if (channelData.type === "voice") {
             createOptions.bitrate = 64000;
             createOptions.userLimit = channelData.userLimit;
@@ -262,7 +268,6 @@ async function loadChannel(channelData, guild, category, options) {
                 });
             } else {
                 console.log(`❌ Role "${perm.roleName}" not found for channel "${channelData.name}"`);
-                console.log(`Available roles: ${guild.roles.map(r => r.name).join(', ')}`);
             }
         });
 
@@ -270,6 +275,7 @@ async function loadChannel(channelData, guild, category, options) {
 
         try {
             const channel = await guild.createChannel(channelData.name, createOptions);
+            console.log(channel.name)
             if (channel && createOptions.parent) {
                 await channel.setParent(createOptions.parent).catch(() => {});
             }

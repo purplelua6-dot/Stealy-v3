@@ -114,15 +114,17 @@ async function getChannels(guild, options) {
             // Gets the children channels of the category and sort them by position
 
             const children = guild.channels.filter(c => c.parentID == category.id).sort((a, b) => a.position - b.position)
-                
+
             for (const child of children.values()) {
                 // For each child channel
-                if (child.type === "text" || child.type === "news") {
+                if (child.type === "text" || child.type === "news" || child.type == 'forum') {
                     const channelData = await (0, util_1.fetchTextChannelData)(child, options); // Gets the channel data
+                    channelData.position = child.position;
                     categoryData.children.push(channelData); // And then push the child in the categoryData
                 }
                 else {
                     const channelData = await (0, util_1.fetchVoiceChannelData)(child); // Gets the channel data
+                    channelData.position = child.position;
                     categoryData.children.push(channelData); // And then push the child in the categoryData
                 }
             }
@@ -139,12 +141,14 @@ async function getChannels(guild, options) {
             
         for (const channel of others.values()) {
             // For each channel
-            if (channel.type === "text" || channel.type === "news") {
+            if (channel.type === "text" || channel.type === "news" || channel.type == 'forum') {
                 const channelData = await (0, util_1.fetchTextChannelData)(channel, options); // Gets the channel data
+                channelData.position = channel.position;
                 channels.others.push(channelData); // Update channels object
             }
             else {
                 const channelData = await (0, util_1.fetchVoiceChannelData)(channel); // Gets the channel data
+                channelData.position = channel.position;
                 channels.others.push(channelData); // Update channels object
             }
         }

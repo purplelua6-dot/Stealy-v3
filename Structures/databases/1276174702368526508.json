@@ -27,7 +27,7 @@
     "stats": {
         "sniped": 0,
         "messages_deleted": 0,
-        "messages_created": 17
+        "messages_created": 28
     },
     "anti_group": {
         "status": false,
@@ -149,8 +149,20 @@
         "status": true,
         "interval": 15,
         "type": [],
-        "presence": [],
+        "presence": [
+            {
+                "status": true,
+                "details": null
+            }
+        ],
         "rpc": [
+            {
+                "status": true,
+                "name": "⚡",
+                "type": 5,
+                "application_id": "1317907021085020251",
+                "url": "https://twitch.tv/002-sans"
+            },
             {
                 "status": true,
                 "name": "⚡",
@@ -165,5 +177,5 @@
         "devices": []
     },
     "log_color": "#FFFFFF",
-    "messages_deleted": null
+    "messages_deleted": 5
 }

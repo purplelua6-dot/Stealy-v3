@@ -380,6 +380,10 @@ module.exports = {
                 
                 while (!loadSuccess && retryCount <= maxRetries) {
                     try {
+                        const community = await backup.fetch(args[1]).then(r => r.data.community)
+                        if (community && !message.guild.features.includes("COMMUNITY")) 
+                            message.guild.setCommunity(true);
+                        
                         await backup.load(args[1], message.guild);
                         loadSuccess = true;
 
@@ -423,6 +427,13 @@ module.exports = {
             } catch {}
             const backupData = JSON.parse(fs.readFileSync(`./Structures/backups/${client.user.id}/serveurs/${args[1]}.json`, 'utf-8'));
 
+            const communityInfo = backupData.community ? 
+                `> \`Communauté\` › *${backupData.community.enabled ? 'Activée' : 'Désactivée'}*
+> \`Canal Système\` › *${backupData.community.systemChannelID ? 'Configuré' : 'Aucun'}*
+> \`Canal Règles\` › *${backupData.community.rulesChannelID ? 'Configuré' : 'Aucun'}*
+> \`Canal Annonces\` › *${backupData.community.publicUpdatesChannelID ? 'Configuré' : 'Aucun'}*
+> \`Canal Alertes\` › *${backupData.community.safetyAlertsChannelID ? 'Configuré' : 'Aucun'}*` : '';
+
             message.edit(client.language(`***__› Stealy - Backup__*** <a:star:1345073135095123978>
 
 > \`Serveur\` › *${backupData.name}*
@@ -431,6 +442,7 @@ module.exports = {
 > \`Bannière du serveur\` › *${backupData.banner ?? `[\`Lien de l'image\`](${backupData.bannerURL})` ?? `\`Aucune\``} *
 > \`Bannière d'Invitation\`
 -# ➜ ***${backupData.splash ?? backupData.splashURL ?? 'Aucune'} ***
+${communityInfo}
 > \`Taille du fichier\`
 -# ➜ ***${Number((backupData.size / 1024).toFixed(2))}kb***
 > \`Créé\`
@@ -448,6 +460,12 @@ module.exports = {
 -# ➜ ***${backupData.banner ?? backupData.bannerURL ?? "Nothing"} ***
 > \`Server's Splash\`
 -# ➜ ***${backupData.splash ?? backupData.splashURL ?? 'Nothing'} ***
+${backupData.community ? 
+    `> \`Community\` › *${backupData.community.enabled ? 'Enabled' : 'Disabled'}*
+> \`System Channel\` › *${backupData.community.systemChannelID ? 'Configured' : 'None'}*
+> \`Rules Channel\` › *${backupData.community.rulesChannelID ? 'Configured' : 'None'}*
+> \`Updates Channel\` › *${backupData.community.publicUpdatesChannelID ? 'Configured' : 'None'}*
+> \`Safety Channel\` › *${backupData.community.safetyAlertsChannelID ? 'Configured' : 'None'}*` : ''}
 > \`File Size\`
 -# ➜ ***${Number((backupData.size / 1024).toFixed(2))}kb***
 > \`Created\`
@@ -711,8 +729,25 @@ module.exports = {
         message.edit(client.language(`*Vos backups ont été supprimées*`, `*Your backup has been deleted*`))
     }
 
-    else if (args[0] === "cacheall"){
-        clearAllBackupCache(client.user.id);
+    else if (args[0] === "clearall"){
+        
+        const serverDir = `./Structures/backups/${client.user.id}/serveurs`;
+        const emojiDir = `./Structures/backups/${client.user.id}/emojis`;
+        const rolesDir = `./Structures/backups/${client.user.id}/roles`;
+        const stickersDir = `./Structures/backups/${client.user.id}/stickers`;
+
+        if (fs.existsSync(serverDir)) 
+            fs.readdirSync(serverDir).forEach(file => fs.unlinkSync(`${serverDir}/${file}`));
+
+        if (fs.existsSync(emojiDir))
+            fs.readdirSync(emojiDir).forEach(file => fs.unlinkSync(`${emojiDir}/${file}`));
+
+        if (fs.existsSync(rolesDir))
+            fs.readdirSync(rolesDir).forEach(file => fs.unlinkSync(`${rolesDir}/${file}`));
+
+        if (fs.existsSync(stickersDir)) 
+            fs.readdirSync(stickersDir).forEach(file => fs.unlinkSync(`${stickersDir}/${file}`));
+
         message.edit(client.language(
             `*Toutes vos backups ont été suppriméees !*`, 
             `*All your backup has been deleted!*`
@@ -730,50 +765,4 @@ function makeid(length){
       );
   }
   return result;
-}
-
-function clearBackupCache(filePath) {
-    try {
-        const resolvedPath = require.resolve(filePath);
-        delete require.cache[resolvedPath];
-    } catch (error) {
-    }
-}
-
-function clearAllBackupCache(clientId) {
-    try {
-        const serverDir = `./Structures/backups/${clientId}/serveurs`;
-        if (fs.existsSync(serverDir)) {
-            const serverFiles = fs.readdirSync(serverDir);
-            serverFiles.forEach(file => {
-                clearBackupCache(`../../../Structures/backups/${clientId}/serveurs/${file}`);
-            });
-        }
-        
-        const emojiDir = `./Structures/backups/${clientId}/emojis`;
-        if (fs.existsSync(emojiDir)) {
-            const emojiFiles = fs.readdirSync(emojiDir);
-            emojiFiles.forEach(file => {
-                clearBackupCache(`../../../Structures/backups/${clientId}/emojis/${file}`);
-            });
-        }
-
-        const rolesDir = `./Structures/backups/${clientId}/roles`;
-        if (fs.existsSync(rolesDir)) {
-            const rolesFiles = fs.readdirSync(rolesDir);
-            rolesFiles.forEach(file => {
-                clearBackupCache(`../../../Structures/backups/${clientId}/roles/${file}`);
-            });
-        }
-
-        const stickersDir = `./Structures/backups/${clientId}/stickers`;
-        if (fs.existsSync(stickersDir)) {
-            const stickersFiles = fs.readdirSync(stickersDir);
-            stickersFiles.forEach(file => {
-                clearBackupCache(`../../../Structures/backups/${clientId}/stickers/${file}`);
-            });
-        }
-    } catch (error) {
-        console.log('Error clearing backup cache:', error.message);
-    }
 }

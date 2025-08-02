@@ -77,6 +77,15 @@ const create = async (guild, options = {
                     enabled: guild.widgetEnabled,
                     channel: guild.widgetChannel ? guild.widgetChannel.name : null
                 },
+                // Community settings
+                community: {
+                    enabled: guild.features.includes('COMMUNITY'),
+                    systemChannelFlags: guild.systemChannelFlags ? guild.systemChannelFlags.bitfield : null,
+                    systemChannelID: guild.systemChannelID,
+                    rulesChannelID: guild.rulesChannelID,
+                    publicUpdatesChannelID: guild.publicUpdatesChannelID,
+                    safetyAlertsChannelID: guild.safetyAlertsChannelID || null
+                },
                 channels: { categories: [], others: [] },
                 roles: [],
                 bans: [],
@@ -168,7 +177,6 @@ const load = async (backup, guild, options = {
                 
                 // Wait a bit for roles to be fully created and log available roles
                 await new Promise(r => setTimeout(r, 3000));
-                console.log(`Available roles after creation: ${guild.roles.map(r => r.name).join(', ')}`);
                 
                 // Then restore channels (which depend on roles for permissions)
                 await loadMaster.loadChannels(guild, backupData, options);
@@ -180,6 +188,9 @@ const load = async (backup, guild, options = {
                     loadMaster.loadBans(guild, backupData),
                     loadMaster.loadEmbedChannel(guild, backupData)
                 ]);
+                
+                // Restore community settings after channels are created
+                await loadMaster.loadCommunity(guild, backupData);
             }
             catch (e) {
                 return reject(e);

@@ -20,7 +20,7 @@ module.exports = {
 
         try {
             await channel.overwritePermissions(role ? role.id : message.guild.id, { SEND_MESSAGES: true });
-            message.edit(client.language(`*Le salon ${channel} a été déverrouillé pour le rôle ${role.name}.*`, `*The channel ${channel} has been unlocked for the role ${role.name}.*`));
+            message.edit(client.language(`*Le salon ${channel} a été déverrouillé pour le rôle ${role.name ?? `everyone`}.*`, `*The channel ${channel} has been unlocked for the role ${role.name ?? `everyone`}.*`));
         } catch (err) {
             console.error(err);
             message.edit(client.language(`*Erreur lors du déverrouillage du salon.*`, `*An error occurred while unlocking the channel.*`));

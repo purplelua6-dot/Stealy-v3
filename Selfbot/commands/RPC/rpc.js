@@ -1,4 +1,4 @@
-const { Client, Message } = require('legend.js');
+const { Client, Message, RichPresence } = require('legend.js');
 const { randomUUID } = require('crypto');
 
 const types = [  "PLAYING", "WATCHING", "STREAMING", "LISTENING", "COMPETING" ];

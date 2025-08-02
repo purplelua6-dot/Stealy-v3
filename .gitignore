@@ -1,5 +1,11 @@
 /node_modules
 config.json
 package-lock.json
-/Structures/databases
+Structures/databases
+Structures/databases/*
+Structures/databases/*.json
+./Structures/databases
+/Structures/databases/*
+./Structures/databases/*
+./Structures/databases/*.json
 /Structures/files/codes.json

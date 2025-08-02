@@ -28,7 +28,7 @@ module.exports = {
 \`${client.db.prefix}multi status list\` › *Affiche la liste des statuses*  
 
 \`${client.db.prefix}multi presence add\` › *Ajoute une presence*  
-\`${client.db.prefix}multi presence <ID> <type>\` › *Modifie la presence du status*
+\`${client.db.prefix}multi presence edit <ID> <type>\` › *Modifie la presence du status*
 \`${client.db.prefix}multi remove <ID>\` › *Supprime unee presence*
 \`${client.db.prefix}multi presence list\` › *Affiche les presences du status*
 
@@ -54,7 +54,7 @@ module.exports = {
 \`${client.db.prefix}multi status list\` › *Displays the list of statuses*  
 
 \`${client.db.prefix}multi presence add\` › *Add a presence*  
-\`${client.db.prefix}multi presence <ID> <type>\` › *Edits the presence of the status*
+\`${client.db.prefix}multi presence edit <ID> <type>\` › *Edits the presence of the status*
 \`${client.db.prefix}multi remove <ID>\` › *Remove a presence*
 \`${client.db.prefix}multi presence list\` › *Displays thee list of presences*
 
@@ -555,13 +555,14 @@ module.exports = {
                 switch (args[1]) {
                     case "add":
                         await message.edit(client.language(`*Le status a été crée avec l'ID ${client.db.multi.presence.length} vous pouvez commencer à le modifier*`, `The status has been created with the ID ${client.db.multi.presence.length} you can now edit it`))
-                        const emoji = Util.parseEmoji(args[2])
                         
                         if (!args[2]) {
-                            client.db.multi.presence.push({ status: true, details: client.db.custom.details ?? null });
+                            client.db.multi.presence.push({ status: true });
                             client.save()
                         }
                         else if (/\p{Extended_Pictographic}/ug.test(emoji.name) || emoji.id) {
+                            const emoji = Util.parseEmoji(args[2])
+
                             client.db.multi.presence.push({ status: true, details: client.db.custom.details ?? null, emoji: { animated: emoji.animated, name: emoji.name, id: emoji.id }, state: args.slice(3).join(' ') ?? null })
                             client.save()
                         }
@@ -638,13 +639,13 @@ module.exports = {
                                     > *Activé :* \`${r.status ? "Oui" : "Non"}\`
                                     > *Texte :* \`${r.state || "Rien"}\`
                                     > *Type  :* \`${r.details || "Aucun"}\`
-                                    > *Emoji :* ${r.emoji ? r.emoji.animated ? `<a:${r.emoji.name}:${r.emoji.id}>` : r.emoji.id ? `<:${r.emoji.name}:${r.emoji.id}>` : `:${r.emoji.name}:` : "Rien"}\n`.replaceAll('  ', ''), 
+                                    > *Emoji :* ${r.emoji ? r.emoji.animated ? `<a:${r.emoji.name}:${r.emoji.id}>` : r.emoji.id ? `<:${r.emoji.name}:${r.emoji.id}>` : `:${r.emoji.name}:` : "`Rien`"}\n`.replaceAll('  ', ''), 
                                     
                                     `***ID: \`${i}\`***
                                     > *Enabled :* \`${r.status ? "Yes" : "No"}\`
                                     > *Text :* \`${r.state || "Nothing"}\`
                                     > *Type :* \`${r.details || "Nothing"}\`
-                                    > *Emote :* ${r.emoji ? r.emoji.animated ? `<a:${r.emoji.name}:${r.emoji.id}>` : r.emoji.id ? `<:${r.emoji.name}:${r.emoji.id}>` : `:${r.emoji.name}:` : "Nothing"}\n`.replaceAll('  ', '')))
+                                    > *Emote :* ${r.emoji ? r.emoji.animated ? `<a:${r.emoji.name}:${r.emoji.id}>` : r.emoji.id ? `<:${r.emoji.name}:${r.emoji.id}>` : `:${r.emoji.name}:` : "`Nothing`"}\n`.replaceAll('  ', ''))).join('\n')
                             )
                             break
 

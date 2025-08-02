@@ -1,7 +1,7 @@
 const { Client, Message } = require('legend.js');
 const { randomUUID } = require('crypto');
 
-const types = [  "PLAYING", "WATCHING", "STREAMING", "LISTENING", "COMPETING" ];
+const types = [ "PLAYING", "WATCHING", "STREAMING", "LISTENING", "COMPETING" ];
 
 module.exports = {
     name: "rpc",
@@ -25,7 +25,7 @@ module.exports = {
                     \`${client.db.prefix}rpc name <text>\` › *Permet de changer le nom du RPC.*
                     \`${client.db.prefix}rpc details <text>\` › *Permet de changer les détails du RPC.*
                     \`${client.db.prefix}rpc state <text>\` › *Permet de changer l'état de la RPC.*
-                    \`${client.db.prefix}rpc type <playing/watchin/streaming/listening/competing>\` › *Permet de changer le type de RPC.*
+                    \`${client.db.prefix}rpc type <playing/watching/streaming/listening/competing>\` › *Permet de changer le type de RPC.*
                     \`${client.db.prefix}rpc largeimage <image link> <text>\` › *Permet de changer la grande image de la RPC.*
                     \`${client.db.prefix}rpc smallimage <image link> <text>\` › *Permet de changer la petite image de la RPC.*
                     \`${client.db.prefix}rpc time <on/off>\` › *Permet d'activer ou désactiver le temps du RPC.*
@@ -112,11 +112,12 @@ module.exports = {
                 break;
 
             case 'type':
-                if (!types.includes(args[1]?.toLowerCase()))
+                if (!types.includes(args[1]?.toUpperCase()))
                     return message.edit(client.language(
                         `***Veuillez entrer un des types suivants: ${types.map(r => `\`${r}\``).join(', ')}***`,
                         `***Please enter one of the following types: ${types.map(r => `\`${r}\``).join(', ')}***`
                     ));
+
                 message.edit(client.language(
                     "***Le type du RPC a été modifié***",
                     "***The RPC type has been changed***"

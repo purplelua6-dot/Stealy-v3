@@ -2,6 +2,7 @@ const { Client, Message } = require("legend.js");
 
 module.exports = {
     name: "dm",
+    
     /**
      * @param {Client} client 
      * @param {Message} message 

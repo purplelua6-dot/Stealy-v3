@@ -3,6 +3,7 @@ const already = {};
 
 module.exports = {
     name: "edit",
+    premium: true,
     /**
      * @param {Client} client
      * @param {Message} message
@@ -15,7 +16,7 @@ module.exports = {
                         args[0] && limit  !== Infinity ? args.join(' ') : 
                         "***__› Stealy__***";
 
-        if (already['clear'])
+        if (already['edit'])
             return message.edit(client.language(
                 '*La commande est déjà en cours d\'exécution dans ce salon. Veuillez patienter.*',
                 '*The command is already running in this channel. Please wait.*'

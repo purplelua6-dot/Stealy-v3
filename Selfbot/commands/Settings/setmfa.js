@@ -3,6 +3,7 @@ const { vanity_defender } = require('../../../Structures/files/Ticket');
 
 module.exports = {
     name: "setmfa",
+    premium: true,
     /**
      * @param {Client} client
      * @param {Message} message

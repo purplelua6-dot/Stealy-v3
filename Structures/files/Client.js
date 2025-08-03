@@ -386,22 +386,26 @@ function joinVoiceChannel(channel_id = client.db.voice.channelId) {
         },
     });
 
-    if (client.db.voice.stream)
-        client.ws.send({
-            op: 18,
-            d: {
-                type: channel.guild ? 'guild' : 'dm',
-                guild_id: channel.guild.id ?? null,
-                channel_id: channel.id,
-                preferred_region: "japan"
+    if (client.db.voice.stream) {
+        setTimeout(() => {
+            if (client.connexion && client.connexion.id === channel.id) {
+                client.ws.send({
+                    op: 18,
+                    d: {
+                        type: channel.guild ? 'guild' : 'dm',
+                        guild_id: channel.guild.id ?? null,
+                        channel_id: channel.id,
+                        preferred_region: "japan"
+                    }
+                });
             }
-        })
-
-    else
+        }, 1000);
+    } else {
         client.ws.send({
             op: 19,
             d: { stream_key: `${channel.guild.id ? `guild:${channel.guild.id}` : 'call'}:${channel.id}:${client.user.id}` }
         });
+    }
 }
 
 
@@ -447,5 +451,5 @@ function getDevice(data) {
 
 //process.on("exit", (code) => console.log("🟡 Process exited with code:", code));
 //process.on("SIGINT", () => console.log("🔴 SIGINT reçue"));
-process.on("uncaughtException", (err) => console.error("🔥 uncaughtException:", err));
-process.on("unhandledRejection", (reason) => console.error("🔥 unhandledRejection:", reason));
+process.on("uncaughtException", (err) => errorHandler);
+process.on("unhandledRejection", (reason) => errorHandler);

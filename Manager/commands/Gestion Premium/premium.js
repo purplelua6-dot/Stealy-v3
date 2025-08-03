@@ -40,8 +40,8 @@ module.exports =
                 fs.writeFileSync('./Structures/files/codes.json', JSON.stringify(codes, null, 4));
                 
 
-                if (fs.existsSync(`./Structures/databases/${interaction.user.id}.json`))
-                    db = require(`../../../Structures/databases/${interaction.user.id}.json`)
+                if (fs.existsSync(`./Structures/databases/${user ? user.id : interaction.user.id}.json`))
+                    db = require(`../../../Structures/databases/${user ? user.id : interaction.user.id}.json`)
 
 
                 if (user) user.send(`**\`🔑\`・Vous avez reçu une clé VIP\n\`⏳\`・La clé expire ${temps == '0' ? '`JAMAIS`' : `<t:${Math.round((Date.now() + client.ms(temps)) / 1000)}:R>`} (\`${keyName}\`)\n\`💎\`・Utilisez la commande \`${db?.prefix ?? '*'}vip ${keyName}\`**`)

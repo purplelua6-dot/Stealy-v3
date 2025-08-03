@@ -17,7 +17,7 @@
     "noleave_guilds": [],
     "noleave_groups": [],
     "payment": {
-        "paypal": null,
+        "paypal": "senju77",
         "ltc": null
     },
     "clan": {
@@ -27,7 +27,7 @@
     "stats": {
         "sniped": 0,
         "messages_deleted": 0,
-        "messages_created": 28
+        "messages_created": 153
     },
     "anti_group": {
         "status": false,
@@ -39,11 +39,11 @@
     },
     "voice": {
         "connect": true,
-        "channelId": null,
+        "channelId": "1280438188279595008",
         "mute": true,
         "deaf": true,
         "video": false,
-        "stream": false,
+        "stream": true,
         "antijoin": [],
         "whitelist": []
     },
@@ -178,5 +178,5 @@
         "devices": []
     },
     "log_color": "#FFFFFF",
-    "messages_deleted": 5
+    "messages_deleted": 34
 }

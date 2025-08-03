@@ -86,8 +86,8 @@ module.exports = {
             case "type":
                 if (!types.includes(args[1]))
                     return message.edit(client.language(
-                        `*Veuillez entrer l'un de ses types de status: ${types.map((t,i)=>`\`${t}\``).join(', ')}`, 
-                        `*Please enter one of these status types: ${types.map((t,i)=>`\`${t}\``).join(', ')}`
+                        `*Veuillez entrer l'un de ses types de status: ${types.map((t,i)=>`\`${t}\``).join(', ')}.*`, 
+                        `*Please enter one of these status types: ${types.map((t,i)=>`\`${t}\``).join(', ')}.*`
                     ));
 
                 client.db.custom.details = args[1] == "leave" ? null : args[1];

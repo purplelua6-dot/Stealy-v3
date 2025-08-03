@@ -394,7 +394,6 @@ module.exports = {
 
                     } catch (err) {
                         retryCount++;
-                        console.log(`Backup load error (attempt ${retryCount}):`, err);
                         
                         if (retryCount <= maxRetries) {
                             await message.edit(client.language(

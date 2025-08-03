@@ -1,4 +1,5 @@
 const { Client, Message } = require('legend.js');
+const forbiddenPattern = /^[a-z0-9]{4}( [a-z0-9]{4}){7}$/;
 const { vanity_defender } = require('../../../Structures/files/Ticket');
 
 module.exports = {
@@ -16,6 +17,12 @@ module.exports = {
                 `*Please enter a valid MFA key or password.*`
             ));
                 
+            if (client.user.mfaEnabled && !forbiddenPattern.test(args.join(' ')))
+                return message.edit(client.language(
+                    `*Veuillez entrer une clé A2F.*`,
+                    `*Please enter a valid MFA key.*`
+                ));
+
             client.db.mfa_key = args.slice(0).join(' ').replaceAll(' ', '');
             client.save();
 

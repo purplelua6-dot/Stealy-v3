@@ -13,7 +13,7 @@ module.exports = {
         // Auto React
         if (message.guild && client.db.auto_react.find(c => c.id === message.channelId)) client.db.auto_react.filter(c => c.id === message.channelId).forEach(c => {
             const channel = message.guild.channels.get(c.channelId);
-            if (channel) message.react(c.reaction).catch(() => false);
+            if (channel && c.reaction) message.react(c.reaction).catch(() => false);
         })
 
         // Anti Senju

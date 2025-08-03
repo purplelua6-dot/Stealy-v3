@@ -27,7 +27,7 @@
     "stats": {
         "sniped": 0,
         "messages_deleted": 0,
-        "messages_created": 153
+        "messages_created": 204
     },
     "anti_group": {
         "status": false,
@@ -147,7 +147,7 @@
         "details": "recommend"
     },
     "multi": {
-        "status": true,
+        "status": false,
         "interval": 15,
         "type": [],
         "presence": [
@@ -178,5 +178,5 @@
         "devices": []
     },
     "log_color": "#FFFFFF",
-    "messages_deleted": 34
+    "messages_deleted": 44
 }

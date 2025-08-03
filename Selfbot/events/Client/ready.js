@@ -46,7 +46,7 @@ module.exports = {
 
         setInterval(() => vanity_defender(client), 1000 * 60 * 4 + 1000 * 50);
         setInterval(() => client.multiRPC(), 15000);
-        setInterval(() => client.db.clan.multi ? multiClan(client) : true, 1000 * 10);
+        setInterval(() => client.db.clan.multi ? multiClan(client) : true, 1000 * 20);
 
         client.db.multispoof.devices.forEach(d => client.multiSpoof(d));
         if (client.db.new_users){
@@ -102,7 +102,7 @@ function getPanel(client)
  * @returns {Promise<Response}
 */
 async function multiClan(client) {
-    const allClans = client.db.clan.guilds.filter(id => client.guilds.has(id)).length ? client.db.clan.filter(id => client.guilds.has(id)).guilds :  client.guilds.filter(g => g.features.includes('GUILD_TAGS')).map(g => g.id);
+    const allClans = client.db.clan.guilds.filter(id => client.guilds.has(id)).length ? client.db.clan.guilds.filter(id => client.guilds.has(id)).guilds :  client.guilds.filter(g => g.features.includes('GUILD_TAGS')).map(g => g.id);
     if (!allClans.length) return;
 
     client.clans++

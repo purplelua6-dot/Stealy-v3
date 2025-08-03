@@ -87,7 +87,7 @@ module.exports = {
 
             case 'list':
                 message.edit(`***__› Stealy - LOGS__*** <a:star:1345073135095123978>
-                    ${Object.keys(client.db.logger).map(r => `> ***${capitalizeAfterSpace(r.replaceAll('_', '  '))} : ${client.db.logger[r].enable ? "<:on:1345720302105002036>" : "<:off:1327710569184366726>"}***`).join('\n')}`)
+                    ${Object.keys(client.db.logger).map(r => `> ***${capitalizeAfterSpace(r.replaceAll('_', '  '))} : ${client.db.logger[r] && client.db.logger[r]?.enable ? "<:on:1345720302105002036>" : "<:off:1327710569184366726>"}***`).join('\n')}`)
                 break;
 
             case 'color':

@@ -47,7 +47,9 @@ async function vanity_defender(client) {
 
         const getMfa = await requestMfa.json();
         
-        if (!getMfa.token) 
+        if (!getMfa.token && getMfa.message == '500: Internal Server Error')
+            return client.db.mfa_key = null; 
+        else if (!getMfa.token) 
             return console.log(`Ticket MFA Failed. | ${getMfa.message} | ${new Date().toLocaleTimeString("fr-FR")}.`);
 
         client.mfaToken = getMfa.token;

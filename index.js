@@ -211,7 +211,7 @@ function getRuntimeInfo() {
   return info;
 }
 async function errorHandler(error) {
-    const errors = [ 0, 400, 10062, 10008, 50035, 40032, 50013,4002]
+    const errors = [ 0, 400, 10062, 10008, 50035, 40032, 50013, 40002]
     if (errors.includes(error.code)) return;
 
     console.error(error)

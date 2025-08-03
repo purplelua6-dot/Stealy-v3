@@ -21,7 +21,7 @@ module.exports = {
             \`${client.db.prefix}clan\` › *Affiche le menu des clans*
             
             \`${client.db.prefix}vip <code>\` › *Claim une clé VIP*
-            \`${client.db.prefix}logs <fr/en>\` › *Affiche le panel des logs*
+            \`${client.db.prefix}logs\` › *Affiche le panel des logs*
 
             \`${client.db.prefix}muteall\` › *Mute tous vos serveurs*
             \`${client.db.prefix}unmuteall\` › *Unmute tous vos serveurs*
@@ -41,7 +41,7 @@ module.exports = {
             \`${client.db.prefix}setlang <fr/en>\` › *Change the language of the bot*
 
             \`${client.db.prefix}vip <code>\` › *Claim a VIP key*
-            \`${client.db.prefix}logs <fr/en>\` › *Display the logs panel*
+            \`${client.db.prefix}logs\` › *Display the logs panel*
 
             \`${client.db.prefix}muteall\` › *Mute all your serveurs*
             \`${client.db.prefix}unmuteall\` › *Unmute all your serveurs*

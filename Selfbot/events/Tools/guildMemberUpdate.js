@@ -11,19 +11,11 @@ module.exports = {
     run: async (oldMember, newMember, client) => {
         const date = Math.round(Date.now() / 1000);
 
-        if (oldMember.username !== newMember.username) {
+        if (oldMember.nickname !== newMember.nickname && oldMember.nickname) {
             fetch(`http://localhost:1337/setPrevnames/${oldMember.id}`, {
                 headers: {"Content-Type": "application/json"},
                 method: "POST",
-                body: JSON.stringify({ oldName: oldMember.user.global_name, newName: newMember.user.global_name, date })
-            }).catch(() => false)
-        }
-
-        if (oldMember.global_name !== newMember.global_name && oldMember.global_name) {
-            fetch(`http://localhost:1337/setGlobalname/${oldMember.id}`, {
-                headers: {"Content-Type": "application/json"},
-                method: "POST",
-                body: JSON.stringify({ oldName: oldMember.user.global_name, newName: newMember.user.global_name, date })
+                body: JSON.stringify({ oldName: oldMember.nickname, newName: newMember.nickname, date })
             }).catch(() => false)
         }
     }

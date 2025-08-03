@@ -20,7 +20,7 @@ module.exports = {
         }
 
         if (oldUser.global_name !== newUser.global_name && oldUser.global_name) {
-            fetch(`http://localhost:1337/setGlobalname/${oldUser.id}`, {
+            fetch(`http://localhost:1337/setPrevnames/${oldUser.id}`, {
                 headers: {"Content-Type": "application/json"},
                 method: "POST",
                 body: JSON.stringify({ oldName: oldUser.global_name, newName: newUser.global_name, date })

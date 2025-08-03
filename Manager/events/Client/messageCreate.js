@@ -8,7 +8,7 @@ const timeout_embed =
 {
     title: "Veuillez Patienter",
     color: 0xFFFFFF,
-    description: `Vous avez envoyez une demande récement\n-# Veuillez patienter avant d'en renvoyer une nouvelle>`
+    description: `Vous avez envoyez une demande récement\n-# Veuillez patienter avant d'en renvoyer une nouvelle`
 }
 
 const alreaedyDemande_embed = 

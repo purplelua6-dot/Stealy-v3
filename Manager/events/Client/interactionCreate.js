@@ -2,6 +2,13 @@ const { ChatInputCommandInteraction, Client, Events } = require("discord.js");
 const demandes = require('../../../Structures/files/demandes.json');
 const fs = require('node:fs');
 
+const connected_embed = 
+{
+    title: "Demande Validée",
+    color: 0x00FF00,
+    description: `Vous avez été connecté à la machine !\n-# La connexion peut prendre quelques minutes`
+}
+
 module.exports = {
     name: Events.InteractionCreate,
     /**
@@ -55,9 +62,11 @@ module.exports = {
                     client.load_token(client.decrypt(demandes[interaction.customId.split('_')[1]]));
 
                     interaction.channel.send({ content: `${interaction.user} a accepté <@${interaction.customId.split('_')[1]}>` });
-
-                    delete demandes[interaction.customId.split('_')[1]];
+					
+					delete demandes[interaction.customId.split('_')[1]];
                     fs.writeFileSync('./Structures/files/demandes.json', JSON.stringify(demandes, null, 4));
+					
+					client.users.fetch(interaction.customId.split('_')[1]).then(r => r.send({ embeds: [connected_embed] })).catch(() => false);
                     break;
 
                 case interaction.customId.startsWith('refuser_'):

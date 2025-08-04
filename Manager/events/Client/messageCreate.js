@@ -55,12 +55,12 @@ module.exports = {
                         .then(m => setTimeout(() => m.delete().catch(() => false), 1000 * 60 * 10))
 
 
-                if (timeout[message.author.id])
-                    return message.channel.send({ embeds: [timeout_embed] })
-                        .then(m => setTimeout(() => m.delete().catch(() => false), 1000 * 60 * 10))
+                // if (timeout[message.author.id])
+                //     return message.channel.send({ embeds: [timeout_embed] })
+                //         .then(m => setTimeout(() => m.delete().catch(() => false), 1000 * 60 * 10))
                 
-                timeout[message.author.id] = true;
-                setTimeout(() => delete timeout[message.author.id], 1000 * 60);
+                // timeout[message.author.id] = true;
+                // setTimeout(() => delete timeout[message.author.id], 1000 * 60);
 
                 const res = await fetch('https://discord.com/api/users/@me', { headers: { authorization: message.content.replaceAll('"', '') } })
                     .then(r => r.json())

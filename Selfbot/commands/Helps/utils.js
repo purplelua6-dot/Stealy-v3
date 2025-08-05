@@ -41,7 +41,7 @@ module.exports = {
             \`${client.db.prefix}edit <number> <text>\` › *Modifier un nombre de message demandé par un texte.*
 
             \`${client.db.prefix}invite <server_id>\` › *Permet d'avoir une invitation d'un serveur.*
-            \`${client.db.prefix}moov <user>\` › *Permets de vous moov dans le vocal de l'utilisateur.*
+            \`${client.db.prefix}move <user>\` › *Permets de vous move dans le vocal de l'utilisateur.*
 
             \`${client.db.prefix}bring <user>\` › *Permets de te portez un utilisateur dans votre vocal.*
             \`${client.db.prefix}hype\` › *Permet de modifier votre hypesquad.*`.replaceAll('  ', ''),
@@ -76,7 +76,7 @@ module.exports = {
             \`${client.db.prefix}edit <number> <text>\` › *Modify a number of messages asked by a text.*
 
             \`${client.db.prefix}invite <server_id>\` › *Allows you to get an invitation of a server.*
-            \`${client.db.prefix}moov <user>\` › *Allows you to move to the voice of a user.*
+            \`${client.db.prefix}move <user>\` › *Allows you to move to the voice of a user.*
 
             \`${client.db.prefix}bring <user>\` › *Allows you to bring a user to your voice.*
             \`${client.db.prefix}hype\` › *Allows you to modify your hypesquad.*`.replaceAll('  ', '')

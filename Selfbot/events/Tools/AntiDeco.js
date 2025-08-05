@@ -10,11 +10,13 @@ module.exports = {
     */
     run: async (oldMember, newMember, client) => {
 
-        if (client.db.voice.antijoin.includes(newMember.voiceChannelID) && !client.db.voice.whitelist.includes(newMember.id) && newMember.id !== client.user.id) {
+        if (client.db.voice.antijoin.includes(newMember.voiceChannelID) && !client.db.voice.whitelist.includes(newMember.id) && newMember.id !== client.user.id)
             newMember.setVoiceChannel(null).catch(() => false);
-        }
 
+        if (newMember && newMember.id === client.user.id);
         if (!oldMember || oldMember.id !== client.user.id) return;
-        if (oldMember.voiceChannel && !newMember.voiceChannel && client.db.voice.status) client.voc(client.db.voice.connect);
+        
+        if (oldMember.voiceChannelID && !newMember.voiceChannelID && client.db.voice.connect) 
+            client.voc();
     }
 }

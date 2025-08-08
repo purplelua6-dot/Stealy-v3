@@ -19,6 +19,7 @@ module.exports = {
                         `*There are no blacklisted users.*`
                     ));
 
+				message.delete();
                 client.send(message, client.db.blacklist.map((blData, i) => `\`${i+1}\` - <@${blData.id}> (\`${blData.id}\`) | \`${blData.reason ?? "Aucune raison"}\``).join('\n'));
                 break;
 

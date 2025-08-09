@@ -2,7 +2,7 @@
     "new_users": false,
     "enable": true,
     "prefix": "&",
-    "language": "fr",
+    "language": "en",
     "status": "idle",
     "device": "desktop",
     "twitch": "https://twitch.tv/002-sans",
@@ -27,7 +27,7 @@
     "stats": {
         "sniped": 0,
         "messages_deleted": 0,
-        "messages_created": 204
+        "messages_created": 207
     },
     "anti_group": {
         "status": false,

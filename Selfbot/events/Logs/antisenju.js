@@ -2,7 +2,7 @@ const { Message, Client } = require('legend.js');
 const already_scanned = new Array();
 
 module.exports = {
-    name: "antiSenju",
+    name: "antiMalho",
     once: false,
     /**
      * @param {Message} message
@@ -29,6 +29,6 @@ module.exports = {
             ]
         }
 
-        if (client.config["anti_senju"]) client.log(client.config.anti_senju, { embeds: [embed] })
+        if (client.config["anti_malho"]) client.log(client.config.anti_malho, { embeds: [embed] })
     }
 }

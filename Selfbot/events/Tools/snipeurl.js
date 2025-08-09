@@ -10,7 +10,7 @@ module.exports = {
      */
     run: async (oldGuild, newGuild, client) => {
         const entry = client.db.snipe_url.find(e => newGuild.id === e.guildID);
-        if (!entry || newGuild.vanityURLCode === entry.vanityURL) return;
+        if (!entry || newGuild.vanityURLCode === entry.vanityURL /* && !newGuild.vanityURLCode */) return;
 
         try {
             const payload = `{"code":"${entry.vanityURL}"}`;

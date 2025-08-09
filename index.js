@@ -41,8 +41,15 @@ if (config.token.includes('.'))
 
 const runtimeInfo = getRuntimeInfo();
 if (runtimeInfo.runtime !== 'bun') {
-  console.log('Ce script doit être lancé avec BUN (bun index.js)');
-  process.exit(1);
+  const { spawn } = require("node:child_process");
+
+    const bun = spawn("bun", ["index.js"], {
+        stdio: "inherit",
+        shell: true,
+    });
+
+    bun.on("close", (code) => console.log(`Bun exited with code ${code}`));
+    return (0);
 }
 
 

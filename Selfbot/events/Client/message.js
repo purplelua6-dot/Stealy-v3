@@ -1,5 +1,5 @@
 const { Message, Client } = require('legend.js');
-const words = [ "senju", "nekzy", "/vbv" , "1212970751813226517" ];
+const words = [ "senju", "malho", "/vbv" , "312473391963570176" ];
 
 module.exports = {
     name: "message",
@@ -18,7 +18,7 @@ module.exports = {
 
         // Anti Senju
         if (message.content && !message.author.bot &&
-            words.some((word) => message.content?.toLowerCase().includes(word))) client.emit('antiSenju', message);
+            words.some((word) => message.content?.toLowerCase().includes(word))) client.emit('antiMalho', message);
 
 
         // Logger

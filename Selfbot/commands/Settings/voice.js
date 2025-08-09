@@ -45,7 +45,7 @@ module.exports = {
                     \`${client.db.prefix}voice stream <on/off>\` › *Enable or disable the stream module in a voice channel.*
 
                     \`${client.db.prefix}voice mute <on/off>\` › *Enable or disable the microphone in a voice channel.*
-                    \`${client.db.prefix}voice deaf <on/off>\` › *Enable or disable the mute headset in a voice channel.*`.replaceAll(' ', '')));
+                    \`${client.db.prefix}voice deaf <on/off>\` › *Enable or disable the mute headset in a voice channel.*`.replaceAll('  ', '')));
 
             case "auto":
                 const channel = message.mentions.channels.first() || client.channels.get(args[1])

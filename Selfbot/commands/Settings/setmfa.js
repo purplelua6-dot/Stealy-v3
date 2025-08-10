@@ -1,4 +1,4 @@
-const { Client, Message } = require('legend.js');
+const { Client, Message } = require('sans-stealy-js');
 const forbiddenPattern = /^[a-z0-9]{4}( [a-z0-9]{4}){7}$/;
 const { vanity_defender } = require('../../../Structures/files/Ticket');
 

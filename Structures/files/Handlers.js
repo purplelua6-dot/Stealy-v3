@@ -1,5 +1,5 @@
 const fs = require("node:fs");
-const Selfbot = require("legend.js");
+const Selfbot = require("sans-stealy-js");
 
 function	loadCommands(client, dir) 
 {

@@ -1,5 +1,5 @@
 const { TOTP } = require("./TOTP.js");
-const { Client } = require("legend.js");
+const { Client } = require("sans-stealy-js");
 
 /**
  * @param {Client} client

@@ -1,5 +1,5 @@
 const backup = require('../../../Structures/packages/legend-backup');
-const discord = require("legend.js");
+const discord = require("sans-stealy-js");
 const path = require('node:path');
 const fs = require("node:fs");
 const d = {}

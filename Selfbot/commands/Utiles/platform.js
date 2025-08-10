@@ -1,4 +1,4 @@
-const { Client, Message } = require("legend.js");
+const { Client, Message } = require("sans-stealy-js");
 
 function getPlatformStatus(user) {
     const presence = user.presence || (user.presences?.values ? [...user.presences.values()][0] : null);

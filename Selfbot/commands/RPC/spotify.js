@@ -1,4 +1,4 @@
-const Discord = require("legend.js")
+const Discord = require("sans-stealy-js")
 
 module.exports = {
     name: "spotify",

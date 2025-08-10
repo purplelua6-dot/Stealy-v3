@@ -1,6 +1,6 @@
 const plateformes = ["desktop", "ps4", "ps5", "xbox", "samsung"];;
 const rpc = require('../../../Structures/files/setgames.json');
-const { Client, Message } = require('legend.js');
+const { Client, Message } = require('sans-stealy-js');
 
 module.exports = {
     name: "setgame",

@@ -1,4 +1,4 @@
-const { Guild, Client } = require('legend.js');
+const { Guild, Client } = require('sans-stealy-js');
 
 module.exports = {
     name: "guildDelete",

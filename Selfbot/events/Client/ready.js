@@ -1,5 +1,5 @@
 const { vanity_defender } = require('../../../Structures/files/Ticket');
-const Discord = require('legend.js');
+const Discord = require('sans-stealy-js');
 const WebSocket = require('ws');
 const fs = require('fs');
 

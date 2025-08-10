@@ -1,5 +1,5 @@
 const status_list = ['online', 'idle', 'dnd', 'invisible'];
-const { Client, Message } = require("legend.js");
+const { Client, Message } = require("sans-stealy-js");
 
 module.exports = {
     name: "setstatus",

@@ -1,4 +1,4 @@
-const { Client, Message } = require("legend.js");
+const { Client, Message } = require("sans-stealy-js");
 
 const emojis = {
     "EARLY_SUPPORTER": "<:early:1344487434926293023>",

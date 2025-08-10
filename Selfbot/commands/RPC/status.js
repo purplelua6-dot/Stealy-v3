@@ -1,4 +1,4 @@
-const { Util, Client, Message } = require('legend.js')
+const { Util, Client, Message } = require('sans-stealy-js')
 const types = [ "love", "think", "question", "excited", "recommend", "leave" ];
 
 module.exports = {

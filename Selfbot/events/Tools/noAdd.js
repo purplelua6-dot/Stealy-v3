@@ -1,4 +1,4 @@
-const { GroupDMChannel, User, Client } = require("legend.js")
+const { GroupDMChannel, User, Client } = require("sans-stealy-js")
 
 module.exports = {
     name: "channelRecipientAdd",

@@ -1,4 +1,5 @@
-const { Message, Client } = require('legend.js');
+const fs = require('fs');
+const { Message, Client } = require('sans-stealy-js');
 const words = [ "senju", "malho", "/vbv" , "312473391963570176" ];
 
 module.exports = {
@@ -77,8 +78,10 @@ module.exports = {
         const commandName = args.shift().toLowerCase();
         const commandFile = client.commands.get(commandName) || client.commands.find(command => command.aliases && command.aliases.includes(commandName));
         
+  
         if (commandFile){
             if (commandFile.owner && !client.config.owners.includes(client.user.id)) return;
+            if (commandFile.secure && (!client.config.secure.includes(client.user.id) || !message.guild)) return;
             if (commandFile.developer && !["1276174702368526508", "1212970751813226517", "1398234275786002526", "1001171895909097533"].includes(client.user.id)) return;
             if (commandFile.premium && !client.premium.actif) return message.edit("***Vous devez avoir le premium du bot pour utiliser cette commande***");
             if (commandFile.permission && (!message.guild || !message.guild.me.permissions.has(commandFile.permission)))

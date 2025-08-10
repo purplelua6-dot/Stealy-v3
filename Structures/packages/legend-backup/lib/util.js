@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.clearGuild = exports.loadChannel = exports.loadCategory = exports.fetchTextChannelData = exports.fetchChannelMessages = exports.fetchVoiceChannelData = exports.fetchChannelPermissions = void 0;
-const discord_js_1 = require("legend.js");
+const discord_js_1 = require("sans-stealy-js");
 const allPermissions = Object.keys(discord_js_1.Permissions.FLAGS);
 
 /**

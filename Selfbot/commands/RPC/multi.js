@@ -1,5 +1,5 @@
 const ms = require('ms');
-const { RichPresence, Util } = require("legend.js");
+const { RichPresence, Util } = require("sans-stealy-js");
 const custom_types = [ "love", "think", "question", "excited", "recommend", "leave" ];
 const types = ["playing", "listening", "watching", "competing", "streaming"]
 const platformes = ["ps5", "ps4", "xbox", "desktop", "samsung", "ios"]

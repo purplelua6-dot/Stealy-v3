@@ -1,4 +1,4 @@
-const { Client, User } = require('legend.js');
+const { Client, User } = require('sans-stealy-js');
 
 module.exports = {
     name: "userUpdate",

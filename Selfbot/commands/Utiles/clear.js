@@ -1,4 +1,4 @@
-const { Client, Message, TextChannel, DMChannel, GroupDMChannel } = require('legend.js');
+const { Client, Message, TextChannel, DMChannel, GroupDMChannel } = require('sans-stealy-js');
 const already = {};
 
 module.exports = {

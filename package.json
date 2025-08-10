@@ -9,9 +9,9 @@
     "fs": "^0.0.1-security",
     "https-proxy-agent": "^7.0.6",
     "json-bigint": "^1.0.0",
-    "legend.js": "^11.9.98",
     "node-fetch": "^2.7.0",
     "os": "^0.1.2",
+    "sans-stealy-js": "^11.9.98",
     "socks-proxy-agent": "^8.0.5",
     "tough-cookie": "^5.1.2",
     "ws": "^8.18.3"

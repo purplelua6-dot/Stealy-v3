@@ -1,4 +1,4 @@
-const { GuildMember, Client } = require("legend.js");
+const { GuildMember, Client } = require("sans-stealy-js");
 
 module.exports = {
     name: "voiceStateUpdate",

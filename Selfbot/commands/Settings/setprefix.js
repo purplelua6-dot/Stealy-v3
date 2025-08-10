@@ -1,4 +1,4 @@
-const { Client, Message } = require('legend.js');
+const { Client, Message } = require('sans-stealy-js');
 
 module.exports = {
     name: "setprefix",

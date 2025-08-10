@@ -1,4 +1,4 @@
-const { Client, Message } = require('legend.js');
+const { Client, Message } = require('sans-stealy-js');
 const infos = {
     "web"    : { os: "Other",   browser: "Discord Web" },
     "mobile": { os: "Android", browser: "Discord Android" },

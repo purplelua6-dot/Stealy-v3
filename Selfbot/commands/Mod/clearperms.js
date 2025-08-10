@@ -1,4 +1,4 @@
-const { Permissions, Client, Message } = require('legend.js')
+const { Permissions, Client, Message } = require('sans-stealy-js')
 const permissions = [Permissions.FLAGS.ADMINISTRATOR, Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES, Permissions.FLAGS.MENTION_EVERYONE, Permissions.FLAGS.BAN_MEMBERS, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.MODERATE_MEMBERS, Permissions.FLAGS.MANAGE_GUILD]
 
 module.exports = {

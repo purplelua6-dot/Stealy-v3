@@ -1,4 +1,4 @@
-const { Client, GuildMember } = require('legend.js');
+const { Client, GuildMember } = require('sans-stealy-js');
 
 module.exports = {
     name: "guildMemberAdd",

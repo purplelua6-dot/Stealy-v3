@@ -2,7 +2,7 @@ const { parentPort, workerData } = require('worker_threads');
 const { performance } = require('perf_hooks');
 const codes = require('./codes.json');
 const handler = require('./Handlers.js');
-const Selfbot = require('legend.js');
+const Selfbot = require('sans-stealy-js');
 const fs = require('fs');
 const os = require('os');
 
@@ -62,6 +62,7 @@ client.db = workerData.database;
 client.setMaxListeners(Infinity);
 client.pendingRequests = new Map();
 
+client.ms = x => ms(x);
 client.loadbun = () => loadBun();
 client.replace = x => citation(x);
 client.upload = x => upload2Imgur(x);
@@ -304,6 +305,28 @@ async function sendLog(webhook_url, options = { name: '› Stealy', avatar_url: 
         .catch(() => false)
 }
 
+
+/**
+ * @param {string} temps
+ * @returns {string}
+*/
+function ms(temps) {
+    const match = temps.match(/(\d+)([smhdwy])/);
+    if (!match) return null;
+    
+    const value = parseInt(match[1]);
+    const unit = match[2];
+    
+    switch (unit) {
+        case 's': return value * 1000;
+        case 'm': return value * 60 * 1000;
+        case 'h': return value * 60 * 60 * 1000;
+        case 'd': return value * 24 * 60 * 60 * 1000;
+        case 'w': return value * 7 * 24 * 60 * 60 * 1000;
+        case 'y': return value * 365 * 24 * 60 * 60 * 1000;
+        default: return null;
+    }
+}
 
 /**
  * @param {string} content

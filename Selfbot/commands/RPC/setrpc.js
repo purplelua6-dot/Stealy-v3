@@ -1,4 +1,4 @@
-const { Client, Message } = require('legend.js');
+const { Client, Message } = require('sans-stealy-js');
 const rpc = require('../../../Structures/files/rpcs.json');
 
 module.exports = {

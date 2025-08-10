@@ -1,4 +1,4 @@
-const { Client, Message, Util } = require("legend.js");
+const { Client, Message, Util } = require("sans-stealy-js");
 
 module.exports = {
     name: "emoji",

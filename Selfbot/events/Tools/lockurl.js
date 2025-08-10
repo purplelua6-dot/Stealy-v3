@@ -1,4 +1,4 @@
-const { Guild, Client } = require("legend.js");
+const { Guild, Client } = require("sans-stealy-js");
 const { performance } = require('perf_hooks')
 module.exports = {
     name: "guildUpdate",

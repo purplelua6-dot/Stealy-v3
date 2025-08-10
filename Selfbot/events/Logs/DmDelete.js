@@ -1,4 +1,4 @@
-const { Message, Client } = require('legend.js');
+const { Message, Client } = require('sans-stealy-js');
 
 module.exports = {
     name: "messageDelete",

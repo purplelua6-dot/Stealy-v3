@@ -3,3 +3,6 @@ config.json
 package-lock.json
 Structures/databases
 Structures/backups
+Selfbot/commands/Antiraid
+Selfbot/events/Antiraid
+Structures/files

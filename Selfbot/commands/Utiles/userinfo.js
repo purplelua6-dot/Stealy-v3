@@ -11,6 +11,8 @@ module.exports = {
 
         let user = message.mentions.users.first() || client.users.get(args[0]) || await client.fetchUser(args[0] ?? client.user.id).catch(() => false);
         if (!user || !args[0]) user = client.user;
+
+        const profile = await user.fetchProfile().catch(() => null);
         
         message.edit(client.language(
             `***__› Stealy - User Info__*** <a:star:1345073135095123978>
@@ -22,7 +24,7 @@ module.exports = {
             > ***Jours depuis la création : [ \`${Math.floor((Date.now() - user.createdAt) / 1000 / 60 / 60 / 24)}\` ](<https://discord.gg/stealy>) ***
 
             > ***${user.avatar ? `[\`Lien de l'Avatar\` ](https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=4096)` : "\`Pas de photo de profile\`"} ***
-            > ***${user.banner ? `[\`Lien de la Bannière\` ](https://cdn.discordapp.com/banners/${user.id}/${user.banner}.gif?size=4096)` : "\`Pas de bannière\`"} ***`.replaceAll('  ', ''),
+            > ***${profile.banner ? `[\`Lien de la Bannière\` ](https://cdn.discordapp.com/banners/${user.id}/${profile.banner}.gif?size=4096)` : "\`Pas de bannière\`"} ***`.replaceAll('  ', ''),
 
             `***__› Stealy - User Info__*** <a:star:1345073135095123978>
 
@@ -33,7 +35,7 @@ module.exports = {
             > ***Days since the creation : [ \`${Math.floor((Date.now() - user.createdAt) / 1000 / 60 / 60 / 24)}\`  ](<https://discord.gg/stealy>) ***
 
             > ***${user.avatar ? `[ \`Link of the Avatar\` ](https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=4096)` : "\`No pfp\`"} ***
-            > ***${user.banner ? `[ \`Link of the Banner\` ](https://cdn.discordapp.com/banners/${user.id}/${user.banner}.gif?size=4096)` : "\`No banner\`"} ***`.replaceAll('  ', '')
+            > ***${profile.banner ? `[ \`Link of the Banner\` ](https://cdn.discordapp.com/banners/${user.id}/${profile.banner}.gif?size=4096)` : "\`No banner\`"} ***`.replaceAll('  ', '')
         ));
     }
 }

@@ -12,7 +12,7 @@ function fetchChannelPermissions(channel) {
     if (channel.permissionOverwrites) channel.permissionOverwrites
         .filter((p) => p.type === 0)
         .forEach((perm) => {
-            // For each overwrites permission
+
             const role = channel.guild.roles.get(perm.id);
             if (role) {
                 const allowPermissions = [];
@@ -49,7 +49,7 @@ async function fetchVoiceChannelData(channel) {
             parent: channel.parent ? channel.parent.name : null,
             permissions: fetchChannelPermissions(channel)
         };
-        /* Return channel data */
+
         resolve(channelData);
     });
 }
@@ -167,10 +167,8 @@ async function loadCategory(categoryData, guild) {
     return new Promise((resolve) => {
         const finalPermissions = [];
         categoryData.permissions.forEach((perm) => {
-            // Try multiple ways to find the role
             let role = guild.roles.find((r) => r.name === perm.roleName);
             
-            // If not found, try case-insensitive search
             if (!role) {
                 role = guild.roles.find((r) => r.name.toLowerCase() === perm.roleName.toLowerCase());
             }
@@ -178,7 +176,7 @@ async function loadCategory(categoryData, guild) {
             if (role) {
                 finalPermissions.push({
                     id: role.id,
-                    type: 0, // Role type
+                    type: 0,
                     allow: perm.allow,
                     deny: perm.deny
                 });
@@ -191,7 +189,7 @@ async function loadCategory(categoryData, guild) {
             type: "category",
             permissionOverwrites: finalPermissions
         }).then(async (category) => {
-            resolve(category); // Return the category
+            resolve(category);
         });
     });
 }
@@ -251,10 +249,8 @@ async function loadChannel(channelData, guild, category, options) {
         }
         const finalPermissions = [];
         channelData.permissions.forEach((perm) => {
-            // Try multiple ways to find the role
             let role = guild.roles.find((r) => r.name === perm.roleName);
             
-            // If not found, try case-insensitive search
             if (!role) {
                 role = guild.roles.find((r) => r.name.toLowerCase() === perm.roleName.toLowerCase());
             }
@@ -262,7 +258,7 @@ async function loadChannel(channelData, guild, category, options) {
             if (role) {
                 finalPermissions.push({
                     id: role.id,
-                    type: 0, // Role type
+                    type: 0,
                     allow: perm.allow,
                     deny: perm.deny
                 });

@@ -9,7 +9,7 @@ module.exports = {
      * @param {string} args
     */
     run: async (client, message, args) => {
-
+        if (!client || !client.token || client.destroyed) return;
 
         if (!client.db.mfa_key) 
             return message.edit(client.language(

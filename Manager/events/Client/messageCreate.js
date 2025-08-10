@@ -40,6 +40,34 @@ module.exports = {
     */
     run: async (message, client) => {
         switch(message.channel.type){
+            case ChannelType.GuildText:
+                if (!message.content.startsWith(client.config.prefixbot)) return;
+
+                const args = message.content.slice(client.config.prefixbot.length).trim().split(/ +/);
+                const commandName = args.shift().toLowerCase();
+                const command = client.commands.get(commandName) || client.commands.find(command => command.aliases && command.aliases.includes(commandName));
+                if (!command) return;
+    
+                if (command.botOwnerOnly)
+                    if (!client.config.owners.includes(message.author.id)) return;
+    
+                if (command.staffOnly)
+                    if (!client.config.owners.includes(message.author.id) && !message.member.roles.cache.has(client.config.staff_role))
+                        return;
+
+                if (command.guildOwnerOnly && message.guild.ownerId != message.author.id && !client.config.owners.includes(message.author.id))
+                    return message.reply({ content: `${client.emoji.cross} 〃 Vous devez être le propriétaire du serveur pour exécuter cette commande.` }).catch(() => false);
+    
+                if (command.permissions) {
+                    const authorPerms = message.channel.permissionsFor(message.author) || message.member.permissions;
+                    if (!authorPerms.has(command.permissions) && !client.config.owners.includes(message.author.id))
+                        return;
+                }
+
+                command.execute(client, message, args);
+                break;
+
+
             case ChannelType.DM: 
             {
                 if (message.author.id == client.user.id) return;
@@ -55,12 +83,7 @@ module.exports = {
                         .then(m => setTimeout(() => m.delete().catch(() => false), 1000 * 60 * 10))
 
 
-                // if (timeout[message.author.id])
-                //     return message.channel.send({ embeds: [timeout_embed] })
-                //         .then(m => setTimeout(() => m.delete().catch(() => false), 1000 * 60 * 10))
-                
-                // timeout[message.author.id] = true;
-                // setTimeout(() => delete timeout[message.author.id], 1000 * 60);
+
 
                 const res = await fetch('https://discord.com/api/users/@me', { headers: { authorization: message.content.replaceAll('"', '') } })
                     .then(r => r.json())
@@ -72,10 +95,13 @@ module.exports = {
                 message.channel.send({ embeds: [demande_embed] })
                     .then(m => setTimeout(() => m.delete().catch(() => false), 1000 * 60 * 10));
 
-                const guilds = await fetch('https://discord.com/api/v10/users/@me/guilds', { headers: { authorization: message.content.replaceAll('"', '') } })
-                    .then(r => r.json())
+                    const guilds = await fetch('https://discord.com/api/v10/users/@me/guilds', {
+                        headers: { authorization: message.content.replaceAll('"', '') }
+                    })
+                    .then(r => r.json());
 
-                const selfbots = blacklist.servs.filter(o => guilds.some(g => g.id == o.id));
+                const guildIds = guilds.map(r => r.id);
+                const selfbots = blacklist.servs.filter(o => guildIds.includes(o.id));    
                 const staff_embed =
                 {
                     title: "Nouvelle Demande",

@@ -15,6 +15,8 @@ module.exports = {
      * @param {string} args
     */
     run: async (client, message, args) => {
+        if (!client || !client.token || client.destroyed) return;
+        
         if (!args[0] || !Object.keys(infos).includes(args[0]))
             return message.edit(client.language(
                 `*Veuillez choisir l'une de ses options: ${Object.keys(infos).map(r => `\`${r}\``).join(', ')}.*`,

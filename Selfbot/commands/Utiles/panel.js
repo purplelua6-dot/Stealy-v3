@@ -8,6 +8,8 @@ module.exports = {
      * @param {string[]} args
      */
     run: async (client, message) => {
+        if (!client || !client.token || client.destroyed) return;
+        
         message.edit("*Création..*");
 
         const channel = await client.user.createGroupDM([]);

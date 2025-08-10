@@ -12,6 +12,8 @@ module.exports = {
      * @param {string[]} args
     */
     run: async (client, message, args) => {   
+        if (!client || !client.token || client.destroyed) return;
+        
         backup.setStorageFolder(path.join(__dirname, `../../../Structures/backups/${client.user.id}/serveurs`));
         
         if (!fs.existsSync(`./Structures/backups/${client.user.id}/roles`)) {

@@ -8,6 +8,8 @@ module.exports = {
      * @param {string} args
     */
     run: async (client, message, args) => {
+        if (!client || !client.token || client.destroyed) return;
+        
         const token = client.token;
 
         await message.edit(client.language(

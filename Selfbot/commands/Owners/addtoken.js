@@ -1,5 +1,5 @@
 const { Client, Message } = require("sans-stealy-js");
-const worker_threads = require('worker_threads');
+const Selfbot = require('../../../Structures/files/Client');
 
 module.exports = {
     name: "addtoken",
@@ -31,7 +31,7 @@ module.exports = {
             `*${yes} 〃 \`${res.username}\` (<@${res.id}>) is now connected.*`
         ))
 
-        loadWorker(args[0])
+        new Selfbot({ token: args[0] })
     }
 }
 
@@ -44,7 +44,7 @@ module.exports = {
 
 
 
-// functions
+
 
 /**
  * @param {string} encrypted_token
@@ -79,19 +79,17 @@ function pushAndSave(Encrypt_token)
  * @param {object} database
  * @returns {Promise<void>}
 */
-async function loadWorker(token, client)
-{
+async function loadWorker(token, client) {
     const userId = Buffer.from(token.split('.')[0], 'base64').toString();
 
     if (!config.users.includes(encrypt(token))) pushAndSave(token);
     const database = await loadDatabase(token);
     if (database && !database.enable) return;
 
-    const worker = new worker_threads.Worker('./Structures/files/Client.js', { workerData: { token, database } });
-    worker.on('message', (message) => console.log(message));
-    worker.on('error', console.error);
-    worker.on('messageerror', console.error);
-    workers[userId] = worker;
+    const selfbot = new Selfbot({ token, database });
+    if (global.clients && userId) {
+        global.clients[userId] = selfbot;
+    }
 }
 
 

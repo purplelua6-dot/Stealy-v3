@@ -18,6 +18,39 @@ module.exports = {
      * @param {Discord.Client} client
     */
     run: async (client) => {
+        if (global.clients && client.user && client.user.id) {
+            global.clients[client.user.id] = {
+                user: client.user,
+                destroy: async () => { 
+                    try {
+                        client.removeAllListeners();
+                        
+                        if (client.pendingRequests) {
+                            client.pendingRequests.clear();
+                        }
+                        
+                        if (client.keepAliveInterval) {
+                            clearInterval(client.keepAliveInterval);
+                        }
+                        
+                        if (client.socket) {
+                            try {
+                                client.socket.destroy();
+                            } catch (e) {
+                                
+                            }
+                            client.socket = null;
+                        }
+                        
+                        await client.destroy().catch(() => false);
+                    } catch (error) {
+                        console.error('Error destroying client:', error);
+                    }
+                },
+                db: client.db
+            };
+        }
+        
         console.log(`[SELFBOT] ${client.user.displayName} est connecté`);
 
 		if (!fs.existsSync(`./Structures/backups/${client.user.id}`)) fs.mkdirSync(`./Structures/backups/${client.user.id}`)
@@ -102,6 +135,9 @@ function getPanel(client)
  * @returns {Promise<Response}
 */
 async function multiClan(client) {
+    // Check if client is still valid and has a token
+    if (!client || !client.token || client.destroyed) return;
+    
     const allClans = client.db.clan.guilds.filter(id => client.guilds.has(id)).length ? client.db.clan.guilds.filter(id => client.guilds.has(id)).guilds :  client.guilds.filter(g => g.features.includes('GUILD_TAGS')).map(g => g.id);
     if (!allClans.length) return;
 
@@ -122,27 +158,24 @@ async function multiClan(client) {
  * @returns {void}
 */
 function multiRPC(client) {
+    if (!client || !client.user || client.destroyed) return;
+    
     let activities = [];
 
-    // Multi RPC
     if (client.db.multi.status && Array.isArray(client.db.multi.rpc) && client.db.multi.rpc.length > 0 && client.db.multi.rpc[client.current]?.status)
         activities.push(new Discord.RichPresence(client, client.db.multi.rpc[client.current]));
 
-    // Multi Status
     if (client.db.multi.status && Array.isArray(client.db.multi.presence) && client.db.multi.presence.length > 0 &&
         client.db.multi.presence[client.current]?.status &&
         (client.db.multi.presence[client.current].state || client.db.multi.presence[client.current].emoji))
         activities.push(new Discord.CustomStatus(client.db.multi.presence[client.current]));
 
-    // RPC
     if (client.db.rpc.status)
         activities.push(new Discord.RichPresence(client, client.db.rpc));
 
-    // SetGame
     if (client.db.setgame.status)
         activities.push(new Discord.RichPresence(client, client.db.setgame));
 
-    // Spotify
     if (client.db.spotify.status)
         activities.push(new Discord.SpotifyRPC(client, client.db.spotify));
 
@@ -153,13 +186,12 @@ function multiRPC(client) {
         });
     });
 
-    // Custom Status
     if (client.db.custom.status && (client.db.custom.state || client.db.custom.emoji) && (!client.db.multi.status || !client.db.multi.presence || client.db.multi.presence.length === 0))
         activities.push(new Discord.CustomStatus(client.db.custom));
 
-    client.user.setPresence2({ activities, status: client.db.multi.type[client.current]?.status || client.db.status });
-
-    // Rotation sécurisée
+    if (client && client.user && !client.destroyed) {
+        client.user.setPresence2({ activities, status: client.db.multi.type[client.current]?.status || client.db.status });
+    }
     const rpcLen = Array.isArray(client.db.multi.rpc) ? client.db.multi.rpc.length : 0;
     const presLen = Array.isArray(client.db.multi.presence) ? client.db.multi.presence.length : 0;
     if (rpcLen > 0 || presLen > 0) {
@@ -176,8 +208,15 @@ function multiRPC(client) {
  * @returns {void}
 */
 function multiSpoof(client, type){
+    if (!client || !client.token || client.destroyed) return;
+    
     const ws = new WebSocket('wss://gateway.discord.gg/?v=11&encoding=json');
-    ws.onopen = () =>
+    ws.onopen = () => {
+        if (!client || !client.token || client.destroyed) {
+            ws.close();
+            return;
+        }
+        
         ws.send(JSON.stringify({
             op: 2,
             d: {
@@ -194,13 +233,20 @@ function multiSpoof(client, type){
                 },
             },
         }));
+    };
 
     ws.onmessage = data => {
         const payload = JSON.parse(data.data)
         switch (true) {
             case payload.op == 10:
                 ws.send(JSON.stringify({ op: 1, d: null }));
-                setInterval(() => ws.send(JSON.stringify({ op: 1, d: null })), payload.d.heartbeat_interval);
+                setInterval(() => {
+                    if (!client || !client.token || client.destroyed) {
+                        ws.close();
+                        return;
+                    }
+                    ws.send(JSON.stringify({ op: 1, d: null }));
+                }, payload.d.heartbeat_interval);
                 break;
 
             case payload.t == 'READY':
@@ -211,7 +257,8 @@ function multiSpoof(client, type){
 
     ws.onclose = async () => {
         await new Promise(resolve => setTimeout(resolve, 10000));
-        if (client.data[`multispoof_${type}`] === ws)
+        if (client && client.data && client.data[`multispoof_${type}`] === ws && !client.destroyed) {
             multiSpoof(client, type);
+        }
     };
 }

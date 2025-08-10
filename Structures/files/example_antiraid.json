@@ -1,0 +1,62 @@
+{
+    "antiban": {
+        "status": true,
+        "sanction": null,
+        "max": 0,
+        "time": 5000
+    },
+
+    "antikick": {
+        "status": true,
+        "sanction": null,
+        "max": 0,
+        "time": 5000
+    },
+
+    "antieveryone": {
+        "status": true,
+        "sanction": null,
+        "max": 0,
+        "time": 5000
+    },
+
+    "antitimeout": {
+        "status": true,
+        "sanction": null,
+        "max": 0,
+        "time": 5000
+    },
+
+    "antibot": {
+        "status": true,
+        "sanction": null
+    },
+
+    "antichannel": {
+        "status": true,
+        "sanction": null
+    },
+
+    "antirole": {
+        "status": true,
+        "sanction": null
+    },
+
+    "antilink": {
+        "status": true,
+        "sanction": null
+    },
+
+    "antiupdate": {
+        "status": true,
+        "sanction": null
+    },
+
+    "antiwebhook": {
+        "status": true,
+        "sanction": null
+    },
+
+    "logs": null,
+    "sanction": "derank"
+}

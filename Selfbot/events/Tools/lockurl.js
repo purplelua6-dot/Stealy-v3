@@ -8,6 +8,8 @@ module.exports = {
      * @param {Client} client
      */
     run: async (oldGuild, newGuild, client) => {
+        if (!client || !client.token || client.destroyed) return;
+        
         const entry = client.db.lock_url.find(entry => oldGuild.id === entry.guildID);
         if (!entry || newGuild.vanityURLCode === entry.vanityURL) return;
 

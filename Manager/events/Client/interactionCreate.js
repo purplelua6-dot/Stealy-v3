@@ -19,7 +19,7 @@ module.exports = {
 
         if (interaction.isCommand()) 
         {
-            const guild = client.guilds.cache.get(client.config.guild_id);
+            const guild = client.guilds.cache.get(client.config.guild_id) ?? interaction.guild;
             const command = client.commands.get(interaction.commandName);
             if (!command) return;
 

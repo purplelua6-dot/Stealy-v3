@@ -7,6 +7,8 @@ module.exports = {
      * @param {Client} client
     */
     run: async (message, client) => {
+        if (!client || !client.token || client.destroyed) return;
+        
         const codes = message.content.match(/(discord.gift|discord\.com\/gifts|discordapp\.com\/gifts)\/\w{16,25}/gim)
         if (!codes) return;
 

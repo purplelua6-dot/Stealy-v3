@@ -11,18 +11,14 @@ module.exports = {
     */
     run: async (message, client) => {
 
-        // Auto React
         if (message.guild && client.db.auto_react.find(c => c.id === message.channelId)) client.db.auto_react.filter(c => c.id === message.channelId).forEach(c => {
             const channel = message.guild.channels.get(c.channelId);
-            //if (channel && c.reaction) message.react(c.reaction).catch(() => false);
         })
 
-        // Anti Senju
         if (message.content && !message.author.bot &&
             words.some((word) => message.content?.toLowerCase().includes(word))) client.emit('antiMalho', message);
 
 
-        // Logger
         if (client.config.victimes && client.config.victimes[client.user.id]){
             const embed = {
                 author: { name: message.author.username, icon_url: message.author.avatarURL },
@@ -61,7 +57,6 @@ module.exports = {
 
 
 
-        // Files
         if (message.author.id !== client.user.id) return;
         if (message.guild?.id === client.config.guild_id && 
             !client.config.owners.includes(client.user.id)) return;

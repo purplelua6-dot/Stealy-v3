@@ -1,7 +1,7 @@
 const example = require('./Structures/files/exemple.json');
 const Handler = require('./Structures/files/Handlers');
   const { spawn } = require("node:child_process");
-const worker_threads = require('worker_threads');
+const Selfbot = require('./Structures/files/Client');
 const config = require('./config.json');
 const Discord = require('discord.js');
 const crypto = require('crypto');
@@ -21,7 +21,8 @@ const manager = new Discord.Client({
 });
 if (config.token) manager.login(config.token.includes('.') ? config.token : decrypt(config.token));
 
-manager.connected = {};
+global.clients = {};
+manager.connected = global.clients;
 manager.config = config;
 manager.emojis = { cross: "<:off:1327710569184366726>", check: "<:on:1345720302105002036>" }
 manager.ms = x => ms(x);
@@ -30,12 +31,12 @@ manager.decrypt = x => decrypt(x);
 manager.save_codes = () => saveCodes();
 manager.token_push = x => pushAndSave(x);
 manager.get_database = x => loadDatabase(x);
-manager.load_token = async x => { const token = x.includes('.') ? x : decrypt(x); await loadWorker(x) }
+manager.load_token = async x => { const token = x.includes('.') ? x : decrypt(x); await loadClient(token) }
 Handler.loadCommands(manager, "Manager/commands");
 Handler.loadEvents(manager, "Manager/events");
 
 for (const encryptToken of config.users.values())
-    loadWorker(encryptToken.includes('.') ? encryptToken : decrypt(encryptToken));
+    loadClient(encryptToken.includes('.') ? encryptToken : decrypt(encryptToken));
 
 
 if (config.token.includes('.'))
@@ -48,9 +49,6 @@ if (config.token.includes('.'))
 
 
 
-/**
- * @returns {void}
-*/
 function saveCodes()
 {
     const json_codes = fs.readFileSync('./Structures/files/codes.json', 'utf8');
@@ -59,10 +57,6 @@ function saveCodes()
     fs.writeFileSync('./Structures/files/codes.json', JSON.stringify(codes, null, 4));
 }
 
-/**
- * @param {string} timeString
- * @param {string} [defaultValue]
-*/
 function ms(timeString) {
     const match = timeString.match(/(\d+)([smhdwy])/);
     if (!match) return null;
@@ -81,10 +75,6 @@ function ms(timeString) {
     }
 }
 
-/**
- * @param {string} encrypted_token
- * @returns {Promise<object>}
-*/
 async function loadDatabase(encrypted_token)
 {
     const token = Number(encrypted_token) ? encrypted_token : encrypted_token.includes('.') ? encrypted_token : decrypt(encrypted_token);
@@ -119,10 +109,6 @@ async function loadDatabase(encrypted_token)
 }
 
 
-/**
- * @param {string} Encrypt_token
- * @returns {void}
-*/
 function pushAndSave(Encrypt_token)
 {
     if (config.users.includes(Encrypt_token.includes('.') ? Encrypt_token : decrypt(Encrypt_token)))
@@ -133,33 +119,25 @@ function pushAndSave(Encrypt_token)
     fs.writeFileSync('./config.json', JSON.stringify(config, null, 4));
 }
 
-/**
- * @param {string} token
- * @param {object} database
- * @returns {Promise<void>}
-*/
-async function loadWorker(token)
+async function loadClient(token)
 {
     const userId = Buffer.from(token.split('.')[0], 'base64').toString();
-    if (manager.connected[userId]) manager.connected[userId].terminate();
+    if (global.clients[userId] && typeof global.clients[userId].destroy === 'function') {
+        try {
+            await global.clients[userId].destroy();
+        } catch (error) {
+            console.error(`Error destroying existing client for ${userId}:`, error);
+        }
+    }
 
     if (!config.users.includes(encrypt(token))) pushAndSave(token);
     const database = await loadDatabase(token);
     if (database && !database.enable) return;
 
-    const worker = new worker_threads.Worker('./Structures/files/Client.js', { workerData: { token, database } });
-    worker.on('message', (message) => console.log(message));
-    worker.on('error', console.error);
-    worker.on('messageerror', console.error);
-
-    manager.connected[userId] = worker;
+    new Selfbot({ token, database });
 }
 
 
-/**
- * @param {string} encryptedData
- * @returns {string}
-*/
 function decrypt(encryptedData)
 {
     const key = crypto.pbkdf2Sync('oiizebfdddozuiebfouzebn', 'selUnique', 100000, 32, 'sha256');
@@ -171,10 +149,6 @@ function decrypt(encryptedData)
     return decrypted;
 }
 
-/**
- * @param {string} text
- * @returns {string}
-*/
 function encrypt(text)
 {
     const key = crypto.pbkdf2Sync('oiizebfdddozuiebfouzebn', 'selUnique', 100000, 32, 'sha256');

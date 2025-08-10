@@ -9,11 +9,11 @@ const util_1 = require("./util");
  */
 async function getBans(guild) {
     const bans = [];
-    const cases = await guild.bans.fetch(); // Gets the list of the banned members
+    const cases = await guild.bans.fetch();
     cases.forEach((ban) => {
         bans.push({
             id: ban.user.id,
-            reason: ban.reason // Ban reason
+            reason: ban.reason
         });
     });
     return bans;
@@ -34,7 +34,7 @@ async function getMembers(guild) {
             avatarUrl: member.user.avatarURL(),
             joinedTimestamp: member.joinedTimestamp,
             roles: member.roles.map((role) => role.id),
-            bot: member.user.bot // Member bot
+            bot: member.user.bot
         });
     });
     return members;
@@ -100,7 +100,6 @@ async function getChannels(guild, options) {
             categories: [],
             others: []
         };
-        // Gets the list of the categories and sort them by position
         const categories = guild.channels
             .filter((ch) => ch.type === "category")
             .sort((a, b) => a.position - b.position)
@@ -109,50 +108,44 @@ async function getChannels(guild, options) {
             const categoryData = {
                 name: category.name,
                 permissions: (0, util_1.fetchChannelPermissions)(category),
-                children: [] // The children channels of the category
+                children: []
             };
-            // Gets the children channels of the category and sort them by position
 
             const children = guild.channels.filter(c => c.parentID == category.id).sort((a, b) => a.position - b.position)
 
             for (const child of children.values()) {
-                // For each child channel
                 if (child.type === "text" || child.type === "news" || child.type == 'forum') {
-                    const channelData = await (0, util_1.fetchTextChannelData)(child, options); // Gets the channel data
+                    const channelData = await (0, util_1.fetchTextChannelData)(child, options);
                     channelData.position = child.position;
-                    categoryData.children.push(channelData); // And then push the child in the categoryData
+                    categoryData.children.push(channelData);
                 }
                 else {
-                    const channelData = await (0, util_1.fetchVoiceChannelData)(child); // Gets the channel data
+                    const channelData = await (0, util_1.fetchVoiceChannelData)(child);
                     channelData.position = child.position;
-                    categoryData.children.push(channelData); // And then push the child in the categoryData
+                    categoryData.children.push(channelData);
                 }
             }
-            channels.categories.push(categoryData); // Update channels object
+            channels.categories.push(categoryData);
         }
-        // Gets the list of the other channels (that are not in a category) and sort them by position
         const others = guild.channels
             .filter((ch) => {
             return !ch.parent && ch.type !== "category"
-                //&& ch.type !== 'GUILD_STORE' // there is no way to restore store channels, ignore them
-                //&& ch.type !== "news" && ch.type !== "private-thread" && ch.type !== "public-thread"; // threads will be saved with fetchTextChannelData
         })
             .sort((a, b) => a.position - b.position)
             
         for (const channel of others.values()) {
-            // For each channel
             if (channel.type === "text" || channel.type === "news" || channel.type == 'forum') {
-                const channelData = await (0, util_1.fetchTextChannelData)(channel, options); // Gets the channel data
+                const channelData = await (0, util_1.fetchTextChannelData)(channel, options);
                 channelData.position = channel.position;
-                channels.others.push(channelData); // Update channels object
+                channels.others.push(channelData);
             }
             else {
-                const channelData = await (0, util_1.fetchVoiceChannelData)(channel); // Gets the channel data
+                const channelData = await (0, util_1.fetchVoiceChannelData)(channel);
                 channelData.position = channel.position;
-                channels.others.push(channelData); // Update channels object
+                channels.others.push(channelData);
             }
         }
-        resolve(channels); // Returns the list of the channels
+        resolve(channels);
     });
 }
 

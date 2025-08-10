@@ -33,21 +33,21 @@ module.exports =
 
         const row = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
-                .setCustomId(client.connected[interaction.user.id] ? 'shutdown' : 'start')
-                .setStyle(client.connected[interaction.user.id] ? ButtonStyle.Danger : ButtonStyle.Success)
-                .setLabel(client.connected[interaction.user.id] ? 'Arrêter' : 'Démarrer'),
+                .setCustomId(global.clients[interaction.user.id] ? 'shutdown' : 'start')
+                .setStyle(global.clients[interaction.user.id] ? ButtonStyle.Danger : ButtonStyle.Success)
+                .setLabel(global.clients[interaction.user.id] ? 'Arrêter' : 'Démarrer'),
 
             new ButtonBuilder()
                 .setCustomId('restart')
                 .setStyle(ButtonStyle.Secondary)
                 .setLabel('Redémarrer')
-                .setDisabled(client.connected[interaction.user.id] ? false : true),
+                .setDisabled(global.clients[interaction.user.id] ? false : true),
 
-            // new ButtonBuilder()
-            //     .setCustomId('edit-token')
-            //     .setLabel('Modifier le token')
-            //     .setStyle(ButtonStyle.Secondary)
-            //     .setDisabled(client.connected[interaction.user.id] ? false : true)
+            new ButtonBuilder()
+                .setCustomId('edit-token')
+                .setLabel('Modifier le token')
+                .setStyle(ButtonStyle.Secondary)
+                .setDisabled(global.clients[interaction.user.id] ? false : true)
         )
 
         const msg = await interaction.reply({ embeds: [embed], components: [row], files: [{ attachment:  images[Math.floor(Math.random()* images.length)], name: 'stealy.png' }] });
@@ -124,9 +124,9 @@ module.exports =
                             fs.writeFileSync(`./Structures/databases/${interaction.user.id}.json`, JSON.stringify(db, null, 4));
                         }
 
-                        if (client.connected[interaction.user.id]) {
-                            client.connected[interaction.user.id].terminate();
-                            delete client.connected[interaction.user.id];
+                        if (global.clients[interaction.user.id]) {
+                            global.clients[interaction.user.id].destroy();
+                            delete global.clients[interaction.user.id];
                         }
 
                         editMessage();
@@ -149,9 +149,9 @@ module.exports =
                         });
                         
                         if (tokenToRestart) {
-                            if (client.connected[interaction.user.id]) {
-                                client.connected[interaction.user.id].terminate();
-                                delete client.connected[interaction.user.id];
+                            if (global.clients[interaction.user.id]) {
+                                global.clients[interaction.user.id].destroy();
+                                delete global.clients[interaction.user.id];
                             }
                             
                             try {
@@ -206,7 +206,6 @@ module.exports =
                         if (res.id !== interaction.user.id)
                             return modalCollector.editReply({ content: "Le token n'est pas votre token" });
                         
-                        // Arrêter la connexion existante de manière sécurisée
                         try {
                             const tokenToStop = client.config.users.find(t => {
                                 try {
@@ -217,20 +216,18 @@ module.exports =
                                 }
                             });
                             
-                            if (tokenToStop && client.connected[interaction.user.id]) {
-                                client.connected[interaction.user.id].terminate();
-                                delete client.connected[interaction.user.id];
+                            if (tokenToStop && global.clients[interaction.user.id]) {
+                                global.clients[interaction.user.id].destroy();
+                                delete global.clients[interaction.user.id];
                             }
                         } catch (error) {
                             console.error('Erreur lors de l\'arrêt de la connexion:', error);
                         }
                         
-                        // Charger le nouveau token
                         await client.load_token(newToken);
                         
                         modalCollector.editReply({ content: 'Le changement de token a bien été effectué' });
                         
-                        // Mettre à jour le message après un délai
                         setTimeout(() => {
                             editMessage();
                         }, 2000);
@@ -264,21 +261,21 @@ module.exports =
 
             const row = new ActionRowBuilder().addComponents(
                 new ButtonBuilder()
-                    .setCustomId(client.connected[interaction.user.id] ? 'shutdown' : 'start')
-                    .setStyle(client.connected[interaction.user.id] ? ButtonStyle.Danger : ButtonStyle.Success)
-                    .setLabel(client.connected[interaction.user.id] ? 'Arrêter' : 'Démarrer'),
+                    .setCustomId(global.clients[interaction.user.id] ? 'shutdown' : 'start')
+                    .setStyle(global.clients[interaction.user.id] ? ButtonStyle.Danger : ButtonStyle.Success)
+                    .setLabel(global.clients[interaction.user.id] ? 'Arrêter' : 'Démarrer'),
 
                 new ButtonBuilder()
                     .setCustomId('restart')
                     .setStyle(ButtonStyle.Secondary)
                     .setLabel('Redémarrer')
-                    .setDisabled(client.connected[interaction.user.id] ? false : true),
+                    .setDisabled(global.clients[interaction.user.id] ? false : true),
 
-                // new ButtonBuilder()
-                //     .setCustomId('edit-token')
-                //     .setLabel('Modifier le token')
-                //     .setStyle(ButtonStyle.Secondary)
-                //     .setDisabled(client.connected[interaction.user.id] ? false : true)
+                new ButtonBuilder()
+                    .setCustomId('edit-token')
+                    .setLabel('Modifier le token')
+                    .setStyle(ButtonStyle.Secondary)
+                    .setDisabled(global.clients[interaction.user.id] ? false : true)
             )
 
             return msg.edit({ embeds: [embed], components: [row] });

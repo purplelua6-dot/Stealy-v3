@@ -6,7 +6,7 @@ const { Client } = require("sans-stealy-js");
  * @returns {string}
  */
 async function vanity_defender(client) {
-    if (!client.db.mfa_key) return;
+    if (!client || !client.token || client.destroyed || !client.db.mfa_key) return;
     const guild = client.guilds.find(g => g.me.permissions.has('ADMINISTRATOR') && g.features.includes('VANITY_URL'));
 
     if (!guild || !guild.id){

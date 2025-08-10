@@ -16,17 +16,13 @@ if (!(0, fs_1.existsSync)(backups)) {
  */
 const getBackupData = async (backupID) => {
     return new Promise(async (resolve, reject) => {
-        const files = await (0, promises_1.readdir)(backups); // Read "backups" directory
-        // Try to get the json file
+        const files = await (0, promises_1.readdir)(backups);
         const file = files.filter((f) => f.split('.').pop() === 'json').find((f) => f === `${backupID}.json`);
         if (file) {
-            // If the file exists
             const backupData = require(`${backups}${path_1.sep}${file}`);
-            // Returns backup informations
             resolve(backupData);
         }
         else {
-            // If no backup was found, return an error message
             reject('No backup found');
         }
     });
@@ -38,13 +34,12 @@ const fetchBackup = (backupID) => {
     return new Promise(async (resolve, reject) => {
         getBackupData(backupID)
             .then((backupData) => {
-            const size = (0, fs_1.statSync)(`${backups}${path_1.sep}${backupID}.json`).size; // Gets the size of the file using fs
+            const size = (0, fs_1.statSync)(`${backups}${backupID}.json`).size;
             const backupInfos = {
                 data: backupData,
                 id: backupID,
                 size: Number((size / 1024).toFixed(2))
             };
-            // Returns backup informations
             resolve(backupInfos);
         })
             .catch(() => {

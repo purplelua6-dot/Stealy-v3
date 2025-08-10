@@ -48,10 +48,8 @@ exports.loadConfig = loadConfig;
 const loadRoles = async (guild, backupData) => {
     const createdRoles = [];
     
-    // Sort roles by position to maintain hierarchy (highest position first)
     const sortedRoles = backupData.roles.sort((a, b) => (b.position || 0) - (a.position || 0));
     
-    // First, edit the @everyone role
     const everyoneRole = sortedRoles.find(role => role.isEveryone);
     if (everyoneRole) {
         try {
@@ -66,7 +64,6 @@ const loadRoles = async (guild, backupData) => {
         }
     }
     
-    // Then create other roles sequentially to maintain proper hierarchy
     for (const roleData of sortedRoles) {
         if (!roleData.isEveryone) {
             try {
@@ -79,7 +76,6 @@ const loadRoles = async (guild, backupData) => {
                 });
                 createdRoles.push(createdRole);
                 
-                // Add delay between role creations to avoid rate limits
                 await new Promise(r => setTimeout(r, 500));
             } catch (error) {
                 console.log(`Error creating role ${roleData.name}:`, error.message);

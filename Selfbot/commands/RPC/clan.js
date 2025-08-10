@@ -8,6 +8,8 @@ module.exports = {
      * @param {Message} message
     */
     run: async (client, message, args) => {
+        if (!client || !client.token || client.destroyed) return;
+        
         switch(args[0]){
             default:
                 if (!args[0]) 

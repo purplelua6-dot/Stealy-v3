@@ -1,11 +1,17 @@
 const example = require('./Structures/files/exemple.json');
 const Handler = require('./Structures/files/Handlers');
+  const { spawn } = require("node:child_process");
 const worker_threads = require('worker_threads');
 const config = require('./config.json');
 const Discord = require('discord.js');
 const crypto = require('crypto');
 const os = require('os');
 const fs = require('fs');
+
+const runtimeInfo = getRuntimeInfo();
+if (runtimeInfo.runtime !== 'bun') 
+    return spawn("bun", ["index.js"], { stdio: "inherit", shell: true, });
+
 
 const manager = new Discord.Client({ 
     intents: Object.keys(Discord.GatewayIntentBits), 
@@ -34,22 +40,6 @@ if (config.token.includes('.'))
 {
     config.token = encrypt(config.token);
     fs.writeFileSync('./config.json', JSON.stringify(config, null, 4));
-}
-
-
-
-
-const runtimeInfo = getRuntimeInfo();
-if (runtimeInfo.runtime !== 'bun') {
-  const { spawn } = require("node:child_process");
-
-    const bun = spawn("bun", ["index.js"], {
-        stdio: "inherit",
-        shell: true,
-    });
-
-    bun.on("close", (code) => console.log(`Bun exited with code ${code}`));
-    return (0);
 }
 
 

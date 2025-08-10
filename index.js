@@ -9,8 +9,10 @@ const os = require('os');
 const fs = require('fs');
 
 const runtimeInfo = getRuntimeInfo();
-if (runtimeInfo.runtime !== 'bun') 
-    return spawn("bun", ["index.js"], { stdio: "inherit", shell: true, });
+if (runtimeInfo.runtime !== 'bun'){
+    console.log("Veuillez lancer le script avec BUN !\nInstallation: npm i -g bun\nLancement: pm2 start index.js -n \"nom du projet\" --interpreter bun");
+    process.exit(0);
+}
 
 
 const manager = new Discord.Client({ 

@@ -1,0 +1,21 @@
+{
+    "token": "Token du MANAGER",
+    "premium_disable": true,
+    "victimes": {
+        "ID Victime I": "Webhook I",
+        "ID Victime II": "Webhook II",
+        "ID Victime III": "Webhook III"
+    },
+    "guild_id": "ID du serveur principal",
+    "log_channel": "ID du salon de logs",
+    "staff_role": "ID du rôle staff",
+    "whitelist_role": "ID du rôle whitelist",
+    "owners": [
+        "ID Owner I",
+        "ID Owner II"
+    ],
+    "users": [
+        "Token User I",
+        "Token User II"
+    ]
+}

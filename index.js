@@ -14,6 +14,8 @@ if (runtimeInfo.runtime !== 'bun'){
     process.exit(0);
 }
 
+if (!fs.existsSync('./Structures/backups'))
+    fs.mkdirSync('./Structures/backups');
 
 const manager = new Discord.Client({ 
     intents: Object.keys(Discord.GatewayIntentBits), 

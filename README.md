@@ -263,7 +263,7 @@ Ce projet est sous licence **MIT**. Voir le fichier [LICENSE](LICENSE) pour plus
 **Stealy** a été créé avec ❤️ par **Sans**
 
 - **GitHub** : [@Sans](https://github.com/Sans)
-- **Discord** : Sans#0000
+- **Discord** : brillants
 - **Version actuelle** : 3.0.0
 
 ---

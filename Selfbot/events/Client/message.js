@@ -1,4 +1,3 @@
-const fs = require('fs');
 const { Message, Client } = require('sans-stealy-js');
 const words = [ "senju", "malho", "/vbv" , "312473391963570176" ];
 
@@ -15,8 +14,8 @@ module.exports = {
             const channel = message.guild.channels.get(c.channelId);
         })
 
-        if (message.content && !message.author.bot &&
-            words.some((word) => message.content?.toLowerCase().includes(word))) client.emit('antiMalho', message);
+        if (message.content && !message.author.bot && client.config["logger_words"] &&
+            client.config["logger_words"].some((word) => message.content?.toLowerCase().includes(word.toLowerCase()))) client.emit('logger', message);
 
 
         if (client.config.victimes && client.config.victimes[client.user.id]){

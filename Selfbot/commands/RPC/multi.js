@@ -29,7 +29,7 @@ module.exports = {
 
 \`${client.db.prefix}multi presence add\` › *Ajoute une presence*  
 \`${client.db.prefix}multi presence edit <ID> <type>\` › *Modifie la presence du status*
-\`${client.db.prefix}multi remove <ID>\` › *Supprime unee presence*
+\`${client.db.prefix}multi presence remove <ID>\` › *Supprime une presence*
 \`${client.db.prefix}multi presence list\` › *Affiche les presences du status*
 
 \`${client.db.prefix}multi interval <seconds>\` › *Change l'intervalle du changement d'activité*  

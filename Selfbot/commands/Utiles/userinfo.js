@@ -23,8 +23,8 @@ module.exports = {
             > ***Date de création : <t:${Math.round(user.createdTimestamp / 1000)}> <t:${Math.round(user.createdTimestamp / 1000)}:R> ***
             > ***Jours depuis la création : [ \`${Math.floor((Date.now() - user.createdAt) / 1000 / 60 / 60 / 24)}\` ](<https://discord.gg/stealy>) ***
 
-            > ***${user.avatar ? `[\`Lien de l'Avatar\` ](https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=4096)` : "\`Pas de photo de profile\`"} ***
-            > ***${profile.banner ? `[\`Lien de la Bannière\` ](https://cdn.discordapp.com/banners/${user.id}/${profile.banner}.gif?size=4096)` : "\`Pas de bannière\`"} ***`.replaceAll('  ', ''),
+            > ***${user.avatar ? `[\`Lien de l'Avatar\` ](https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith("a_") ? "gif" : "png"}?size=4096)` : "\`Pas de photo de profile\`"} ***
+            > ***${profile.banner ? `[\`Lien de la Bannière\` ](https://cdn.discordapp.com/banners/${user.id}/${profile.banner}.${profile.banner.startsWith("a_") ? "gif" : "png"}?size=4096)` : "\`Pas de bannière\`"} ***`.replaceAll('  ', ''),
 
             `***__› Stealy - User Info__*** <a:star:1345073135095123978>
 
@@ -34,8 +34,8 @@ module.exports = {
             > ***Creation date : <t:${Math.round(user.createdTimestamp / 1000)}> <t:${Math.round(user.createdTimestamp / 1000)}:R> ***
             > ***Days since the creation : [ \`${Math.floor((Date.now() - user.createdAt) / 1000 / 60 / 60 / 24)}\`  ](<https://discord.gg/stealy>) ***
 
-            > ***${user.avatar ? `[ \`Link of the Avatar\` ](https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=4096)` : "\`No pfp\`"} ***
-            > ***${profile.banner ? `[ \`Link of the Banner\` ](https://cdn.discordapp.com/banners/${user.id}/${profile.banner}.gif?size=4096)` : "\`No banner\`"} ***`.replaceAll('  ', '')
+            > ***${user.avatar ? `[ \`Link of the Avatar\` ](https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith("a_") ? "gif" : "png"}?size=4096)` : "\`No pfp\`"} ***
+            > ***${profile.banner ? `[ \`Link of the Banner\` ](https://cdn.discordapp.com/banners/${user.id}/${profile.banner}.${profile.banner.startsWith("a_") ? "gif" : "png"}?size=4096)` : "\`No banner\`"} ***`.replaceAll('  ', '')
         ));
     }
 }

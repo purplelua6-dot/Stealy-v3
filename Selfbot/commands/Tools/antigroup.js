@@ -41,27 +41,35 @@ module.exports = {
                 break
 
             case 'wl':
-                const user = message.mentions.users.first() || client.users.get(args[0]) || await client.fetchUser(args[0]).catch(() => false);
+                if (args[1] == 'list'){
+                    if (!client.db.anti_group.whitelist.length)
+                        return message.edit(client.language("Aucun utilisateur n'est dans la whitelist de l'anti groupe", "No user is in the whitelist of the antigroup"));
 
-                if (!user || !args[0]) 
-                    return message.edit(client.language(
-                        '*Aucun utilisateur trouvé.*',
-                        '*No user found.*'
-                    ));
+                    message.edit(`***__› Stealy__*** - Anti Group\n${client.db.anti_group.whitelist.map((id, r) => `\`${i+1}\` › <@${id}> (\`${id}\`)`).join('\n')}`);
+                }
+                else {
+                    const user = message.mentions.users.first() || client.users.get(args[1]) || await client.fetchUser(args[1]).catch(() => false);
 
-                if (client.db.anti_group.whitelist.includes(user.id)) 
-                    return message.edit(client.language(
-                        `*${user} est déjà whitelist.*`,
-                        `*${user} is already whitelist.*`
-                    ));
+                    if (!user || !args[1]) 
+                        return message.edit(client.language(
+                            '*Aucun utilisateur trouvé.*',
+                            '*No user found.*'
+                        ));
 
-                client.db.anti_group.whitelist.push(user.id);
-                client.save();
+                    if (client.db.anti_group.whitelist.includes(user.id)) 
+                        return message.edit(client.language(
+                            `*${user} est déjà whitelist.*`,
+                            `*${user} is already whitelist.*`
+                        ));
 
-                message.edit(client.language(
-                    `*${user} a été ajouté à la whitelist de l'anti groupe.*`,
-                    `*${user} has been added to the whitelist of the anti group.*`
-                ));
+                    client.db.anti_group.whitelist.push(user.id);
+                    client.save();
+
+                    message.edit(client.language(
+                        `*${user} a été ajouté à la whitelist de l'anti groupe.*`,
+                        `*${user} has been added to the whitelist of the anti group.*`
+                    ));        
+                }
                 break;
 
             case 'unwl':

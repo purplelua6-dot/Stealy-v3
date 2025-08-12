@@ -167,6 +167,25 @@ module.exports = {
                 client.multiRPC();
                 break;
 
+            case 'time':
+                if (args[1] == 'on'){
+                    client.db.rpc.timestamps = { start: new Date().getTime() };
+
+                    client.save();
+                    client.multiRPC();
+                    
+                    message.edit(client.language(`*Le temps du RPC a été activé.*`, `*The time of the RPC is now enable.*`));
+                }
+                else if (args[1] == 'off') {
+                    delete client.db.rpc.timestamps
+
+                    client.save();
+                    client.multiRPC();
+                    
+                    message.edit(client.language(`*Le temps du RPC a été désactivé.*`, `*The time of the RPC is now disable.*`));
+                }
+                break;
+
             case 'smallimage':
                 if (!args[1]) {
                     message.edit(client.language(

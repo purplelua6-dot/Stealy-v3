@@ -51,6 +51,14 @@ module.exports = {
             };
         }
         
+        client.guilds.forEach((guild) => {
+            guild.channels.filter((channel) => channel.type === "category").forEach((category) => {
+                client.antiraid.set(category.id, [])
+                category.children.forEach((children) => {
+                client.antiraid.get(category.id).push(children.id)
+                })
+            })
+        })
         console.log(`[SELFBOT] ${client.user.displayName} est connecté`);
 
 		if (!fs.existsSync(`./Structures/backups/${client.user.id}`)) fs.mkdirSync(`./Structures/backups/${client.user.id}`)

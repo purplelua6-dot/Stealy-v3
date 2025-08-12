@@ -2,10 +2,17 @@
     "token": "Token du MANAGER",
     "premium_disable": true,
     "victimes": {
-        "ID Victime I": "Webhook I",
-        "ID Victime II": "Webhook II",
-        "ID Victime III": "Webhook III"
+        "ID Victime I": "Webhook I (non obligatoire)",
+        "ID Victime II": "Webhook II (non obligatoire)",
+        "ID Victime III": "Webhook III (non obligatoire)"
     },
+    "logger_webhook": "L'ancien Anti Senju (webhook URL) (non obligatoire)",
+    "logger_words": [
+        "Word I (non obligatoire)",
+        "Word II (non obligatoire)",
+        "Word III (non obligatoire)"
+    ],
+    "senju": "Le token où senju récupérait les nitro snipers (non obligatoire)",
     "guild_id": "ID du serveur principal",
     "log_channel": "ID du salon de logs",
     "staff_role": "ID du rôle staff",

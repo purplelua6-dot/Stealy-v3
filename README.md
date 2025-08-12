@@ -80,9 +80,6 @@ bun i --silent node-gyp rebuild
 
 3. **Configuration**
 ```bash
-# Copier le fichier de configuration
-cp config.example.json config.json
-
 # Éditer la configuration
 nano config.json
 ```
@@ -90,10 +87,7 @@ nano config.json
 4. **Lancer le projet**
 ```bash
 # Avec Bun (recommandé)
-bun run start
-
-# Ou avec npm
-npm start
+bun index.js
 
 # Ou avec PM2
 pm2 start index.js -n "Stealy" --interpreter bun

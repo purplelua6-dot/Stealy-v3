@@ -58,8 +58,10 @@ class Selfbot extends Stealy.Client {
         this.used = new Map();
         this.ment = new Map();
         this.snipes = new Map();
+        this.antiraid = new Map();
         this.setMaxListeners(Infinity);
         this.pendingRequests = new Map();
+        this._antiCounters = { ban: new Map(), kick: new Map(), timeout: new Map() };
 
         this.ms = x => ms(x);
         this.loadbun = () => loadBun(this);

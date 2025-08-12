@@ -2,7 +2,6 @@ const { Client, Message } = require('sans-stealy-js');
 
 module.exports = {
     name: "vanity",
-    owner: true,
     /**
      * @param {Client} client 
      * @param {Message} message 

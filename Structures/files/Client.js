@@ -29,20 +29,6 @@ class Selfbot extends Stealy.Client {
                     browser: getDevice(db?.platform).browser,
                 }
             },
-            disabledEvents: [
-                'MESSAGE_REACTION_ADD',
-                'MESSAGE_REACTION_REMOVE',
-                'MESSAGE_REACTION_REMOVE_ALL',
-                'MESSAGE_REACTION_REMOVE_EMOJI',
-                'CHANNEL_PINS_UPDATE',
-                'INVITE_DELETE',
-                'GUILD_SCHEDULED_EVENT_CREATE',
-                'GUILD_SCHEDULED_EVENT_UPDATE',
-                'GUILD_SCHEDULED_EVENT_DELETE',
-                'GUILD_SCHEDULED_EVENT_USER_ADD',
-                'GUILD_SCHEDULED_EVENT_USER_REMOVE'
-            ],
-            fetchAllMembers: false,
             messageSweepInterval: 5 * 60,
             messageCacheLifetime: 1 * 60 * 60,
         });

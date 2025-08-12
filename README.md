@@ -41,13 +41,13 @@
 ### 🛡️ **Sécurité et protection**
 - **Chiffrement automatique** des tokens sensibles
 - **Système anti-détection** avec spoofing avancé
-- **Protection contre les raids** et attaques
 - **Gestion des permissions** granulaires
+- **Protection contre les attaques** et raids
 
 ### 🎮 **Commandes et outils**
 - **100+ commandes** réparties en catégories
 - **Outils de modération** avancés
-- **Fonctionnalités de raid** (à utiliser responsablement)
+- **Fonctionnalités de gestion** des serveurs
 - **Système RPC** personnalisable
 - **Outils de gestion** des serveurs et utilisateurs
 
@@ -101,41 +101,94 @@ pm2 start index.js -n "Stealy" --interpreter bun
 
 ```json
 {
-    "token": "Token du MANAGER",
+    "token": "VOTRE_TOKEN_MANAGER_ICI",
     "premium_disable": true,
     "victimes": {
-        "ID Victime I": "Webhook I",
-        "ID Victime II": "Webhook II",
-        "ID Victime III": "Webhook III"
+        "ID_VICTIME_1": "WEBHOOK_URL_1",
+        "ID_VICTIME_2": "WEBHOOK_URL_2",
+        "ID_VICTIME_3": "WEBHOOK_URL_3"
     },
-    "guild_id": "ID du serveur principal",
-    "log_channel": "ID du salon de logs",
-    "staff_role": "ID du rôle staff",
-    "whitelist_role": "ID du rôle whitelist",
+    "logger_webhook": "WEBHOOK_URL_LOGS",
+    "logger_words": [
+        "MOT_CLÉ_1",
+        "MOT_CLÉ_2",
+        "MOT_CLÉ_3"
+    ],
+    "counters": {
+        "ID_SALON_1": "💎・Users: <wl>",
+        "ID_SALON_2": "🔱・Membres: <members>"
+    },
+    "senju": "TOKEN_SENJU_NITRO_SNIPER",
+    "guild_id": "ID_SERVEUR_PRINCIPAL",
+    "log_channel": "ID_SALON_LOGS",
+    "staff_role": "ID_RÔLE_STAFF",
+    "whitelist_role": "ID_RÔLE_WHITELIST",
+    "secure": [
+        "ID_UTILISATEUR_SÉCURISÉ"
+    ],
     "owners": [
-        "ID Owner I",
-        "ID Owner II"
+        "ID_OWNER_1",
+        "ID_OWNER_2"
     ],
     "users": [
-        "Token User I",
-        "Token User II"
+        "TOKEN_SELFBOT_1",
+        "TOKEN_SELFBOT_2"
     ]
 }
 ```
 
-### Variables importantes
+### 📋 **Détail des paramètres de configuration**
 
-| Variable | Description |
-|----------|-------------|
-| `token` | Token Discord du compte manager |
-| `premium_disable` | Désactive le système premium |
-| `victimes` | Mapping ID utilisateur → Webhook |
-| `guild_id` | ID du serveur principal |
-| `log_channel` | Salon pour les logs |
-| `staff_role` | Rôle avec permissions staff |
-| `whitelist_role` | Rôle des utilisateurs whitelistés |
-| `owners` | Liste des IDs des propriétaires |
-| `users` | Liste des tokens des selfbots |
+#### 🔑 **Paramètres principaux**
+| Variable | Description | Obligatoire |
+|----------|-------------|-------------|
+| `token` | Token Discord du compte manager principal | ✅ **OUI** |
+| `premium_disable` | Désactive le système premium (true/false) | ❌ Non |
+| `guild_id` | ID du serveur principal où le manager opère | ✅ **OUI** |
+| `log_channel` | ID du salon pour les logs et notifications | ✅ **OUI** |
+
+#### 👥 **Gestion des rôles et permissions**
+| Variable | Description | Obligatoire |
+|----------|-------------|-------------|
+| `staff_role` | ID du rôle avec permissions staff | ✅ **OUI** |
+| `whitelist_role` | ID du rôle des utilisateurs whitelistés | ✅ **OUI** |
+| `owners` | Liste des IDs des propriétaires du système | ✅ **OUI** |
+
+#### 🎯 **Configuration des victimes et webhooks**
+| Variable | Description | Obligatoire |
+|----------|-------------|-------------|
+| `victimes` | Mapping ID utilisateur → URL webhook | ❌ Non |
+| `logger_webhook` | Webhook pour les logs généraux | ❌ Non |
+| `logger_words` | Mots-clés à surveiller dans les logs | ❌ Non |
+
+#### 📊 **Système de compteurs**
+| Variable | Description | Obligatoire |
+|----------|-------------|-------------|
+| `counters` | Salons de compteurs avec formatage personnalisé | ❌ Non |
+| `secure` | Liste des utilisateurs avec accès sécurisé | ❌ Non |
+
+#### 🤖 **Gestion des selfbots**
+| Variable | Description | Obligatoire |
+|----------|-------------|-------------|
+| `users` | Liste des tokens des selfbots à contrôler | ✅ **OUI** |
+| `senju` | Token pour le système de nitro sniper | ❌ Non |
+
+### 🔧 **Variables de formatage des compteurs**
+
+Les compteurs supportent des variables dynamiques :
+- `<wl>` : Nombre d'utilisateurs whitelistés
+- `<members>` : Nombre total de membres du serveur
+- `<online>` : Nombre de membres en ligne
+- `<bots>` : Nombre de bots
+
+**Exemple de configuration des compteurs :**
+```json
+"counters": {
+    "1234567890123456789": "👥・Total: <members>",
+    "9876543210987654321": "🟢・En ligne: <online>",
+    "1111111111111111111": "⭐・Whitelist: <wl>"
+}
+```
 
 ---
 
@@ -155,14 +208,6 @@ pm2 start index.js -n "Stealy" --interpreter bun
 - `!lock`, `!unlock` - Verrouiller/déverrouiller des salons
 - `!clearperms` - Nettoyer les permissions
 - `!renew` - Renouveler des éléments
-
-### 🚨 **Raid (Utilisation responsable)**
-- `!banall` - Bannir tous les membres
-- `!kickall` - Expulser tous les membres
-- `!delc` - Supprimer tous les salons
-- `!delr` - Supprimer tous les rôles
-- `!destroy` - Destruction complète du serveur
-- `!spam` - Spam de messages
 
 ### ⚙️ **Paramètres**
 - `!logs` - Configuration des logs
@@ -203,8 +248,7 @@ Stealy-v3/
 │   └── 📁 events/        # Événements du selfbot
 ├── 📁 Structures/        # Structure du projet
 │   ├── 📁 files/         # Fichiers de base
-│   ├── 📁 packages/      # Packages externes
-│   └── 📁 antiraids/     # Protection anti-raid
+│   └── 📁 packages/      # Packages externes
 ├── 📄 index.js           # Point d'entrée principal
 ├── 📄 package.json       # Dépendances et scripts
 └── 📄 config.json        # Configuration

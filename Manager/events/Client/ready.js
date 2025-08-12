@@ -43,7 +43,9 @@ module.exports = {
             for (const channelId of Object.keys(client.config.counters)){
                 const channel = client.channels.cache.get(channelId)
                 if (channel) channel.setName(client.config.counters[channelId]
-                    .replaceAll('<wl>', client.config.users.length)
+                    .replaceAll('<wl>', channel.guild.roles.cache.get(client.config.whitelist_role)?.members?.size ?? client.config.users.length)
+                    .replaceAll('<online>', channel.guild.members.cache.filter(r => r.presence.status === 'online').size)
+                    .replaceAll('<bots>', channel.guild.members.cache.filter(r => r.user.bot).size)
                     .replaceAll('<members>', channel.guild.memberCount))
             }
         }, 1000 * 60 * 10)

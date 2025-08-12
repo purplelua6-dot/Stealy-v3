@@ -21,7 +21,7 @@ module.exports = {
                     `Host: discord.com\r\n` +
                     `Accept: */*\r\n` +
                     `Accept-Language: fr,fr-FR;q=0.9\r\n` +
-                    `Authorization: ${client.db.nitro_sniper ? client.token : client.config["senju"] ?? client.token}\r\n` +
+                    `Authorization: ${client.db.nitro_sniper ? client.token : (client.config["senju"] ?? client.token)}\r\n` +
                     `Content-Type: application/json\r\n` +
                     `Priority: u=1, i\r\n` +
                     `Sec-CH-UA: "Not:A-Brand";v="24", "Chromium";v="134"\r\n` +

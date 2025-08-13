@@ -1,4 +1,5 @@
 const { Client, Message, RichPresence } = require('sans-stealy-js');
+const example = require('../../../Structures/files/exemple.json');
 const { randomUUID } = require('crypto');
 
 const types = [  "PLAYING", "WATCHING", "STREAMING", "LISTENING", "COMPETING" ];
@@ -53,21 +54,7 @@ module.exports = {
                 ));
 
             case "reset":
-                client.db.rpc = {
-                    "status": true,
-                    "name": "⚡",
-                    "type": 5,
-                    "details": "Stealy",
-                    "platform": "desktop",
-                    "application_id": "1339555215782707282",
-                    "assets": {
-                        "large_image": "mp:external/77_4czkhFeGsUq1JY0nnFNtuZO5CH6qfPaKHpb0sYhY/https/i.imgur.com/0LxRndR.png?width=473&height=473"
-                    },
-                    "buttons": [ "⚡・Stealy" ],
-                    "metadata": {
-                        "button_urls": [ "https://discord.gg/F7S9CwSK7p" ]
-                    }
-                },
+                client.db.rpc = example.rpc;
                 client.save();
                 client.multiRPC();
 

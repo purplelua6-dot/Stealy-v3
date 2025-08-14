@@ -27,18 +27,11 @@
     "staff_role": "ID_RÔLE_STAFF",
     "whitelist_role": "ID_RÔLE_WHITELIST",
     
-    "secure": [
-        "ID_UTILISATEUR_SÉCURISÉ"
-    ],
-
     
     "owners": [
         "ID_OWNER_1",
         "ID_OWNER_2"
     ],
     
-    "users": [
-        "TOKEN_SELFBOT_1",
-        "TOKEN_SELFBOT_2"
-    ]
+    "users": []
 }

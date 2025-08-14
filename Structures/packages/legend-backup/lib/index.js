@@ -17,7 +17,7 @@ if (!(0, fs_1.existsSync)(backups)) {
 const getBackupData = async (backupID) => {
     return new Promise(async (resolve, reject) => {
         const files = await (0, promises_1.readdir)(backups);
-        const file = files.filter((f) => f.split('.').pop() === 'json').find((f) => f === `${backupID}.json`);
+        const file = files.find(f => f.trim().toLowerCase() === `${backupID}.json`.toLowerCase());
         if (file) {
             const backupData = require(`${backups}${path_1.sep}${file}`);
             resolve(backupData);
@@ -34,7 +34,7 @@ const fetchBackup = (backupID) => {
     return new Promise(async (resolve, reject) => {
         getBackupData(backupID)
             .then((backupData) => {
-            const size = (0, fs_1.statSync)(`${backups}${backupID}.json`).size;
+            const size = fs_1.statSync(path_1.join(backups, `${backupID}.json`)).size;
             const backupInfos = {
                 data: backupData,
                 id: backupID,
@@ -232,7 +232,7 @@ const setStorageFolder = (path) => {
     }
     backups = path;
     if (!(0, fs_1.existsSync)(backups)) {
-        (0, fs_1.mkdirSync)(backups);
+        (0, fs_1.mkdirSync)(backups, { recursive: true });
     }
 };
 exports.setStorageFolder = setStorageFolder;

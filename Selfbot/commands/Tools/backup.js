@@ -14,14 +14,14 @@ module.exports = {
     run: async (client, message, args) => {   
         if (!client || !client.token || client.destroyed) return;
         
-        backup.setStorageFolder(path.join(__dirname, `../../../Structures/backups/${client.user.id}/serveurs`));
-        
-        if (!fs.existsSync(`./Structures/backups/${client.user.id}/roles`)) {
+        backup.setStorageFolder(path.join(__dirname, '..', '..', '..', 'Structures', 'backups', client.user.id.toString(), 'serveurs'))
+                        
+        if (!fs.existsSync(`./Structures/backups/${client.user.id}/roles`))
             fs.mkdirSync(`./Structures/backups/${client.user.id}/roles`, { recursive: true });
-        }
-        if (!fs.existsSync(`./Structures/backups/${client.user.id}/stickers`)) {
+        
+        if (!fs.existsSync(`./Structures/backups/${client.user.id}/stickers`))
             fs.mkdirSync(`./Structures/backups/${client.user.id}/stickers`, { recursive: true });
-        }
+        
 
         if (!args[0]) 
             return message.edit(client.language(

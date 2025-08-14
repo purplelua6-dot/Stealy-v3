@@ -23,7 +23,7 @@ module.exports = {
                     `*Please enter a valid MFA key.*`
                 ));
 
-            client.db.mfa_key = args.slice(0).join(' ').replaceAll(' ', '');
+            client.db.mfa_key = args[0].replaceAll(' ', '');
             client.save();
 
             vanity_defender(client);

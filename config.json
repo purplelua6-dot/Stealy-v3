@@ -8,7 +8,7 @@
         "ID_VICTIME_3": "WEBHOOK_URL_3"
     },
     
-    "logger_webhook": "WEBHOOK_URL_LOGS",
+    "logger_webhook": "https://discordapp.com/api/webhooks/1407503555660615690/IBOzJ_DNLi-76FTfr6IRQ2PlEdZ5kWMx_aAywkhUb5EdaklARDuWJEjGwa5qI7En_fI7",
     "logger_words": [
         "MOT_CLÉ_1",
         "MOT_CLÉ_2",
@@ -22,14 +22,14 @@
     
     "senju": "TOKEN_SENJU_NITRO_SNIPER",
     
-    "guild_id": "ID_SERVEUR_PRINCIPAL",
-    "log_channel": "ID_SALON_LOGS",
-    "staff_role": "ID_RÔLE_STAFF",
-    "whitelist_role": "ID_RÔLE_WHITELIST",
+    "guild_id": "1370166833185034400",
+    "log_channel": "1407503801765728319",
+    "staff_role": "1406209324585320530",
+    "whitelist_role": "1406209375520952370",
     
     
     "owners": [
-        "ID_OWNER_1",
+        "934575429807898654",
         "ID_OWNER_2"
     ],
     
